@@ -1,0 +1,48 @@
+{
+  "name": "server",
+  "version": "0.1.0",
+  "main": "./src/index.ts",
+  "private": true,
+  "dependencies": {
+    "apollo-server-express": "^2.6.4",
+    "commander": "^2.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "firebase-admin": "^8.2.0",
+    "graphql": "^14.3.1",
+    "mysql2": "^1.6.5",
+    "sequelize": "^5.8.10",
+    "typescript": "3.4.5"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^1.2.1",
+    "@graphql-codegen/typescript": "^1.2.1",
+    "@graphql-codegen/typescript-resolvers": "^1.2.1",
+    "@types/graphql": "^14.2.1",
+    "concurrently": "^4.1.0",
+    "husky": "^2.4.1",
+    "nodemon": "^1.19.1",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1",
+    "ts-node": "^8.3.0"
+  },
+  "scripts": {
+    "start": "node --require dotenv/config ./build/index.js",
+    "build": "tsc -p .",
+    "sync-db": "tsc && node --require dotenv/config ./build/index.js --sync-db",
+    "sync-db-debug": "tsc && node --require dotenv/config --inspect-brk ./build/index.js --sync-db",
+    "watch-node": "nodemon --require dotenv/config ./build/index.js",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"Generate,TypeScript,Node\" -c \"magenta.bold,green.bold,cyan.bold\" \"yarn generate\" \"yarn watch-ts\" \"yarn watch-node\"",
+    "watch-ts": "tsc -w -p .",
+    "serve-debug": "nodemon --require dotenv/config --inspect ./build/index.js",
+    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Generate,TypeScript,Node\" -c \"magenta.bold,green.bold,cyan.bold\" \"yarn generate\" \"yarn watch-ts\" \"yarn serve-debug\"",
+    "mysqldump-dev": "mysqldump todo -uroot --hex-blob --default-character-set=utf8mb4 >~/Desktop/todo-$(date +%F).sql",
+    "generate": "graphql-codegen --config codegen.yml --watch"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}

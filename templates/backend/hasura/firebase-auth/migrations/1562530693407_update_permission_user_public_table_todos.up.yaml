@@ -1,0 +1,10 @@
+- args:
+    permission:
+      filter:
+        uid:
+          _eq: X-Hasura-User-Id
+    role: user
+    table:
+      name: todos
+      schema: public
+  type: create_delete_permission

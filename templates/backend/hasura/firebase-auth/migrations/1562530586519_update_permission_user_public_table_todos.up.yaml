@@ -1,0 +1,21 @@
+- args:
+    permission:
+      allow_upsert: true
+      check:
+        uid:
+          _eq: X-Hasura-User-Id
+      columns:
+      - complete
+      - name
+      localPresets:
+      - key: uid
+        value: x-hasura-User-Id
+      - key: ""
+        value: ""
+      set:
+        uid: x-hasura-User-Id
+    role: user
+    table:
+      name: todos
+      schema: public
+  type: create_insert_permission

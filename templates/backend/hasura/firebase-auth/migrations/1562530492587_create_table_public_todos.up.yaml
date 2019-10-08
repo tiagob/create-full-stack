@@ -1,0 +1,9 @@
+- args:
+    sql: CREATE TABLE "public"."todos"("id" serial NOT NULL, "name" text NOT NULL,
+      "complete" boolean NOT NULL DEFAULT false, "uid" varchar NOT NULL, PRIMARY KEY
+      ("id") , UNIQUE ("id"));
+  type: run_sql
+- args:
+    name: todos
+    schema: public
+  type: add_existing_table_or_view
