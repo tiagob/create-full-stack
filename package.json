@@ -2,22 +2,33 @@
   "name": "create-boilerplate-app",
   "version": "0.1.0",
   "description": "Configuration and scripts for Create Boilerplate App.",
+  "bin": {
+    "create-boilerplate-app": "./build/src/index.js"
+  },
   "devDependencies": {
-    "@types/node": "^12.7.11",
-    "commander": "^2.19.0",
-    "husky": "^1.3.1",
-    "prettier": "1.16.4",
-    "pretty-quick": "^1.10.0",
-    "typescript": "^3.3.3"
+    "@types/fs-extra": "^9.0.0",
+    "@types/node": "^14.0.1",
+    "@types/validate-npm-package-name": "^3.0.0",
+    "commander": "^5.1.0",
+    "husky": "^4.2.5",
+    "prettier": "2.0.5",
+    "pretty-quick": "^2.0.1",
+    "typescript": "^3.9.2"
   },
   "scripts": {
-    "init": "tsc && node ./build/init.js",
-    "init-debug": "tsc && node --inspect-brk ./build/init.js"
+    "create-boilerplate-app": "tsc && node ./build/src/index.js",
+    "create-boilerplate-app-debug": "tsc && node --inspect-brk ./build/src/index.js"
   },
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "fs-extra": "^9.0.0",
+    "path": "^0.12.7",
+    "validate-npm-package-name": "^3.0.0"
+  }
 }
