@@ -1,17 +1,17 @@
-import fs from "fs-extra";
 import chalk from "chalk";
 import commander from "commander";
+import fs from "fs-extra";
 import path from "path";
 
 import packageJson from "../package.json";
 import { checkAppName, isSafeToCreateProjectIn } from "./createReactAppUtils";
 
 const backends = ["apollo", "hasura", "firestore"];
-// TODO add auth0
+// TODO: Add auth0
 const auths = {
   firebase: "firebase-auth",
   google: "google-auth",
-  "": "no-auth",
+  "": "no-auth"
 };
 
 let projectName = "";
@@ -36,11 +36,11 @@ const program: Program = new commander.Command(packageJson.name)
   .option("-a, --auth <auth>", `auth type [${Object.keys(auths).join("|")}]`)
   .parse(process.argv);
 
-function copySync(templatePath: string, appPath: string): void {
+function copySync(templatePath: string, appPath: string, silent = false): void {
   fs.ensureDirSync(templatePath);
   if (fs.existsSync(templatePath)) {
     fs.copySync(templatePath, appPath);
-  } else {
+  } else if (!silent) {
     console.error(
       `Could not locate supplied template: ${chalk.green(templatePath)}`
     );
@@ -78,11 +78,20 @@ function run(): void {
   console.log(`Creating a new full-stack app in ${chalk.green(root)}.`);
   console.log();
 
+  // TODO: Cleanup typing
   const auth = auths[(program.auth || "") as "firebase" | "google" | ""];
   copySync(
     `./templates/backend/${program.backend}/${auth}`,
     `${projectName}/backend`
   );
+
+  if (program.web || program.mobile) {
+    copySync(
+      `./templates/common/${program.backend}`,
+      `${projectName}/common`,
+      true
+    );
+  }
 
   if (program.web) {
     copySync(

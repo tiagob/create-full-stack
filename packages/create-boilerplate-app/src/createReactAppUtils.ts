@@ -2,8 +2,8 @@
 // https://github.com/facebook/create-react-app/blob/f5c3bdb65480f93b2d4a4c2f3214fc50753de434/packages/create-react-app/createReactApp.js
 import chalk from "chalk";
 import fs from "fs-extra";
-import validateProjectName from "validate-npm-package-name";
 import path from "path";
+import validateProjectName from "validate-npm-package-name";
 
 export function checkAppName(appName: string): void {
   const validationResult = validateProjectName(appName);
