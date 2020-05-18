@@ -23,4 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # templates
-packages/create-boilerplate-app/templates/**/yarn.lock
+packages/create-full-stack/templates/**/yarn.lock

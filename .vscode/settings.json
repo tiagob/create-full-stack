@@ -4,7 +4,7 @@
   },
   "editor.tabSize": 2,
   "eslint.workingDirectories": [
-    {"directory": "packages/create-boilerplate-app", "changeProcessCWD": true },
-    {"directory": "packages/create-boilerplate-app/templates/backend/apollo/firebase-auth", "changeProcessCWD": true }
+    {"directory": "packages/create-full-stack", "changeProcessCWD": true },
+    {"directory": "packages/create-full-stack/templates/backend/apollo/firebase-auth", "changeProcessCWD": true }
   ]
 }

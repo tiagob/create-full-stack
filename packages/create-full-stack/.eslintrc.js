@@ -1,5 +1,5 @@
 module.exports = {
-  extends: "eslint-config-boilerplate-app",
+  extends: "eslint-config-full-stack",
   rules: {
     "unicorn/no-process-exit": "off",
     "no-console": "off"

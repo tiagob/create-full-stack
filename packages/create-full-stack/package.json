@@ -1,9 +1,9 @@
 {
-  "name": "create-boilerplate-app",
+  "name": "create-full-stack",
   "version": "0.1.0",
-  "description": "Configuration and scripts for Create Boilerplate App.",
+  "description": "Configuration and scripts for Create Full Stack.",
   "bin": {
-    "create-boilerplate-app": "./build/src/index.js"
+    "create-full-stack": "./build/src/index.js"
   },
   "devDependencies": {
     "@types/cross-spawn": "^6.0.2",
@@ -11,7 +11,7 @@
     "@types/node": "^14.0.1",
     "@types/validate-npm-package-name": "^3.0.0",
     "eslint": "^6.8.0",
-    "eslint-config-boilerplate-app": "0.1.0",
+    "eslint-config-full-stack": "0.1.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.2",
     "prettier": "2.0.5",
@@ -19,8 +19,8 @@
     "typescript": "^3.9.2"
   },
   "scripts": {
-    "create-boilerplate-app": "tsc && node ./build/src/index.js",
-    "create-boilerplate-app-debug": "tsc && node --inspect-brk ./build/src/index.js",
+    "create-full-stack": "tsc && node ./build/src/index.js",
+    "create-full-stack-debug": "tsc && node --inspect-brk ./build/src/index.js",
     "lint": "eslint src/**.ts"
   },
   "husky": {

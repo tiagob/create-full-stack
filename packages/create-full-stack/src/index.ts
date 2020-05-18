@@ -144,7 +144,7 @@ function run(): void {
   if (!shouldUseYarn()) {
     console.error(
       chalk.red(
-        "Create Boilerplate App requires Yarn.\nPlease install Yarn. https://classic.yarnpkg.com/en/docs/install"
+        "Create Full Stack requires Yarn.\nPlease install Yarn. https://classic.yarnpkg.com/en/docs/install"
       )
     );
     process.exit(1);

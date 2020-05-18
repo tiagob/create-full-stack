@@ -163,7 +163,7 @@ export function tryGitInit(appPath: string): boolean {
 
     execSync(`git -C ${appPath} add -A`, { stdio: "ignore" });
     execSync(
-      `git -C ${appPath} commit -m "Initial commit from Create Boilerplate App"`,
+      `git -C ${appPath} commit -m "Initial commit from Create Full Stack"`,
       {
         stdio: "ignore",
       }
