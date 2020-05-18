@@ -1,6 +1,8 @@
-// Taken from create-react-app
+// Adapted from create-react-app
 // https://github.com/facebook/create-react-app/blob/f5c3bdb65480f93b2d4a4c2f3214fc50753de434/packages/create-react-app/createReactApp.js
+// https://github.com/facebook/create-react-app/blob/47e9e2c7a07bfe60b52011cf71de5ca33bdeb6e3/packages/react-scripts/scripts/init.js
 import chalk from "chalk";
+import { execSync } from "child_process";
 import fs from "fs-extra";
 import path from "path";
 import validateProjectName from "validate-npm-package-name";
@@ -117,4 +119,70 @@ export function isSafeToCreateProjectIn(root: string, name: string): boolean {
     }
   });
   return true;
+}
+
+export function shouldUseYarn(): boolean {
+  try {
+    execSync("yarnpkg --version", { stdio: "ignore" });
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+function isInGitRepository(appPath: string): boolean {
+  try {
+    execSync(`git -C ${appPath} rev-parse --is-inside-work-tree`, {
+      stdio: "ignore",
+    });
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+function isInMercurialRepository(appPath: string): boolean {
+  try {
+    execSync(`hg --cwd ${appPath} root`, { stdio: "ignore" });
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+export function tryGitInit(appPath: string): boolean {
+  let didInit = false;
+  try {
+    execSync(`git -C ${appPath} --version`, { stdio: "ignore" });
+    if (isInGitRepository(appPath) || isInMercurialRepository(appPath)) {
+      return false;
+    }
+
+    execSync(`git -C ${appPath} init`, { stdio: "ignore" });
+    didInit = true;
+
+    execSync(`git -C ${appPath} add -A`, { stdio: "ignore" });
+    execSync(
+      `git -C ${appPath} commit -m "Initial commit from Create Boilerplate App"`,
+      {
+        stdio: "ignore",
+      }
+    );
+    return true;
+  } catch (error) {
+    if (didInit) {
+      // If we successfully initialized but couldn't commit,
+      // maybe the commit author config is not set.
+      // In the future, we might supply our own committer
+      // like Ember CLI does, but for now, let's just
+      // remove the Git files to avoid a half-done state.
+      try {
+        // unlinkSync() doesn't work on directories.
+        fs.removeSync(path.join(appPath, ".git"));
+      } catch (removeError) {
+        // Ignore.
+      }
+    }
+    return false;
+  }
 }

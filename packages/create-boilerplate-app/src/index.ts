@@ -1,17 +1,24 @@
 import chalk from "chalk";
 import commander from "commander";
+import spawn from "cross-spawn";
 import fs from "fs-extra";
 import path from "path";
 
 import packageJson from "../package.json";
-import { checkAppName, isSafeToCreateProjectIn } from "./createReactAppUtils";
+import {
+  checkAppName,
+  isSafeToCreateProjectIn,
+  shouldUseYarn,
+  tryGitInit,
+} from "./createReactAppUtils";
 
 const backends = ["apollo", "hasura", "firestore"];
+const nodeBackends = new Set(["apollo"]);
 // TODO: Add auth0
 const auths = {
   firebase: "firebase-auth",
   google: "google-auth",
-  "": "no-auth"
+  "": "no-auth",
 };
 
 let projectName = "";
@@ -47,6 +54,56 @@ function copySync(templatePath: string, appPath: string, silent = false): void {
   }
 }
 
+function copyTemplate(): void {
+  // Copy root package.json for Yarn workspaces
+  fs.copySync("./templates/package.json", `${projectName}/package.json`);
+  fs.copySync("./templates/gitignore", `${projectName}/.gitignore`);
+
+  // TODO: Cleanup typing
+  const auth = auths[(program.auth || "") as "firebase" | "google" | ""];
+  copySync(
+    `./templates/backend/${program.backend}/${auth}`,
+    nodeBackends.has(program.backend || "")
+      ? `${projectName}/packages/backend`
+      : `${projectName}/${program.backend}`
+  );
+
+  if (program.web || program.mobile) {
+    copySync(
+      `./templates/common/${program.backend}`,
+      `${projectName}/packages/common`,
+      true
+    );
+  }
+
+  if (program.web) {
+    copySync(
+      `./templates/web/${program.backend}/${auth}`,
+      `${projectName}/packages/web`
+    );
+  }
+
+  if (program.mobile) {
+    copySync(
+      `./templates/mobile/${program.backend}/${auth}`,
+      `${projectName}/packages/mobile`
+    );
+  }
+}
+
+function installDependencies(): void {
+  const command = "yarnpkg";
+  const commandArguments = ["--cwd", projectName];
+  console.log(`Installing packages using ${command}...`);
+  console.log();
+
+  const proc = spawn.sync(command, commandArguments, { stdio: "inherit" });
+  if (proc.status !== 0) {
+    console.error(`\`${command} ${commandArguments.join(" ")}\` failed`);
+    process.exit(1);
+  }
+}
+
 function run(): void {
   // Validation
   // TODO: Add Cloud Run for hasura handlers (event triggers or actions, crons?)
@@ -74,38 +131,30 @@ function run(): void {
     process.exit(1);
   }
   console.log();
-
+  // Yarn is required for Yarn workspaces (monorepo support)
+  if (!shouldUseYarn()) {
+    console.error(
+      chalk.red(
+        "Create Boilerplate App requires Yarn.\nPlease install Yarn. https://classic.yarnpkg.com/en/docs/install"
+      )
+    );
+    process.exit(1);
+  }
   console.log(`Creating a new full-stack app in ${chalk.green(root)}.`);
   console.log();
 
-  // TODO: Cleanup typing
-  const auth = auths[(program.auth || "") as "firebase" | "google" | ""];
-  copySync(
-    `./templates/backend/${program.backend}/${auth}`,
-    `${projectName}/backend`
-  );
+  copyTemplate();
 
-  if (program.web || program.mobile) {
-    copySync(
-      `./templates/common/${program.backend}`,
-      `${projectName}/common`,
-      true
-    );
-  }
+  installDependencies();
 
-  if (program.web) {
-    copySync(
-      `./templates/web/${program.backend}/${auth}`,
-      `${projectName}/web`
-    );
+  if (tryGitInit(projectName)) {
+    console.log();
+    console.log("Initialized a git repository.");
   }
-
-  if (program.mobile) {
-    copySync(
-      `./templates/mobile/${program.backend}/${auth}`,
-      `${projectName}/mobile`
-    );
-  }
+  console.log();
+  console.log(`Success! Created ${appName} at ${projectName}`);
+  console.log();
+  console.log("Happy hacking!");
 }
 
 if (projectName && program.backend) {
