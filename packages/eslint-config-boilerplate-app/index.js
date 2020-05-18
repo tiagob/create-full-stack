@@ -34,6 +34,8 @@ module.exports = {
     jest: true,
   },
   rules: {
+    // Common abbreviations are known and readable
+    "unicorn/prevent-abbreviations": "off",
     // Overload airbnb definition to allow 'ForOfStatement'
     // https://github.com/airbnb/javascript/blob/b6fc6dc7c3cb76497db0bb81edaa54d8f3427796/packages/eslint-config-airbnb-base/rules/style.js#L257
     'no-restricted-syntax': [
@@ -56,5 +58,5 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": "error",
     "object-shorthand": "error"
   },
-  ignorePatterns: ["node_modules", "build"]
+  ignorePatterns: ["node_modules", "build", "generated"]
 }

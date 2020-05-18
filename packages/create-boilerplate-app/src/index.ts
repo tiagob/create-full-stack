@@ -43,10 +43,19 @@ const program: Program = new commander.Command(packageJson.name)
   .option("-a, --auth <auth>", `auth type [${Object.keys(auths).join("|")}]`)
   .parse(process.argv);
 
+// Don't include any local files. node_modules and yarn.lock will be different
+// depending on what packages are included because yarn puts these at the root
+// of the project
+const excludeFiles = new Set(["node_modules", "build", "yarn.lock"]);
+function filterCopySync(src: string): boolean {
+  const fileOrFolder = path.basename(src);
+  return !excludeFiles.has(fileOrFolder);
+}
+
 function copySync(templatePath: string, appPath: string, silent = false): void {
   fs.ensureDirSync(templatePath);
   if (fs.existsSync(templatePath)) {
-    fs.copySync(templatePath, appPath);
+    fs.copySync(templatePath, appPath, { filter: filterCopySync });
   } else if (!silent) {
     console.error(
       `Could not locate supplied template: ${chalk.green(templatePath)}`
@@ -93,13 +102,13 @@ function copyTemplate(): void {
 
 function installDependencies(): void {
   const command = "yarnpkg";
-  const commandArguments = ["--cwd", projectName];
+  const args = ["--cwd", projectName];
   console.log(`Installing packages using ${command}...`);
   console.log();
 
-  const proc = spawn.sync(command, commandArguments, { stdio: "inherit" });
+  const proc = spawn.sync(command, args, { stdio: "inherit" });
   if (proc.status !== 0) {
-    console.error(`\`${command} ${commandArguments.join(" ")}\` failed`);
+    console.error(`\`${command} ${args.join(" ")}\` failed`);
     process.exit(1);
   }
 }

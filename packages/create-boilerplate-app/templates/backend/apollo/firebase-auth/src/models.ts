@@ -1,9 +1,12 @@
-import { Sequelize, Model, DataTypes, BuildOptions } from "sequelize";
+import { DataTypes, Model, Sequelize } from "sequelize";
 
 export class Todo extends Model {
   public id!: number;
+
   public name!: string;
+
   public complete!: boolean;
+
   public uid!: string;
 }
 

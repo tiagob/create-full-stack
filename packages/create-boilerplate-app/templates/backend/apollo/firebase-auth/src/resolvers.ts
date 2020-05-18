@@ -1,9 +1,9 @@
-import { Todo } from "./models";
 import {
   MutationCreateTodoArgs,
-  MutationUpdateTodoArgs,
   MutationDestroyTodoArgs,
+  MutationUpdateTodoArgs,
 } from "./generated/graphql";
+import { Todo } from "./models";
 import admin from "./utils/firebaseAdmin";
 
 interface Context {
@@ -12,35 +12,37 @@ interface Context {
 
 export default {
   Query: {
-    todos: (_: any, __: any, context: Context) =>
+    todos: (_: unknown, __: unknown, context: Context): Todo[] =>
       Todo.findAll({ where: { uid: context.user.uid } }),
   },
   Mutation: {
-    createTodo: (_: any, args: MutationCreateTodoArgs, context: Context) =>
-      Todo.create({ uid: context.user.uid, complete: false, ...args }),
-    updateTodo: async (
-      _: any,
-      { id, ...args }: MutationUpdateTodoArgs,
+    createTodo: (
+      _: unknown,
+      arguments_: MutationCreateTodoArgs,
       context: Context
-    ) => {
+    ): Todo =>
+      Todo.create({ uid: context.user.uid, complete: false, ...arguments_ }),
+    updateTodo: async (
+      _: unknown,
+      { id, ...arguments_ }: MutationUpdateTodoArgs,
+      context: Context
+    ): Promise<Todo | undefined> => {
       const todo = await Todo.findOne({ where: { id, uid: context.user.uid } });
       if (todo) {
-        return todo.update(args);
-      } else {
-        return null;
+        return todo.update(arguments_);
       }
+      return undefined;
     },
     destroyTodo: async (
-      _: any,
+      _: unknown,
       { id }: MutationDestroyTodoArgs,
       context: Context
-    ) => {
+    ): Promise<Todo | undefined> => {
       const todo = await Todo.findOne({ where: { id, uid: context.user.uid } });
       if (todo) {
         return todo.destroy();
-      } else {
-        return null;
       }
+      return undefined;
     },
   },
 };
