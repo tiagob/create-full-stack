@@ -2,6 +2,7 @@
   "name": "create-full-stack",
   "version": "0.1.0",
   "description": "Configuration and scripts for Create Full Stack.",
+  "license": "MIT",
   "bin": {
     "create-full-stack": "./build/src/index.js"
   },
@@ -11,7 +12,7 @@
     "@types/node": "^14.0.1",
     "@types/validate-npm-package-name": "^3.0.0",
     "eslint": "^6.8.0",
-    "eslint-config-full-stack": "0.1.0",
+    "eslint-config-create-full-stack": "0.1.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.2",
     "prettier": "2.0.5",
@@ -28,7 +29,6 @@
       "pre-commit": "lint-staged"
     }
   },
-  "license": "MIT",
   "dependencies": {
     "chalk": "^4.0.0",
     "commander": "^5.1.0",
