@@ -17,9 +17,9 @@ const nodeBackends = new Set(["apollo"]);
 // TODO: Add auth0
 const auths = {
   firebase: "firebase-auth",
-  google: "google-auth",
   "": "no-auth",
 };
+type Auths = typeof auths;
 
 let projectName = "";
 
@@ -68,8 +68,7 @@ function copyTemplate(): void {
   fs.copySync("./templates/package.json", `${projectName}/package.json`);
   fs.copySync("./templates/gitignore", `${projectName}/.gitignore`);
 
-  // TODO: Cleanup typing
-  const auth = auths[(program.auth || "") as "firebase" | "google" | ""];
+  const auth = auths[(program.auth || "") as keyof Auths];
   copySync(
     `./templates/backend/${program.backend}/${auth}`,
     nodeBackends.has(program.backend || "")

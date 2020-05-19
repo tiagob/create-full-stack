@@ -28,7 +28,7 @@ const run = (): void => {
     const app = express();
     const corsOptions = {
       origin,
-      credentials: true, // <-- REQUIRED backend setting
+      credentials: true,
     };
     app.use(cors(corsOptions));
 

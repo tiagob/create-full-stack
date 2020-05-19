@@ -20,7 +20,6 @@
     "@graphql-codegen/cli": "^1.13.5",
     "@graphql-codegen/typescript": "^1.13.5",
     "@graphql-codegen/typescript-resolvers": "^1.13.5",
-    "@types/graphql": "^14.5.0",
     "concurrently": "^5.2.0",
     "husky": "^4.2.5",
     "nodemon": "^2.0.4",

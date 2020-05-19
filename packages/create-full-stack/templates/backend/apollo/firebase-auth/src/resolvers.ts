@@ -12,7 +12,7 @@ interface Context {
 
 export default {
   Query: {
-    todos: (_: unknown, __: unknown, context: Context): Todo[] =>
+    todos: (_: unknown, __: unknown, context: Context): Promise<Todo[]> =>
       Todo.findAll({ where: { uid: context.user.uid } }),
   },
   Mutation: {
@@ -20,7 +20,7 @@ export default {
       _: unknown,
       arguments_: MutationCreateTodoArgs,
       context: Context
-    ): Todo =>
+    ): Promise<Todo> =>
       Todo.create({ uid: context.user.uid, complete: false, ...arguments_ }),
     updateTodo: async (
       _: unknown,
