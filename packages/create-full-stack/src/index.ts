@@ -17,7 +17,9 @@ import {
   tryGitInit,
 } from "./createReactAppUtils";
 
+// TODO: Should "apollo" be "apollo-server" or "node"?
 const backends = ["apollo", "hasura", "firestore"];
+// TODO: Am I using only "apollo" elsewhere?
 const nodeBackends = new Set(["apollo"]);
 // TODO: Add auth0
 const auths = {
@@ -91,7 +93,6 @@ function addApolloCodegen() {
     `${projectName}/codegen.yml`,
     yaml.safeDump({
       schema: "packages/backend/src/graphql/schema.ts",
-      documents: "packages/*/src/graphql/*.graphql",
       generates: {
         "packages/backend/src/graphql/__generated__/index.ts": {
           plugins: ["typescript", "typescript-resolvers"],
@@ -101,6 +102,22 @@ function addApolloCodegen() {
         },
         ...(program.mobile && {
           "packages/mobile/src/graphql/__generated__/index.ts": {
+            documents: "packages/mobile/src/graphql/*.graphql",
+            plugins: [
+              "typescript",
+              "typescript-operations",
+              "typescript-react-apollo",
+            ],
+            config: {
+              withHOC: false,
+              withComponent: false,
+              withHooks: true,
+            },
+          },
+        }),
+        ...(program.web && {
+          "packages/web/src/graphql/__generated__/index.ts": {
+            documents: "packages/web/src/graphql/*.graphql",
             plugins: [
               "typescript",
               "typescript-operations",
@@ -118,21 +135,33 @@ function addApolloCodegen() {
   );
 }
 
+// "eslint.workingDirectories" is defined in the base settings.json as never[]
+// Override the type definition to allow this script to push to it
+type VSCodeSettingsJson = typeof vscodeSettingsJson;
+interface VSCodeSettings
+  extends Omit<VSCodeSettingsJson, "eslint.workingDirectories"> {
+  "eslint.workingDirectories": {
+    directory: string;
+    changeProcessCWD: boolean;
+  }[];
+}
+
 function addVSCodeSettings() {
+  const vscodeSettings: VSCodeSettings = { ...vscodeSettingsJson };
   if (program.backend === "apollo") {
-    vscodeSettingsJson["eslint.workingDirectories"].push({
+    vscodeSettings["eslint.workingDirectories"].push({
       directory: "packages/backend",
       changeProcessCWD: true,
     });
   }
   if (program.mobile) {
-    vscodeSettingsJson["eslint.workingDirectories"].push({
+    vscodeSettings["eslint.workingDirectories"].push({
       directory: "packages/mobile",
       changeProcessCWD: true,
     });
   }
   if (program.web) {
-    vscodeSettingsJson["eslint.workingDirectories"].push({
+    vscodeSettings["eslint.workingDirectories"].push({
       directory: "packages/web",
       changeProcessCWD: true,
     });
@@ -140,13 +169,16 @@ function addVSCodeSettings() {
   fs.ensureDirSync(`${projectName}/.vscode`);
   fs.writeFileSync(
     `${projectName}/.vscode/settings.json`,
-    JSON.stringify(vscodeSettingsJson, undefined, 2) + os.EOL
+    JSON.stringify(vscodeSettings, undefined, 2) + os.EOL
   );
+  // TODO: Add launch.json
+  // https://github.com/tiagob/todo-starter/blob/master/.vscode/launch.json
 }
 
 async function copyTemplate() {
   fs.copySync("./templates/gitignore", `${projectName}/.gitignore`);
   // Copy root package.json for Yarn workspaces
+  // TODO: Set package name to the project name
   fs.copySync("./templates/package.json", `${projectName}/package.json`);
   if (program.backend === "apollo") {
     addApolloCodegen();
@@ -249,6 +281,7 @@ async function run() {
     console.log();
     console.log("Initialized a git repository.");
   }
+  // TODO: Generate local development initialization script ex. install postgres, sync-db, buildNodeBackend etc.
   if (program.backend === "apollo") {
     buildNodeBackend();
   }

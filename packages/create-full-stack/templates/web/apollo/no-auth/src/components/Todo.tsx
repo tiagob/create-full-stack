@@ -1,20 +1,22 @@
-import React from "react";
 import {
-  ListItem,
   Checkbox,
-  ListItemText,
+  IconButton,
+  ListItem,
   ListItemSecondaryAction,
-  IconButton
+  ListItemText,
+  makeStyles,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Todo as TodoType } from "common";
-import { makeStyles } from "@material-ui/styles";
-import { useUpdateTodoMutation, useDestroyTodoMutation } from "common";
+import React from "react";
+
+import { Todo as TodoType } from "../graphql/__generated__";
+import useDestroyTodo from "../graphql/useDestroyTodo";
+import useUpdateTodo from "../graphql/useUpdateTodo";
 
 const useStyles = makeStyles({
   complete: {
-    textDecoration: "line-through"
-  }
+    textDecoration: "line-through",
+  },
 });
 
 interface Props {
@@ -23,8 +25,8 @@ interface Props {
 
 export default function Todo({ todo }: Props) {
   const classes = useStyles();
-  const [updateTodo] = useUpdateTodoMutation();
-  const [destroyTodo] = useDestroyTodoMutation();
+  const [updateTodo] = useUpdateTodo();
+  const [destroyTodo] = useDestroyTodo();
 
   return (
     <ListItem

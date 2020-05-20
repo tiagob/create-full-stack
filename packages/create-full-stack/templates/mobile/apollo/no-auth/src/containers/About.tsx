@@ -32,7 +32,7 @@ export default function About({ navigation }: Props) {
         }}
       >
         <Button
-          title="Go to GitHub"
+          title="GO TO GITHUB"
           onPress={() =>
             Linking.openURL("https://github.com/tiagob/create-full-stack")
           }

@@ -5,3 +5,25 @@ query Todos {
     complete
   }
 }
+
+mutation CreateTodo($name: String!) {
+  createTodo(name: $name) {
+    id
+    name
+    complete
+  }
+}
+
+mutation UpdateTodo($id: Int!, $complete: Boolean!) {
+  updateTodo(id: $id, complete: $complete) {
+    id
+    name
+    complete
+  }
+}
+
+mutation DestroyTodo($id: Int!) {
+  destroyTodo(id: $id) {
+    id
+  }
+}

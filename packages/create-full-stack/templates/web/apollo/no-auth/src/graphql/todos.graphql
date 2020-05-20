@@ -1,3 +1,19 @@
+query Todos {
+  todos {
+    id
+    name
+    complete
+  }
+}
+
+mutation CreateTodo($name: String!) {
+  createTodo(name: $name) {
+    id
+    name
+    complete
+  }
+}
+
 mutation UpdateTodo($id: Int!, $complete: Boolean!) {
   updateTodo(id: $id, complete: $complete) {
     id

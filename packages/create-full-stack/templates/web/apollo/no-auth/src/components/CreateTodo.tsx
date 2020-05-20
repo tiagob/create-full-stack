@@ -1,10 +1,11 @@
-import React, { useState } from "react";
 import { TextField } from "@material-ui/core";
-import { useCreateTodoMutation } from "common";
+import React, { useState } from "react";
+
+import useCreateTodo from "../graphql/useCreateTodo";
 
 export default function CreateTodo() {
   const [name, setName] = useState("");
-  const [createTodo] = useCreateTodoMutation();
+  const [createTodo] = useCreateTodo();
 
   return (
     <TextField
@@ -14,10 +15,11 @@ export default function CreateTodo() {
       fullWidth
       variant="outlined"
       value={name}
-      onChange={event => setName(event.target.value)}
-      onKeyPress={event => {
+      onChange={(event) => setName(event.target.value)}
+      onKeyPress={async (event) => {
         if (event.key === "Enter") {
-          createTodo({ variables: { name } }).then(() => setName(""));
+          await createTodo({ variables: { name } });
+          setName("");
         }
       }}
     />

@@ -1,14 +1,16 @@
+import { List, makeStyles, Paper } from "@material-ui/core";
 import React from "react";
-import { List, Paper, Theme, makeStyles } from "@material-ui/core";
-import Todo from "../components/Todo";
-import CreateTodo from "../components/CreateTodo";
-import { useTodosQuery } from "common";
 
-const useStyles = makeStyles(({ spacing }: Theme) => ({
+import CreateTodo from "../components/CreateTodo";
+import Todo from "../components/Todo";
+import { useTodosQuery } from "../graphql/__generated__";
+
+const useStyles = makeStyles(({ spacing }) => ({
   root: {
+    margin: spacing(3),
     padding: spacing(1),
-    width: "80%"
-  }
+    width: "80%",
+  },
 }));
 
 export default function Todos() {
@@ -18,8 +20,8 @@ export default function Todos() {
     <Paper className={classes.root}>
       <CreateTodo />
       <List>
-        {(data && data.todos ? data.todos : []).map((todo, index) => (
-          <Todo todo={todo} key={index} />
+        {(data?.todos ? data.todos : []).map((todo) => (
+          <Todo todo={todo} key={todo.id} />
         ))}
       </List>
     </Paper>
