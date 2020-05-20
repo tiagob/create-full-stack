@@ -1,25 +1,24 @@
-import React from "react";
-import { createStackNavigator, createAppContainer } from "react-navigation";
-import TodoScreen from "./src/containers/TodoScreen";
-import AboutScreen from "./src/containers/AboutScreen";
-import { ApolloProvider } from "react-apollo-hooks";
-import { client } from "./src/utils/apolloClient";
+import { ApolloProvider } from "@apollo/react-hooks";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import React, { ReactElement } from "react";
 
-const MainNavigator = createStackNavigator(
-  {
-    Todo: ({ ...props }) => (
-      <ApolloProvider client={client}>
-        <TodoScreen {...props} />
-      </ApolloProvider>
-    ),
-    About: AboutScreen
-  },
-  {
-    initialRouteName: "Todo",
-    headerMode: "none"
-  }
-);
+import About from "./src/containers/About";
+import Todos from "./src/containers/Todos";
+import apolloClient from "./src/utils/apolloClient";
+import { RootStackParamList } from "./src/utils/types";
 
-const App = createAppContainer(MainNavigator);
+const Stack = createStackNavigator<RootStackParamList>();
 
-export default App;
+export default function App(): ReactElement {
+  return (
+    <ApolloProvider client={apolloClient}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Todos" headerMode="none">
+          <Stack.Screen name="Todos" component={Todos} />
+          <Stack.Screen name="About" component={About} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ApolloProvider>
+  );
+}

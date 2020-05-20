@@ -56,7 +56,11 @@ module.exports = {
     "simple-import-sort/sort": "error",
     "@typescript-eslint/prefer-optional-chain": "error",
     "@typescript-eslint/no-explicit-any": "error",
-    "object-shorthand": "error"
+    "object-shorthand": "error",
+    "react/jsx-props-no-spreading": "off",
+    // TypeScript can infer return types
+    // https://www.typescriptlang.org/docs/handbook/type-inference.html
+    "@typescript-eslint/explicit-function-return-type": "off"
   },
-  ignorePatterns: ["node_modules", "build", "generated"]
+  ignorePatterns: ["node_modules", "build", "__generated__"]
 }

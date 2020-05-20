@@ -37,7 +37,6 @@
     "watch-ts": "tsc -w -p .",
     "serve-debug": "nodemon --require dotenv/config --inspect ./build/index.js",
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Generate,TypeScript,Node\" -c \"magenta.bold,green.bold,cyan.bold\" \"yarn generate\" \"yarn watch-ts\" \"yarn serve-debug\"",
-    "mysqldump-dev": "mysqldump todo -uroot --hex-blob --default-character-set=utf8mb4 >~/Desktop/todo-$(date +%F).sql",
     "generate": "graphql-codegen --config codegen.yml --watch"
   },
   "husky": {

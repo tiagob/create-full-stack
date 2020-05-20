@@ -2,30 +2,25 @@ import {
   MutationCreateTodoArgs,
   MutationDestroyTodoArgs,
   MutationUpdateTodoArgs,
-} from "./generated/graphql";
+  Resolvers,
+} from "./graphql/__generated__";
 import { Todo } from "./models";
 
-export default {
+const resolver: Resolvers = {
   Query: {
-    todos: (): Promise<Todo[]> => Todo.findAll({}),
+    todos: () => Todo.findAll({}),
   },
   Mutation: {
-    createTodo: (_: unknown, args: MutationCreateTodoArgs): Promise<Todo> =>
+    createTodo: (_: unknown, args: MutationCreateTodoArgs) =>
       Todo.create({ complete: false, ...args }),
-    updateTodo: async (
-      _: unknown,
-      { id, ...args }: MutationUpdateTodoArgs
-    ): Promise<Todo | undefined> => {
+    updateTodo: async (_: unknown, { id, ...args }: MutationUpdateTodoArgs) => {
       const todo = await Todo.findOne({ where: { id } });
       if (todo) {
         return todo.update(args);
       }
       return undefined;
     },
-    destroyTodo: async (
-      _: unknown,
-      { id }: MutationDestroyTodoArgs
-    ): Promise<Todo | undefined> => {
+    destroyTodo: async (_: unknown, { id }: MutationDestroyTodoArgs) => {
       const todo = await Todo.findOne({ where: { id } });
       if (todo) {
         return todo.destroy();
@@ -34,3 +29,4 @@ export default {
     },
   },
 };
+export default resolver;

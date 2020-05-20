@@ -2,11 +2,11 @@ import ApolloClient from "apollo-boost";
 import Constants from "expo-constants";
 
 const { manifest } = Constants;
-const uri = `http://${manifest.debuggerHost
-  .split(`:`)
-  .shift()
-  .concat(`:4000`)}`;
+const uri =
+  manifest.debuggerHost && manifest.debuggerHost.includes(":")
+    ? `http://${manifest.debuggerHost.split(`:`)[0].concat(`:4000`)}`
+    : undefined;
 
-export const client = new ApolloClient({
+export default new ApolloClient({
   uri,
 });

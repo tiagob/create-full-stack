@@ -7,7 +7,7 @@ import fs from "fs-extra";
 import path from "path";
 import validateProjectName from "validate-npm-package-name";
 
-export function checkAppName(appName: string): void {
+export function checkAppName(appName: string) {
   const validationResult = validateProjectName(appName);
   if (!validationResult.validForNewPackages) {
     console.error(
@@ -49,7 +49,7 @@ export function checkAppName(appName: string): void {
 // installation, lets remove them now.
 // We also special case IJ-based products .idea because it integrates with CRA:
 // https://github.com/facebook/create-react-app/pull/368#issuecomment-243446094
-export function isSafeToCreateProjectIn(root: string, name: string): boolean {
+export function isSafeToCreateProjectIn(root: string, name: string) {
   const validFiles = new Set([
     ".DS_Store",
     ".git",
@@ -121,7 +121,7 @@ export function isSafeToCreateProjectIn(root: string, name: string): boolean {
   return true;
 }
 
-export function shouldUseYarn(): boolean {
+export function shouldUseYarn() {
   try {
     execSync("yarnpkg --version", { stdio: "ignore" });
     return true;
@@ -130,7 +130,7 @@ export function shouldUseYarn(): boolean {
   }
 }
 
-function isInGitRepository(appPath: string): boolean {
+function isInGitRepository(appPath: string) {
   try {
     execSync(`git -C ${appPath} rev-parse --is-inside-work-tree`, {
       stdio: "ignore",
@@ -141,7 +141,7 @@ function isInGitRepository(appPath: string): boolean {
   }
 }
 
-function isInMercurialRepository(appPath: string): boolean {
+function isInMercurialRepository(appPath: string) {
   try {
     execSync(`hg --cwd ${appPath} root`, { stdio: "ignore" });
     return true;
@@ -150,7 +150,7 @@ function isInMercurialRepository(appPath: string): boolean {
   }
 }
 
-export function tryGitInit(appPath: string): boolean {
+export function tryGitInit(appPath: string) {
   let didInit = false;
   try {
     execSync(`git -C ${appPath} --version`, { stdio: "ignore" });

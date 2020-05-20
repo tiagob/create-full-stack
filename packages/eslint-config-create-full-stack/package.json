@@ -1,6 +1,6 @@
 {
     "name": "eslint-config-create-full-stack",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "license": "MIT",
     "dependencies": {
         "@typescript-eslint/eslint-plugin": "^2.33.0",

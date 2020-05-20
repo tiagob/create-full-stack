@@ -1,60 +1,48 @@
 import React from "react";
-import {
-  Todo as TodoType,
-  UpdateTodoComponent,
-  TodosQuery,
-  TodosQueryVariables,
-  TodosDocument,
-  DestroyTodoComponent
-} from "../generated/graphql";
-import {
-  Left,
-  Text,
-  Right,
-  ListItem,
-  Button,
-  Icon,
-  CheckBox
-} from "native-base";
-import { useUpdateTodoMutation, useDestroyTodoMutation } from "common";
+import { Button, CheckBox, Icon, ListItem } from "react-native-elements";
+
+import { Todo as TodoType } from "../graphql/__generated__";
+import useDestroyTodo from "../graphql/useDestroyTodo";
+import useUpdateTodo from "../graphql/useUpdateTodo";
 
 interface Props {
   todo: TodoType;
 }
 
 export default function Todo({ todo }: Props) {
-  const [updateTodo] = useUpdateTodoMutation();
-  const [destroyTodo] = useDestroyTodoMutation();
+  const [updateTodo] = useUpdateTodo();
+  const [destroyTodo] = useDestroyTodo();
 
   return (
-    <ListItem>
-      <Left>
+    <ListItem
+      leftElement={
         <CheckBox
           onPress={() =>
             updateTodo({
-              variables: { id: todo.id, complete: !todo.complete }
+              variables: { id: todo.id, complete: !todo.complete },
             })
           }
           checked={todo.complete}
-          style={{ marginRight: 40 }}
         />
-        <Text
-          style={
-            todo.complete
-              ? {
-                  textDecorationLine: "line-through"
-                }
-              : undefined
+      }
+      title={todo.name}
+      titleStyle={
+        todo.complete && {
+          textDecorationLine: "line-through",
+        }
+      }
+      rightElement={
+        <Button
+          icon={
+            <Icon
+              name="delete"
+              onPress={() => destroyTodo({ variables: { id: todo.id } })}
+            />
           }
-        >
-          {todo.name}
-        </Text>
-      </Left>
-      <Right>
-        <Button onPress={() => destroyTodo({ variables: { id: todo.id } })}>
-          <Icon active name="trash" />
-        </Button>
-      </Right>
-    </ListItem>
+          type="outline"
+          raised
+        />
+      }
+    />
   );
 }

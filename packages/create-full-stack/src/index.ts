@@ -1,10 +1,15 @@
+import { JSONSchemaForNPMPackageJsonFiles } from "@schemastore/package";
 import chalk from "chalk";
 import commander from "commander";
 import spawn from "cross-spawn";
 import fs from "fs-extra";
+import yaml from "js-yaml";
+import os from "os";
 import path from "path";
 
 import packageJson from "../package.json";
+import appPackageJson from "../templates/package.json";
+import vscodeSettingsJson from "../templates/vscode/settings.json";
 import {
   checkAppName,
   isSafeToCreateProjectIn,
@@ -52,7 +57,7 @@ function filterCopySync(src: string): boolean {
   return !excludeFiles.has(fileOrFolder);
 }
 
-function copySync(templatePath: string, appPath: string, silent = false): void {
+function copySync(templatePath: string, appPath: string, silent = false) {
   fs.ensureDirSync(templatePath);
   if (fs.existsSync(templatePath)) {
     fs.copySync(templatePath, appPath, { filter: filterCopySync });
@@ -63,10 +68,90 @@ function copySync(templatePath: string, appPath: string, silent = false): void {
   }
 }
 
-function copyTemplate(): void {
+function addApolloCodegen() {
+  const appPackage: JSONSchemaForNPMPackageJsonFiles = { ...appPackageJson };
+  appPackage.devDependencies = Object.assign(appPackage.devDependencies || {}, {
+    "@graphql-codegen/cli": "^1.14.0",
+    "@graphql-codegen/typescript": "^1.14.0",
+    "@graphql-codegen/typescript-operations": "^1.14.0",
+    "@graphql-codegen/typescript-react-apollo": "^1.14.0",
+    "@graphql-codegen/typescript-resolvers": "^1.14.0",
+    graphql: "^14.2.1",
+    "graphql-tag": "^2.0.0",
+  });
+  appPackage.scripts = Object.assign(appPackage.scripts || {}, {
+    generate: "graphql-codegen --watch",
+  });
+  fs.writeFileSync(
+    `${projectName}/package.json`,
+    JSON.stringify(appPackage, undefined, 2) + os.EOL
+  );
+
+  fs.writeFileSync(
+    `${projectName}/codegen.yml`,
+    yaml.safeDump({
+      schema: "packages/backend/src/graphql/schema.ts",
+      documents: "packages/*/src/graphql/*.graphql",
+      generates: {
+        "packages/backend/src/graphql/__generated__/index.ts": {
+          plugins: ["typescript", "typescript-resolvers"],
+          config: {
+            useIndexSignature: true,
+          },
+        },
+        ...(program.mobile && {
+          "packages/mobile/src/graphql/__generated__/index.ts": {
+            plugins: [
+              "typescript",
+              "typescript-operations",
+              "typescript-react-apollo",
+            ],
+            config: {
+              withHOC: false,
+              withComponent: false,
+              withHooks: true,
+            },
+          },
+        }),
+      },
+    }) + os.EOL
+  );
+}
+
+function addVSCodeSettings() {
+  if (program.backend === "apollo") {
+    vscodeSettingsJson["eslint.workingDirectories"].push({
+      directory: "packages/backend",
+      changeProcessCWD: true,
+    });
+  }
+  if (program.mobile) {
+    vscodeSettingsJson["eslint.workingDirectories"].push({
+      directory: "packages/mobile",
+      changeProcessCWD: true,
+    });
+  }
+  if (program.web) {
+    vscodeSettingsJson["eslint.workingDirectories"].push({
+      directory: "packages/web",
+      changeProcessCWD: true,
+    });
+  }
+  fs.ensureDirSync(`${projectName}/.vscode`);
+  fs.writeFileSync(
+    `${projectName}/.vscode/settings.json`,
+    JSON.stringify(vscodeSettingsJson, undefined, 2) + os.EOL
+  );
+}
+
+async function copyTemplate() {
+  fs.copySync("./templates/gitignore", `${projectName}/.gitignore`);
   // Copy root package.json for Yarn workspaces
   fs.copySync("./templates/package.json", `${projectName}/package.json`);
-  fs.copySync("./templates/gitignore", `${projectName}/.gitignore`);
+  if (program.backend === "apollo") {
+    addApolloCodegen();
+  }
+  addVSCodeSettings();
 
   const auth = auths[(program.auth || "") as keyof Auths];
   copySync(
@@ -75,14 +160,6 @@ function copyTemplate(): void {
       ? `${projectName}/packages/backend`
       : `${projectName}/${program.backend}`
   );
-
-  if (program.web || program.mobile) {
-    copySync(
-      `./templates/common/${program.backend}`,
-      `${projectName}/packages/common`,
-      true
-    );
-  }
 
   if (program.web) {
     copySync(
@@ -99,7 +176,7 @@ function copyTemplate(): void {
   }
 }
 
-function installDependencies(): void {
+function installDependencies() {
   const command = "yarnpkg";
   const args = ["--cwd", projectName];
   console.log(`Installing packages using ${command}...`);
@@ -112,7 +189,7 @@ function installDependencies(): void {
   }
 }
 
-function run(): void {
+async function run() {
   // Validation
   // TODO: Add Cloud Run for hasura handlers (event triggers or actions, crons?)
   if (!backends.includes(program.backend || "")) {
@@ -151,7 +228,7 @@ function run(): void {
   console.log(`Creating a new full-stack app in ${chalk.green(root)}.`);
   console.log();
 
-  copyTemplate();
+  await copyTemplate();
 
   installDependencies();
 
