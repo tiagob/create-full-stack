@@ -189,6 +189,19 @@ function installDependencies() {
   }
 }
 
+function buildNodeBackend() {
+  const command = "yarnpkg";
+  const args = ["--cwd", `${projectName}/packages/backend`, "build"];
+  console.log(`Building the node backend...`);
+  console.log();
+
+  const proc = spawn.sync(command, args, { stdio: "inherit" });
+  if (proc.status !== 0) {
+    console.error(`\`${command} ${args.join(" ")}\` failed`);
+    process.exit(1);
+  }
+}
+
 async function run() {
   // Validation
   // TODO: Add Cloud Run for hasura handlers (event triggers or actions, crons?)
@@ -235,6 +248,9 @@ async function run() {
   if (tryGitInit(projectName)) {
     console.log();
     console.log("Initialized a git repository.");
+  }
+  if (program.backend === "apollo") {
+    buildNodeBackend();
   }
   console.log();
   console.log(`Success! Created ${appName} at ${projectName}`);
