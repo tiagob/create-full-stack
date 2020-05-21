@@ -70,34 +70,9 @@ The config files (`.vscode/`) are included which formats on save.
 
 ## Generated project notes
 
-**TODO: Generate in READMEs as applicable**
+Check specific package READMEs for additional information.
 
-### Setup for apollo backend
-
-#### Install [MySQL](https://www.mysql.com/)
-
-Install MySQL with Homebrew ([MySQL commands on MacOS](https://gist.github.com/nrollr/3f57fc15ded7dddddcc4e82fe137b58e)).
-
-```bash
-brew install mysql
-brew tap homebrew/services
-```
-
-Start MySQL
-
-```bash
-brew services start mysql
-```
-
-#### Setup database
-
-Create database and sync (creating tables).
-
-```bash
-cd packages/backend
-./createDb.sh  # Assumes MySQL is installed with Homebrew
-yarn sync-db
-```
+**TODO: Generate in root README as applicable**
 
 ### Code generation
 
@@ -115,14 +90,16 @@ killall node
 
 #### Hooks can only be called inside the body of a function component
 
-React in both `app/package.json` and `web/package.json` need to be the same version since they're shared in Yarn Workspaces (unless you add [nohoist](https://yarnpkg.com/blog/2018/02/15/nohoist/)).
+React in both `packages/mobile/package.json` and `packages/web/package.json` need to be the same version since they're shared in Yarn Workspaces (unless you add [nohoist](https://yarnpkg.com/blog/2018/02/15/nohoist/)).
 
 #### Yarn Workspaces with Expo
 
-Using [expo-yarn-workspaces](https://www.npmjs.com/package/expo-yarn-workspaces) which provides a workaround to make Yarn Workspaces work with Expo. We need Yarn Workspaces to share code between `web/` and `app/`.
+Using [expo-yarn-workspaces](https://www.npmjs.com/package/expo-yarn-workspaces) which provides a workaround to make Yarn Workspaces work with Expo. Yarn Workspaces is required to share `node_modules` between `packages/web` and `packages/mobile`.
 
 ## References
 
+- [Create React App](https://reactjs.org/docs/create-a-new-react-app.html)
+- [TypeScript Node Starter](https://github.com/microsoft/TypeScript-Node-Starter)
 - [TypesScript](https://www.typescriptlang.org/)
 - [React](https://reactjs.org/)
 - [React Native](https://facebook.github.io/react-native/)
