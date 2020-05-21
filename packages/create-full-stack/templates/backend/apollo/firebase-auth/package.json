@@ -8,7 +8,6 @@
     "apollo-server-express": "^2.13.1",
     "commander": "^5.1.0",
     "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "firebase-admin": "^8.12.1",
     "graphql": "^14.2.1",
@@ -17,10 +16,8 @@
     "typescript": "3.9.2"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^1.13.5",
-    "@graphql-codegen/typescript": "^1.13.5",
-    "@graphql-codegen/typescript-resolvers": "^1.13.5",
     "concurrently": "^5.2.0",
+    "eslint-config-create-full-stack": "^0.1.2",
     "husky": "^4.2.5",
     "nodemon": "^2.0.4",
     "prettier": "^2.0.5",
@@ -28,16 +25,15 @@
     "ts-node": "^8.10.1"
   },
   "scripts": {
-    "start": "node --require dotenv/config ./build/index.js",
+    "start": "node ./build/index.js",
     "build": "tsc -p .",
-    "sync-db": "tsc && node --require dotenv/config ./build/index.js --sync-db",
-    "sync-db-debug": "tsc && node --require dotenv/config --inspect-brk ./build/index.js --sync-db",
-    "watch-node": "nodemon --require dotenv/config ./build/index.js",
-    "watch": "concurrently -k -p \"[{name}]\" -n \"Generate,TypeScript,Node\" -c \"magenta.bold,green.bold,cyan.bold\" \"yarn generate\" \"yarn watch-ts\" \"yarn watch-node\"",
+    "sync-db": "tsc && node ./build/index.js --sync-db",
+    "sync-db-debug": "tsc && node --inspect-brk ./build/index.js --sync-db",
+    "watch-node": "nodemon ./build/index.js",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"Generate,TypeScript,Node\" -c \"magenta.bold,green.bold,cyan.bold\" \"yarn --cwd ../.. generate\" \"yarn watch-ts\" \"yarn watch-node\"",
     "watch-ts": "tsc -w -p .",
-    "serve-debug": "nodemon --require dotenv/config --inspect ./build/index.js",
-    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Generate,TypeScript,Node\" -c \"magenta.bold,green.bold,cyan.bold\" \"yarn generate\" \"yarn watch-ts\" \"yarn serve-debug\"",
-    "generate": "graphql-codegen --config codegen.yml --watch"
+    "serve-debug": "nodemon --inspect ./build/index.js",
+    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Generate,TypeScript,Node\" -c \"magenta.bold,green.bold,cyan.bold\" \"yarn --cwd ../.. generate\" \"yarn watch-ts\" \"yarn serve-debug\""
   },
   "husky": {
     "hooks": {

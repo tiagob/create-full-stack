@@ -1,50 +1,27 @@
-import React, { useState } from "react";
 import { TextField } from "@material-ui/core";
-import {
-  CreateTodoComponent,
-  TodosQuery,
-  TodosDocument,
-  TodosQueryVariables
-} from "../generated/graphql";
+import React, { useState } from "react";
+
+import useCreateTodo from "../graphql/useCreateTodo";
 
 export default function CreateTodo() {
   const [name, setName] = useState("");
+  const [createTodo] = useCreateTodo();
 
   return (
-    <CreateTodoComponent
-      update={(cache, { data }) => {
-        if (!data) {
-          return;
-        }
-        const createTodo = data.createTodo;
-        const query = cache.readQuery<TodosQuery, TodosQueryVariables>({
-          query: TodosDocument
-        });
-        if (query) {
-          const { todos } = query;
-          cache.writeQuery<TodosQuery, TodosQueryVariables>({
-            query: TodosDocument,
-            data: { todos: todos.concat([createTodo]) }
-          });
+    <TextField
+      id="outlined-full-width"
+      label="Todo"
+      placeholder="What needs to be done?"
+      fullWidth
+      variant="outlined"
+      value={name}
+      onChange={(event) => setName(event.target.value)}
+      onKeyPress={async (event) => {
+        if (event.key === "Enter") {
+          await createTodo({ variables: { name } });
+          setName("");
         }
       }}
-    >
-      {createTodo => (
-        <TextField
-          id="outlined-full-width"
-          label="Todo"
-          placeholder="What needs to be done?"
-          fullWidth
-          variant="outlined"
-          value={name}
-          onChange={event => setName(event.target.value)}
-          onKeyPress={event => {
-            if (event.key === "Enter") {
-              createTodo({ variables: { name } }).then(() => setName(""));
-            }
-          }}
-        />
-      )}
-    </CreateTodoComponent>
+    />
   );
 }

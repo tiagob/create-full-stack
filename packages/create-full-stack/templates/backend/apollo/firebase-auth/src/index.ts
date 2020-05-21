@@ -5,17 +5,18 @@ import {
 } from "apollo-server-express";
 import program from "commander";
 import cors from "cors";
+import * as dns from "dns";
 import express from "express";
+import * as os from "os";
 
+import typeDefs from "./graphql/schema";
 import { sequelize } from "./models";
 import resolvers from "./resolvers";
-import typeDefs from "./schema";
 import admin from "./utils/firebaseAdmin";
 
 program.option("-s, --sync-db", "Sync database").parse(process.argv);
 
 const origin = "http://localhost:3000";
-const host = "http://localhost:4000";
 
 interface Context {
   user: admin.auth.UserRecord;
@@ -56,8 +57,12 @@ const run = (): void => {
     });
     server.applyMiddleware({ app });
 
-    app.listen(process.env.PORT || 4000, () => {
-      console.log(`🚀  Server ready at ${host}${server.graphqlPath}`);
+    dns.lookup(os.hostname(), async (_, localIp) => {
+      const port = process.env.PORT || 4000;
+      await app.listen(port);
+      console.log(
+        `🚀  Server ready at http://localhost:${port} and http://${localIp}:${port}`
+      );
     });
   }
 };

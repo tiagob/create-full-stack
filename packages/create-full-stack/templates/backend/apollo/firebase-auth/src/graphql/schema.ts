@@ -13,7 +13,7 @@ export default gql`
 
   type Mutation {
     createTodo(name: String!): Todo!
-    updateTodo(id: Int!, name: String, complete: Boolean): Todo!
-    destroyTodo(id: Int!): Todo!
+    updateTodo(id: Int!, name: String, complete: Boolean): Todo
+    destroyTodo(id: Int!): Todo
   }
 `;

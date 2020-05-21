@@ -11,16 +11,16 @@ const resolver: Resolvers = {
     todos: () => Todo.findAll({}),
   },
   Mutation: {
-    createTodo: (_: unknown, args: MutationCreateTodoArgs) =>
+    createTodo: (_, args: MutationCreateTodoArgs) =>
       Todo.create({ complete: false, ...args }),
-    updateTodo: async (_: unknown, { id, ...args }: MutationUpdateTodoArgs) => {
+    updateTodo: async (_, { id, ...args }: MutationUpdateTodoArgs) => {
       const todo = await Todo.findOne({ where: { id } });
       if (todo) {
         return todo.update(args);
       }
       return undefined;
     },
-    destroyTodo: async (_: unknown, { id }: MutationDestroyTodoArgs) => {
+    destroyTodo: async (_, { id }: MutationDestroyTodoArgs) => {
       const todo = await Todo.findOne({ where: { id } });
       if (todo) {
         return todo.destroy();

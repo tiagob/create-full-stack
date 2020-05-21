@@ -24,3 +24,6 @@ yarn-error.log*
 
 # templates
 packages/create-full-stack/templates/**/yarn.lock
+
+# keys
+serviceAccountKey.json

@@ -13,13 +13,12 @@ const run = () => {
   if (program.syncDb) {
     sequelize.sync({ force: true });
   } else {
-    dns.lookup(os.hostname(), async (_, localIp) => {
-      const server = new ApolloServer({ typeDefs, resolvers });
+    const server = new ApolloServer({ typeDefs, resolvers });
 
+    dns.lookup(os.hostname(), async (_, localIp) => {
       const port = process.env.PORT || 4000;
       const { url } = await server.listen(port);
-      // eslint-disable-next-line no-console
-      console.log(`🚀  Server ready at ${url} and http://${localIp}:${port}/`);
+      console.log(`🚀  Server ready at ${url} and http://${localIp}:${port}`);
     });
   }
 };
