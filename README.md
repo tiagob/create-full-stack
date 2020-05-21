@@ -70,7 +70,7 @@ The config files (`.vscode/`) are included which formats on save.
 
 ## Generated project notes
 
-**TODO: Generate in README.mds as applicable**
+**TODO: Generate in READMEs as applicable**
 
 ### Setup for apollo backend
 
@@ -94,14 +94,14 @@ brew services start mysql
 Create database and sync (creating tables).
 
 ```bash
-cd server
+cd packages/backend
 ./createDb.sh  # Assumes MySQL is installed with Homebrew
 yarn sync-db
 ```
 
 ### Code generation
 
-Repo uses [graphql-code-generator](https://graphql-code-generator.com/). Client React components for GraphQL queries and mutations are automatically generated via the [typescript-react-apollo plugin](https://graphql-code-generator.com/docs/plugins/typescript-react-apollo#usage) from the `*.graphql` files. Server relies on type generation via the [typescript plugin](https://graphql-code-generator.com/docs/plugins/typescript). This code is automattically generated when running commands from the workspace root.
+Repo uses [graphql-code-generator](https://graphql-code-generator.com/). Client React components for GraphQL queries and mutations are automatically generated via the [typescript-react-apollo plugin](https://graphql-code-generator.com/docs/plugins/typescript-react-apollo#usage) from the `*.graphql` files. The backend relies on type generation via the [typescript-resolvers plugin](https://graphql-code-generator.com/docs/plugins/typescript-resolvers). This code is automattically generated when running commands from the workspace root.
 
 ### Gotchas
 
