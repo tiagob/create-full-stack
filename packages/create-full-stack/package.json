@@ -16,8 +16,6 @@
     "eslint-config-create-full-stack": "0.1.2",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.2",
-    "prettier": "2.0.5",
-    "pretty-quick": "^2.0.1",
     "typescript": "^3.9.2"
   },
   "scripts": {
@@ -41,6 +39,6 @@
     "validate-npm-package-name": "^3.0.0"
   },
   "lint-staged": {
-    "*.{ts,md}": "prettier --write"
+    "*.{js,ts,tsx}": "eslint --fix"
   }
 }
