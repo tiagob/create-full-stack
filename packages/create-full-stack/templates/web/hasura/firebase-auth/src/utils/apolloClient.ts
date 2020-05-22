@@ -1,5 +1,5 @@
 import { createHttpLink } from "apollo-link-http";
-import { ApolloClient, InMemoryCache } from "apollo-boost";
+import { ApolloClient } from "apollo-boost";
 import { setContext } from "apollo-link-context";
 import firebase from "../utils/firebase";
 
@@ -25,5 +25,4 @@ const authLink = setContext(async (_, { headers }) => {
 
 export const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
 });

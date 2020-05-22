@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache } from "apollo-boost";
+import { ApolloClient } from "apollo-boost";
 import { setContext } from "apollo-link-context";
 import { createHttpLink } from "apollo-link-http";
 
@@ -26,5 +26,4 @@ const authLink = setContext(async (_, { headers }) => {
 
 export default new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
 });
