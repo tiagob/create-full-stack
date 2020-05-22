@@ -29,7 +29,7 @@ export default function SignIn() {
           }
         }}
       >
-        Sign in with Google
+        SIGN IN WITH GOOGLE
       </Button>
     </div>
   );

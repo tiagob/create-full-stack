@@ -36,7 +36,7 @@ const run = (): void => {
     const server = new ApolloServer({
       typeDefs,
       resolvers,
-      context: async ({ req }): Promise<Context> => {
+      context: async ({ req }) => {
         // Get the user token from the headers
         const token = req.headers.authorization || "";
         if (!token) {
@@ -61,7 +61,7 @@ const run = (): void => {
       const port = process.env.PORT || 4000;
       await app.listen(port);
       console.log(
-        `🚀  Server ready at http://localhost:${port} and http://${localIp}:${port}`
+        `🚀  Server ready at http://localhost:${port}/graphql and http://${localIp}:${port}/graphql`
       );
     });
   }
