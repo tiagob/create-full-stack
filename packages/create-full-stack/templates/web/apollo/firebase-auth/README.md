@@ -8,7 +8,7 @@ If you haven't already as part of backend or mobile setup.
 
 Complete steps [#1](https://firebase.google.com/docs/web/setup#create-project) and [#2](https://firebase.google.com/docs/web/setup#register-app) in the [setup docs](https://firebase.google.com/docs/web/setup)
 
-### Setup the client for Firebase
+### Set the environment variables
 
 Create and edit `.env.local` with your favorite editor
 
@@ -16,7 +16,7 @@ Copy the Firebase config variables (`apiKey`, `authDomain` and `projectId`) to `
 
 ![Firebase Config](https://raw.githubusercontent.com/tiagob/ts-react-apollo-node/firebase-auth/firebaseConfig.png)
 
-```
+```bash
 REACT_APP_FIREBASE_API_KEY=apiKey
 REACT_APP_FIREBASE_AUTH_DOMAIN=authDomain
 REACT_APP_FIREBASE_PROJECT_ID=projectId
