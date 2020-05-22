@@ -22,6 +22,10 @@
       "changeProcessCWD": true
     },
     {
+      "directory": "packages/create-full-stack/templates/mobile/apollo/firebase-auth",
+      "changeProcessCWD": true
+    },
+    {
       "directory": "packages/create-full-stack/templates/web/apollo/firebase-auth",
       "changeProcessCWD": true
     },

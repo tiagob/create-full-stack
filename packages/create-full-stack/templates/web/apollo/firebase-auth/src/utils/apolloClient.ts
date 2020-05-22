@@ -1,4 +1,4 @@
-import { ApolloClient } from "apollo-boost";
+import ApolloClient from "apollo-boost";
 import { setContext } from "apollo-link-context";
 import { createHttpLink } from "apollo-link-http";
 
