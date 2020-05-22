@@ -30,7 +30,7 @@ cd create-full-stack
 ### Install dependencies
 
 ```bash
-yarn install
+yarn
 ```
 
 ## Run

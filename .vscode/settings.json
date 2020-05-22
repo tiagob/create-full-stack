@@ -6,31 +6,27 @@
   "eslint.workingDirectories": [
     { "directory": "packages/create-full-stack", "changeProcessCWD": true },
     {
-      "directory": "packages/create-full-stack/templates/backend/apollo/firebase-auth",
+      "directory": "packages/create-full-stack/templates/backend/apollo-server-express/firebase-auth",
       "changeProcessCWD": true
     },
     {
-      "directory": "packages/create-full-stack/templates/backend/apollo/no-auth",
+      "directory": "packages/create-full-stack/templates/backend/apollo-server-express/no-auth",
       "changeProcessCWD": true
     },
     {
-      "directory": "packages/create-full-stack/templates/common/apollo",
+      "directory": "packages/create-full-stack/templates/mobile/apollo-server-express/no-auth",
       "changeProcessCWD": true
     },
     {
-      "directory": "packages/create-full-stack/templates/mobile/apollo/no-auth",
+      "directory": "packages/create-full-stack/templates/mobile/apollo-server-express/firebase-auth",
       "changeProcessCWD": true
     },
     {
-      "directory": "packages/create-full-stack/templates/mobile/apollo/firebase-auth",
+      "directory": "packages/create-full-stack/templates/web/apollo-server-express/firebase-auth",
       "changeProcessCWD": true
     },
     {
-      "directory": "packages/create-full-stack/templates/web/apollo/firebase-auth",
-      "changeProcessCWD": true
-    },
-    {
-      "directory": "packages/create-full-stack/templates/web/apollo/no-auth",
+      "directory": "packages/create-full-stack/templates/web/apollo-server-express/no-auth",
       "changeProcessCWD": true
     },
     {

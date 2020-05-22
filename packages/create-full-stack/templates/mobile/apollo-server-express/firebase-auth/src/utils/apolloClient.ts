@@ -1,10 +1,15 @@
-import ApolloClient from "apollo-boost";
+import { ApolloClient, InMemoryCache } from "apollo-boost";
 import { setContext } from "apollo-link-context";
 import { createHttpLink } from "apollo-link-http";
+import Constants from "expo-constants";
 
 import firebase from "./firebase";
 
-const uri = "http://localhost:4000/graphql";
+const { manifest } = Constants;
+const uri =
+  manifest.debuggerHost && manifest.debuggerHost.includes(":")
+    ? `http://${manifest.debuggerHost.split(`:`)[0].concat(`:4000`)}/graphql`
+    : undefined;
 
 const httpLink = createHttpLink({ uri });
 
@@ -26,4 +31,5 @@ const authLink = setContext(async (_, { headers }) => {
 
 export default new ApolloClient({
   link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
 });

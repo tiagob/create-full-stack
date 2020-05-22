@@ -18,20 +18,17 @@ program.option("-s, --sync-db", "Sync database").parse(process.argv);
 
 const origin = "http://localhost:3000";
 
-interface Context {
-  user: admin.auth.UserRecord;
-}
-
-const run = (): void => {
+function run() {
   if (program.syncDb) {
     sequelize.sync({ force: true });
   } else {
     const app = express();
-    const corsOptions = {
-      origin,
-      credentials: true,
-    };
-    app.use(cors(corsOptions));
+    app.use(
+      cors({
+        origin,
+        credentials: true,
+      })
+    );
 
     const server = new ApolloServer({
       typeDefs,
@@ -65,6 +62,6 @@ const run = (): void => {
       );
     });
   }
-};
+}
 
 run();

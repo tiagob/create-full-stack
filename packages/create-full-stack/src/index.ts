@@ -17,10 +17,8 @@ import {
   tryGitInit,
 } from "./createReactAppUtils";
 
-// TODO: Should "apollo" be "apollo-server" or "node"?
-const backends = ["apollo", "hasura", "firestore"];
-// TODO: Am I using only "apollo" elsewhere?
-const nodeBackends = new Set(["apollo"]);
+const backends = ["apollo-server-express", "hasura", "firestore"];
+const nodeBackends = new Set(["apollo-server-express"]);
 // TODO: Add auth0
 const auths = {
   firebase: "firebase-auth",
@@ -49,6 +47,10 @@ const program: Program = new commander.Command(packageJson.name)
   .option("-m, --mobile", "include react-native mobile app")
   .option("-a, --auth <auth>", `auth type [${Object.keys(auths).join("|")}]`)
   .parse(process.argv);
+
+const isNodeBackend = program.backend
+  ? nodeBackends.has(program.backend)
+  : false;
 
 // Don't include any local files. node_modules and yarn.lock will be different
 // depending on what packages are included because yarn puts these at the root
@@ -148,7 +150,7 @@ interface VSCodeSettings
 
 function addVSCodeSettings() {
   const vscodeSettings: VSCodeSettings = { ...vscodeSettingsJson };
-  if (program.backend === "apollo") {
+  if (isNodeBackend) {
     vscodeSettings["eslint.workingDirectories"].push({
       directory: "packages/backend",
       changeProcessCWD: true,
@@ -180,7 +182,7 @@ async function copyTemplate() {
   // Copy root package.json for Yarn workspaces
   // TODO: Set package name to the project name
   fs.copySync("./templates/package.json", `${projectName}/package.json`);
-  if (program.backend === "apollo") {
+  if (program.backend === "apollo-server-express") {
     addApolloCodegen();
   }
   addVSCodeSettings();
@@ -188,7 +190,7 @@ async function copyTemplate() {
   const auth = auths[(program.auth || "") as keyof Auths];
   copySync(
     `./templates/backend/${program.backend}/${auth}`,
-    nodeBackends.has(program.backend || "")
+    isNodeBackend
       ? `${projectName}/packages/backend`
       : `${projectName}/${program.backend}`
   );
@@ -282,7 +284,7 @@ async function run() {
     console.log("Initialized a git repository.");
   }
   // TODO: Generate local development initialization script ex. install postgres, sync-db, buildNodeBackend etc.
-  if (program.backend === "apollo") {
+  if (isNodeBackend) {
     buildNodeBackend();
   }
   console.log();
