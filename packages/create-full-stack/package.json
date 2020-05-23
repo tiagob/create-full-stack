@@ -39,6 +39,6 @@
     "validate-npm-package-name": "^3.0.0"
   },
   "lint-staged": {
-    "*.{js,ts,tsx}": "eslint --fix"
+    "src/**.ts": "eslint --fix"
   }
 }

@@ -1,8 +1,0 @@
-schema: "https://<APP_NAME>.herokuapp.com/v1/graphql"
-documents: "**/*.graphql"
-generates:
-  src/generated/graphql.tsx:
-    plugins:
-      - "typescript-react-apollo"
-      - "typescript-operations"
-      - "typescript"

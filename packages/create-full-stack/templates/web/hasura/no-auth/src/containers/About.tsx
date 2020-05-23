@@ -1,29 +1,28 @@
+import { Button, makeStyles } from "@material-ui/core";
 import React from "react";
-import Typography from "@material-ui/core/Typography";
-import { Link, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
+    flex: 1,
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
 });
 
 export default function About() {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Typography variant="h6" gutterBottom>
-        github
-      </Typography>
-      <Link
-        href="https://github.com/tiagob/ts-react-apollo-node"
+      <Button
+        href="https://github.com/tiagob/create-full-stack"
+        variant="contained"
+        color="primary"
         target="_blank"
       >
-        https://github.com/tiagob/ts-react-apollo-node
-      </Link>
+        GO TO GITHUB
+      </Button>
     </div>
   );
 }

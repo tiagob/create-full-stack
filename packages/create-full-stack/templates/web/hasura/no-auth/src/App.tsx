@@ -1,16 +1,16 @@
-import React from "react";
-import ApolloClient from "apollo-boost";
-import { ApolloProvider } from "react-apollo";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { ApolloProvider } from "@apollo/react-hooks";
 import { makeStyles } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
-import Todos from "./containers/Todos";
+import ApolloClient from "apollo-boost";
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
 import Header from "./components/Header";
-import { Page } from "./constants";
 import About from "./containers/About";
+import Todos from "./containers/Todos";
 
 export const client = new ApolloClient({
-  uri: "https://<APP_NAME>.herokuapp.com/v1/graphql"
+  uri: "http://localhost:8080/v1/graphql",
 });
 
 const useStyles = makeStyles({
@@ -19,9 +19,8 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: grey[200]
-  }
+    backgroundColor: grey[200],
+  },
 });
 
 export default function App() {
@@ -31,8 +30,10 @@ export default function App() {
       <Router>
         <div className={classes.root}>
           <Header />
-          <Route exact path="/" component={Todos} />
-          <Route path={`/${Page.about}`} component={About} />
+          <Switch>
+            <Route exact path="/" component={Todos} />
+            <Route path="/about" component={About} />
+          </Switch>
         </div>
       </Router>
     </ApolloProvider>

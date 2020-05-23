@@ -26,10 +26,10 @@
     "sync-db": "tsc && node ./build/index.js --sync-db",
     "sync-db-debug": "tsc && node --inspect-brk ./build/index.js --sync-db",
     "watch-node": "nodemon ./build/index.js",
-    "watch": "concurrently -k -p \"[{name}]\" -n \"Generate,TypeScript,Node\" -c \"magenta.bold,green.bold,cyan.bold\" \"yarn --cwd ../.. generate\" \"yarn watch-ts\" \"yarn watch-node\"",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"green.bold,cyan.bold\" \"yarn watch-ts\" \"yarn watch-node\"",
     "watch-ts": "tsc -w",
     "serve-debug": "nodemon --inspect ./build/index.js",
-    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Generate,TypeScript,Node\" -c \"magenta.bold,green.bold,cyan.bold\" \"yarn --cwd ../.. generate\" \"yarn watch-ts\" \"yarn serve-debug\""
+    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"green.bold,cyan.bold\" \"yarn watch-ts\" \"yarn serve-debug\""
   },
   "husky": {
     "hooks": {

@@ -17,8 +17,13 @@ import {
   tryGitInit,
 } from "./createReactAppUtils";
 
-const backends = ["apollo-server-express", "hasura", "firestore"];
-const nodeBackends = new Set(["apollo-server-express"]);
+enum Backends {
+  apolloServerExpress = "apollo-server-express",
+  hasura = "hasura",
+  firestore = "firestore",
+}
+const backends = Object.values(Backends);
+const nodeBackends = new Set([Backends.apolloServerExpress]);
 // TODO: Add auth0
 const auths = {
   firebase: "firebase-auth",
@@ -29,10 +34,10 @@ type Auths = typeof auths;
 let projectName = "";
 
 interface Program extends commander.Command {
-  backend?: string;
+  backend?: Backends;
   web?: boolean;
   mobile?: boolean;
-  auth?: string;
+  auth?: keyof Auths;
 }
 
 const program: Program = new commander.Command(packageJson.name)
@@ -72,7 +77,13 @@ function copySync(templatePath: string, appPath: string, silent = false) {
   }
 }
 
-function addApolloCodegen() {
+const backendToGraphqlSchema = {
+  [Backends.apolloServerExpress]: "packages/backend/src/graphql/schema.ts",
+  [Backends.hasura]: "http://localhost:8080/v1/graphql",
+};
+type BackendToGraphqlSchema = typeof backendToGraphqlSchema;
+
+function addApolloCodegen(backend: keyof BackendToGraphqlSchema) {
   const appPackage: JSONSchemaForNPMPackageJsonFiles = { ...appPackageJson };
   appPackage.devDependencies = Object.assign(appPackage.devDependencies || {}, {
     "@graphql-codegen/cli": "^1.14.0",
@@ -94,14 +105,16 @@ function addApolloCodegen() {
   fs.writeFileSync(
     `${projectName}/codegen.yml`,
     yaml.safeDump({
-      schema: "packages/backend/src/graphql/schema.ts",
+      schema: backendToGraphqlSchema[backend],
       generates: {
-        "packages/backend/src/graphql/__generated__/index.ts": {
-          plugins: ["typescript", "typescript-resolvers"],
-          config: {
-            useIndexSignature: true,
+        ...(backend === Backends.apolloServerExpress && {
+          "packages/backend/src/graphql/__generated__/index.ts": {
+            plugins: ["typescript", "typescript-resolvers"],
+            config: {
+              useIndexSignature: true,
+            },
           },
-        },
+        }),
         ...(program.mobile && {
           "packages/mobile/src/graphql/__generated__/index.ts": {
             documents: "packages/mobile/src/graphql/*.graphql",
@@ -182,8 +195,11 @@ async function copyTemplate() {
   // Copy root package.json for Yarn workspaces
   // TODO: Set package name to the project name
   fs.copySync("./templates/package.json", `${projectName}/package.json`);
-  if (program.backend === "apollo-server-express") {
-    addApolloCodegen();
+  if (
+    program.backend === Backends.apolloServerExpress ||
+    program.backend === Backends.hasura
+  ) {
+    addApolloCodegen(program.backend);
   }
   addVSCodeSettings();
 
@@ -239,7 +255,7 @@ function buildNodeBackend() {
 async function run() {
   // Validation
   // TODO: Add Cloud Run for hasura handlers (event triggers or actions, crons?)
-  if (!backends.includes(program.backend || "")) {
+  if (!program.backend || !backends.includes(program.backend)) {
     console.error(
       `Specified backend-type not valid. Must be one of [${backends.join("|")}]`
     );
