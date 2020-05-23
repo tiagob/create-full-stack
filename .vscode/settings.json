@@ -14,6 +14,10 @@
       "changeProcessCWD": true
     },
     {
+      "directory": "packages/create-full-stack/templates/backend/hasura/firebase-auth/packages/firebase-functions",
+      "changeProcessCWD": true
+    },
+    {
       "directory": "packages/create-full-stack/templates/mobile/apollo-server-express/no-auth",
       "changeProcessCWD": true
     },

@@ -56,6 +56,8 @@ const program: Program = new commander.Command(packageJson.name)
 const isNodeBackend = program.backend
   ? nodeBackends.has(program.backend)
   : false;
+const hasFirebaseFunctions =
+  program.backend === Backends.hasura && program.auth === "firebase";
 
 // Don't include any local files. node_modules and yarn.lock will be different
 // depending on what packages are included because yarn puts these at the root
@@ -169,6 +171,12 @@ function addVSCodeSettings() {
       changeProcessCWD: true,
     });
   }
+  if (hasFirebaseFunctions) {
+    vscodeSettings["eslint.workingDirectories"].push({
+      directory: "packages/firebase-functions",
+      changeProcessCWD: true,
+    });
+  }
   if (program.mobile) {
     vscodeSettings["eslint.workingDirectories"].push({
       directory: "packages/mobile",
@@ -192,6 +200,12 @@ function addVSCodeSettings() {
 
 async function copyTemplate() {
   fs.copySync("./templates/gitignore", `${projectName}/.gitignore`);
+  if (hasFirebaseFunctions) {
+    fs.appendFileSync(
+      `${projectName}/.gitignore`,
+      "\n# firebase\nfirebase-debug.log\n"
+    );
+  }
   // Copy root package.json for Yarn workspaces
   // TODO: Set package name to the project name
   fs.copySync("./templates/package.json", `${projectName}/package.json`);
@@ -206,9 +220,7 @@ async function copyTemplate() {
   const auth = auths[(program.auth || "") as keyof Auths];
   copySync(
     `./templates/backend/${program.backend}/${auth}`,
-    isNodeBackend
-      ? `${projectName}/packages/backend`
-      : `${projectName}/${program.backend}`
+    isNodeBackend ? `${projectName}/packages/backend` : projectName
   );
 
   if (program.web) {
@@ -254,7 +266,6 @@ function buildNodeBackend() {
 
 async function run() {
   // Validation
-  // TODO: Add Cloud Run for hasura handlers (event triggers or actions, crons?)
   if (!program.backend || !backends.includes(program.backend)) {
     console.error(
       `Specified backend-type not valid. Must be one of [${backends.join("|")}]`

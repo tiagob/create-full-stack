@@ -1,0 +1,35 @@
+query Todos {
+  todos {
+    id
+    name
+    complete
+  }
+}
+
+mutation CreateTodo($name: String!) {
+  insert_todos(objects: { name: $name }) {
+    returning {
+      name
+      id
+      complete
+    }
+  }
+}
+
+mutation UpdateTodo($id: Int!, $complete: Boolean!) {
+  update_todos(where: { id: { _eq: $id } }, _set: { complete: $complete }) {
+    returning {
+      complete
+      id
+      name
+    }
+  }
+}
+
+mutation DestroyTodo($id: Int!) {
+  delete_todos(where: { id: { _eq: $id } }) {
+    returning {
+      id
+    }
+  }
+}

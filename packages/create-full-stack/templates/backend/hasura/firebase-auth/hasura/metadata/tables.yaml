@@ -1,0 +1,40 @@
+- table:
+    schema: public
+    name: todos
+  insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      set:
+        uid: x-hasura-User-Id
+      columns:
+      - complete
+      - name
+      backend_only: false
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - complete
+      - id
+      - name
+      - uid
+      filter:
+        uid:
+          _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - complete
+      - name
+      filter:
+        uid:
+          _eq: X-Hasura-User-Id
+      check: null
+  delete_permissions:
+  - role: user
+    permission:
+      filter:
+        uid:
+          _eq: X-Hasura-User-Id
