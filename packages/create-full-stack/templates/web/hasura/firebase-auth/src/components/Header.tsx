@@ -1,39 +1,39 @@
-import React from "react";
-import AppBar from "@material-ui/core/AppBar";
 import {
-  Typography,
-  Toolbar,
-  Button,
+  IconButton,
   Link,
-  makeStyles
+  makeStyles,
+  Toolbar,
+  Typography,
 } from "@material-ui/core";
-import { Link as RouterLink, LinkProps } from "react-router-dom";
-import { Page } from "../constants";
+import AppBar from "@material-ui/core/AppBar";
+import { grey } from "@material-ui/core/colors";
+import InfoIcon from "@material-ui/icons/Info";
+import React from "react";
+import { Link as RouterLink } from "react-router-dom";
 
 const useStyles = makeStyles({
   toolbar: {
     display: "flex",
-    justifyContent: "space-between"
-  }
+    justifyContent: "space-between",
+  },
+  infoIcon: {
+    color: grey[100],
+  },
 });
-
-const AdapterLink = React.forwardRef<HTMLAnchorElement, LinkProps>(
-  (props, ref) => <RouterLink innerRef={ref as any} {...props} />
-);
 
 export default function Header() {
   const classes = useStyles();
   return (
-    <AppBar>
+    <AppBar position="static">
       <Toolbar className={classes.toolbar}>
-        <Link component={AdapterLink} color="inherit" to="/">
+        <Link component={RouterLink} color="inherit" to="/">
           <Typography variant="h6" color="inherit">
-            Todos
+            TODOS
           </Typography>
         </Link>
-        <Button color="inherit" component={AdapterLink} to={`/${Page.about}`}>
-          About
-        </Button>
+        <IconButton aria-label="about" component={RouterLink} to="/about">
+          <InfoIcon className={classes.infoIcon} />
+        </IconButton>
       </Toolbar>
     </AppBar>
   );

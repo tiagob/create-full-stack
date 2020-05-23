@@ -1,9 +1,10 @@
-import { createHttpLink } from "apollo-link-http";
-import ApolloClient from "apollo-boost";
+import { ApolloClient, InMemoryCache } from "apollo-boost";
 import { setContext } from "apollo-link-context";
-import firebase from "../utils/firebase";
+import { createHttpLink } from "apollo-link-http";
 
-const uri = "https://<HEROKU_APP_NAME>.herokuapp.com/v1/graphql";
+import firebase from "./firebase";
+
+const uri = "http://localhost:8080/v1/graphql";
 
 const httpLink = createHttpLink({ uri });
 
@@ -23,6 +24,7 @@ const authLink = setContext(async (_, { headers }) => {
   };
 });
 
-export const client = new ApolloClient({
+export default new ApolloClient({
   link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
 });

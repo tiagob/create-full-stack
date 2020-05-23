@@ -1,16 +1,15 @@
-import React from "react";
-import { ApolloProvider } from "react-apollo";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { ApolloProvider } from "@apollo/react-hooks";
 import { makeStyles } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
-import Todos from "./containers/Todos";
-import Header from "./components/Header";
-import { Page } from "./constants";
-import About from "./containers/About";
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
+import Header from "./components/Header";
 import PrivateRoute from "./components/PrivateRoute";
+import About from "./containers/About";
 import SignIn from "./containers/SignIn";
-import { client } from "./utils/apolloClient";
+import Todos from "./containers/Todos";
+import apolloClient from "./utils/apolloClient";
 
 const useStyles = makeStyles({
   root: {
@@ -18,21 +17,22 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: grey[200]
-  }
+    backgroundColor: grey[200],
+  },
 });
 
 export default function App() {
   const classes = useStyles();
   return (
-    <ApolloProvider client={client}>
+    <ApolloProvider client={apolloClient}>
       <Router>
         <div className={classes.root}>
           <Header />
-          <PrivateRoute exact path="/" component={Todos} />
-          <Route path={`/${Page.signIn}`} component={SignIn} />
-          <Route path={`/${Page.about}`} component={About} />
+          <Switch>
+            <PrivateRoute exact path="/" component={Todos} />
+            <Route path="/sign-in" component={SignIn} />
+            <Route path="/about" component={About} />
+          </Switch>
         </div>
       </Router>
     </ApolloProvider>
