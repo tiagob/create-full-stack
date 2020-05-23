@@ -18,10 +18,15 @@ program.option("-s, --sync-db", "Sync database").parse(process.argv);
 
 const origin = "http://localhost:3000";
 
-function run() {
+async function run() {
   if (program.syncDb) {
     sequelize.sync({ force: true });
   } else {
+    try {
+      await sequelize.authenticate();
+    } catch (error) {
+      console.error("Can't connect to the database.\n", error);
+    }
     const app = express();
     app.use(
       cors({

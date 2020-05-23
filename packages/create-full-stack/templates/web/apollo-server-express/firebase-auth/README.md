@@ -29,7 +29,7 @@ REACT_APP_FIREBASE_PROJECT_ID=projectId
 If you haven't already as part of backend or mobile setup.
 
 1. In the [Firebase console](https://console.firebase.google.com/), open the Auth section.
-1. On the Sign in method tab, enable the Google sign-in method, add a "Project support email" and click Save.
+1. On the Sign in method tab, enable the Google sign-in method and click Save.
 
 ## Available Scripts
 

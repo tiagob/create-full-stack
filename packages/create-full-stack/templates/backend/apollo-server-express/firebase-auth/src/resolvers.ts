@@ -36,7 +36,8 @@ const resolver: Resolvers = {
     ) => {
       const todo = await Todo.findOne({ where: { id, uid: context.user.uid } });
       if (todo) {
-        return todo.destroy();
+        await todo.destroy();
+        return todo;
       }
       return undefined;
     },

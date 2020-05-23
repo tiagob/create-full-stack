@@ -14,14 +14,13 @@ export const sequelize = new Sequelize({
   database: process.env.DB_NAME || "todo",
   username: process.env.DB_USER || "todo",
   password: process.env.DB_PASS || "todo",
-  // TODO: Update to postgres
-  dialect: "mysql",
+  dialect: "postgres",
 });
 
 Todo.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
@@ -40,7 +39,6 @@ Todo.init(
   },
   {
     sequelize,
-    // TODO: Standardize table name with Hasura
     tableName: "todos",
   }
 );

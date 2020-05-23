@@ -2,21 +2,16 @@
 
 ## Setup
 
-### Install [MySQL](https://www.mysql.com/)
-
-**TODO: Switch to Postgres**
-
-Install MySQL with Homebrew ([MySQL commands on MacOS](https://gist.github.com/nrollr/3f57fc15ded7dddddcc4e82fe137b58e)).
+### Install Postgres
 
 ```bash
-brew install mysql
-brew tap homebrew/services
+brew install postgres
 ```
 
-Start MySQL
+Start Postgres
 
 ```bash
-brew services start mysql
+brew services start postgres
 ```
 
 ### Setup database
@@ -25,7 +20,7 @@ Create database and sync (creating tables).
 
 ```bash
 cd packages/backend
-./createDb.sh  # Assumes MySQL is installed with Homebrew
+./createDb.sh  # Assumes Postgres is installed and running
 yarn sync-db
 ```
 
@@ -33,4 +28,14 @@ yarn sync-db
 
 ```bash
 yarn watch
+```
+
+## Gotchas
+
+### ECONNREFUSED 127.0.0.1:5432
+
+Postgres isn't running. Start it with:
+
+```bash
+brew services start postgres
 ```

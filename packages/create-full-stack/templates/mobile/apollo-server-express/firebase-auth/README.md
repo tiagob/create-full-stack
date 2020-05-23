@@ -63,7 +63,7 @@ GOOGLE_ANDROID_CLIENT_ID=androidClientId
 If you haven't already as part of backend or web setup.
 
 1. In the [Firebase console](https://console.firebase.google.com/), open the Auth section.
-1. On the Sign in method tab, enable the Google sign-in method, add a "Project support email" and click Save.
+1. On the Sign in method tab, enable the Google sign-in method and click Save.
 
 ## Run
 

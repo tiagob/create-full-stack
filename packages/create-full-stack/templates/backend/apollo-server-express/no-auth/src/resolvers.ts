@@ -23,7 +23,8 @@ const resolver: Resolvers = {
     destroyTodo: async (_, { id }: MutationDestroyTodoArgs) => {
       const todo = await Todo.findOne({ where: { id } });
       if (todo) {
-        return todo.destroy();
+        await todo.destroy();
+        return todo;
       }
       return undefined;
     },
