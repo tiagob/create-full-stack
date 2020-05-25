@@ -1,11 +1,12 @@
 import "firebase/firestore";
 
+import Constants from "expo-constants";
 import * as firebase from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  apiKey: Constants.manifest.extra.firebaseApiKey,
+  authDomain: Constants.manifest.extra.firebaseAuthDomain,
+  projectId: Constants.manifest.extra.firebaseProjectId,
 };
 
 firebase.initializeApp(firebaseConfig);

@@ -1,20 +1,21 @@
-import React from "react";
 import {
-  ListItem,
   Checkbox,
-  ListItemText,
+  IconButton,
+  ListItem,
   ListItemSecondaryAction,
-  IconButton
+  ListItemText,
+  makeStyles,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { makeStyles } from "@material-ui/styles";
+import React from "react";
+
 import { getTodosCollection } from "../utils/firebase";
-import { TodoType } from "../constants";
+import { TodoType } from "../utils/types";
 
 const useStyles = makeStyles({
   complete: {
-    textDecoration: "line-through"
-  }
+    textDecoration: "line-through",
+  },
 });
 
 interface Props {
@@ -30,11 +31,9 @@ export default function Todo({ todo }: Props) {
       dense
       button
       onClick={() =>
-        getTodosCollection()
-          .doc(todo.id)
-          .update({
-            complete: !todo.complete
-          })
+        getTodosCollection().doc(todo.id).update({
+          complete: !todo.complete,
+        })
       }
     >
       <Checkbox checked={todo.complete} tabIndex={-1} disableRipple />
@@ -45,11 +44,7 @@ export default function Todo({ todo }: Props) {
       <ListItemSecondaryAction>
         <IconButton
           aria-label="Delete"
-          onClick={() =>
-            getTodosCollection()
-              .doc(todo.id)
-              .delete()
-          }
+          onClick={() => getTodosCollection().doc(todo.id).delete()}
         >
           <DeleteIcon />
         </IconButton>
