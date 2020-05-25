@@ -1,5 +1,6 @@
-import React, { useState } from "react";
 import { TextField } from "@material-ui/core";
+import React, { useState } from "react";
+
 import { getTodosCollection } from "../utils/firebase";
 
 export default function CreateTodo() {
@@ -13,16 +14,14 @@ export default function CreateTodo() {
       fullWidth
       variant="outlined"
       value={name}
-      onChange={event => setName(event.target.value)}
-      onKeyPress={event => {
+      onChange={(event) => setName(event.target.value)}
+      onKeyPress={async (event) => {
         if (event.key === "Enter") {
-          getTodosCollection()
-            .doc()
-            .set({
-              name,
-              complete: false
-            })
-            .then(() => setName(""));
+          await getTodosCollection().doc().set({
+            name,
+            complete: false,
+          });
+          setName("");
         }
       }}
     />

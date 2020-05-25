@@ -1,5 +1,29 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Setup
+
+### Create and register Firebase
+
+If you haven't already as part of backend or mobile setup.
+
+Complete steps [#1](https://firebase.google.com/docs/web/setup#create-project) and [#2](https://firebase.google.com/docs/web/setup#register-app) in the [setup docs](https://firebase.google.com/docs/web/setup)
+
+### Set the environment variables
+
+Create and edit `.env.local` with your favorite editor
+
+Copy the Firebase config variables (`apiKey`, `authDomain` and `projectId`) to `/client/.env`. Found in step [#2](https://firebase.google.com/docs/web/setup#register-app) or in [Project Settings Config](https://support.google.com/firebase/answer/7015592).
+
+![Firebase Config](https://raw.githubusercontent.com/tiagob/ts-react-apollo-node/firebase-auth/firebaseConfig.png)
+
+```bash
+REACT_APP_FIREBASE_API_KEY=apiKey
+REACT_APP_FIREBASE_AUTH_DOMAIN=authDomain
+REACT_APP_FIREBASE_PROJECT_ID=projectId
+```
+
+**All [custom environment variables](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables) on the client must be prefaced with `REACT_APP_`**
+
 ## Available Scripts
 
 In the project directory, you can run:

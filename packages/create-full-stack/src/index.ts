@@ -25,11 +25,11 @@ enum Backends {
 const backends = Object.values(Backends);
 const nodeBackends = new Set([Backends.apolloServerExpress]);
 // TODO: Add auth0
-const auths = {
+const authChoiceToType = {
   firebase: "firebase-auth",
   "": "no-auth",
 };
-type Auths = typeof auths;
+type AuthChoiceToType = typeof authChoiceToType;
 
 let projectName = "";
 
@@ -37,7 +37,7 @@ interface Program extends commander.Command {
   backend?: Backends;
   web?: boolean;
   mobile?: boolean;
-  auth?: keyof Auths;
+  auth?: keyof AuthChoiceToType;
 }
 
 const program: Program = new commander.Command(packageJson.name)
@@ -50,7 +50,10 @@ const program: Program = new commander.Command(packageJson.name)
   .option("-b, --backend <backend>", `backend type [${backends.join("|")}]`)
   .option("-w, --web", "include react website")
   .option("-m, --mobile", "include react-native mobile app")
-  .option("-a, --auth <auth>", `auth type [${Object.keys(auths).join("|")}]`)
+  .option(
+    "-a, --auth <auth>",
+    `auth type [${Object.keys(authChoiceToType).join("|")}]`
+  )
   .parse(process.argv);
 
 const isNodeBackend = program.backend
@@ -217,11 +220,13 @@ async function copyTemplate() {
   }
   addVSCodeSettings();
 
-  const auth = auths[(program.auth || "") as keyof Auths];
-  copySync(
-    `./templates/backend/${program.backend}/${auth}`,
-    isNodeBackend ? `${projectName}/packages/backend` : projectName
-  );
+  const auth = authChoiceToType[(program.auth || "") as keyof AuthChoiceToType];
+  if (program.backend !== Backends.firestore) {
+    copySync(
+      `./templates/backend/${program.backend}/${auth}`,
+      isNodeBackend ? `${projectName}/packages/backend` : projectName
+    );
+  }
 
   if (program.web) {
     copySync(
@@ -272,11 +277,11 @@ async function run() {
     );
     process.exit(1);
   }
-  if (program.auth && !(program.auth in auths)) {
+  if (program.auth && !(program.auth in authChoiceToType)) {
     console.error(
-      `Specified auth-type not valid. Must be one of [${Object.keys(auths).join(
-        "|"
-      )}]`
+      `Specified auth-type not valid. Must be one of [${Object.keys(
+        authChoiceToType
+      ).join("|")}]`
     );
     process.exit(1);
   }

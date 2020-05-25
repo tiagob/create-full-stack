@@ -1,11 +1,11 @@
-import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
-import Todos from "./containers/Todos";
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
 import Header from "./components/Header";
-import { Page } from "./constants";
 import About from "./containers/About";
+import Todos from "./containers/Todos";
 
 const useStyles = makeStyles({
   root: {
@@ -13,9 +13,8 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: grey[200]
-  }
+    backgroundColor: grey[200],
+  },
 });
 
 export default function App() {
@@ -24,8 +23,10 @@ export default function App() {
     <Router>
       <div className={classes.root}>
         <Header />
-        <Route exact path="/" component={Todos} />
-        <Route path={`/${Page.about}`} component={About} />
+        <Switch>
+          <Route exact path="/" component={Todos} />
+          <Route path="/about" component={About} />
+        </Switch>
       </div>
     </Router>
   );
