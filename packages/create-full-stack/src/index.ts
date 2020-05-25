@@ -66,15 +66,27 @@ const hasFirebaseFunctions =
 // depending on what packages are included because yarn puts these at the root
 // of the project
 const excludeFiles = new Set(["node_modules", "build", "yarn.lock"]);
-function filterCopySync(src: string): boolean {
-  const fileOrFolder = path.basename(src);
-  return !excludeFiles.has(fileOrFolder);
+function filterCopySyncWithExcludeList(
+  excludePathList: string[]
+): (src: string) => boolean {
+  return (src: string) => {
+    const fileOrFolder = path.basename(src);
+    const toExclude = new Set([...excludeFiles, ...excludePathList]);
+
+    return !toExclude.has(fileOrFolder);
+  };
 }
 
-function copySync(templatePath: string, appPath: string, silent = false) {
-  fs.ensureDirSync(templatePath);
+function copySync(
+  templatePath: string,
+  appPath: string,
+  silent = false,
+  excludePathList: string[] = []
+) {
   if (fs.existsSync(templatePath)) {
-    fs.copySync(templatePath, appPath, { filter: filterCopySync });
+    fs.copySync(templatePath, appPath, {
+      filter: filterCopySyncWithExcludeList(excludePathList),
+    });
   } else if (!silent) {
     console.error(
       `Could not locate supplied template: ${chalk.green(templatePath)}`
@@ -221,26 +233,19 @@ async function copyTemplate() {
   addVSCodeSettings();
 
   const auth = authChoiceToType[(program.auth || "") as keyof AuthChoiceToType];
-  if (program.backend !== Backends.firestore) {
-    copySync(
-      `./templates/backend/${program.backend}/${auth}`,
-      isNodeBackend ? `${projectName}/packages/backend` : projectName
-    );
+  const excludeList = [];
+  if (!program.web) {
+    excludeList.push("web");
   }
-
-  if (program.web) {
-    copySync(
-      `./templates/web/${program.backend}/${auth}`,
-      `${projectName}/packages/web`
-    );
+  if (!program.mobile) {
+    excludeList.push("mobile");
   }
-
-  if (program.mobile) {
-    copySync(
-      `./templates/mobile/${program.backend}/${auth}`,
-      `${projectName}/packages/mobile`
-    );
-  }
+  copySync(
+    `./templates/${program.backend}/${auth}`,
+    projectName,
+    false,
+    excludeList
+  );
 }
 
 function installDependencies() {
@@ -256,10 +261,10 @@ function installDependencies() {
   }
 }
 
-function buildNodeBackend() {
+function buildNodeServer() {
   const command = "yarnpkg";
-  const args = ["--cwd", `${projectName}/packages/backend`, "build"];
-  console.log(`Building the node backend...`);
+  const args = ["--cwd", `${projectName}/packages/server`, "build"];
+  console.log(`Building the node server...`);
   console.log();
 
   const proc = spawn.sync(command, args, { stdio: "inherit" });
@@ -315,9 +320,9 @@ async function run() {
     console.log();
     console.log("Initialized a git repository.");
   }
-  // TODO: Generate local development initialization script ex. install postgres, sync-db, buildNodeBackend etc.
+  // TODO: Generate local development initialization script ex. install postgres, sync-db, buildNodeServer etc.
   if (isNodeBackend) {
-    buildNodeBackend();
+    buildNodeServer();
   }
   console.log();
   console.log(`Success! Created ${appName} at ${projectName}`);
