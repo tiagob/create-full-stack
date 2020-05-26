@@ -8,6 +8,20 @@
 - Install [Docker Compose](https://docs.docker.com/compose/install/)
 - Install the [Hasura CLI](https://hasura.io/docs/1.0/graphql/manual/hasura-cli/install-hasura-cli.html)
 
+### Generate JWT Config
+
+https://hasura.io/jwt-config/
+
+Paste the generated JWT Config into docker-compose.yaml.
+
+**TODO: Don't commit this into the repo**
+
+```yaml
+    environment:
+      # ...
+      HASURA_GRAPHQL_JWT_SECRET: '{...}'
+```
+
 ## Run
 
 ```bash

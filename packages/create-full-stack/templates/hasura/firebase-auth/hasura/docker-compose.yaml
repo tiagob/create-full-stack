@@ -21,7 +21,6 @@ services:
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
       # TODO: Automate creating and setting HASURA_GRAPHQL_JWT_SECRET
-      # TODO: Is committing this secure? Do we need to expunge this? Doesn't seem like a secret key...
       HASURA_GRAPHQL_JWT_SECRET: '***REMOVED***'
 volumes:
   db_data:
