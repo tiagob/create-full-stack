@@ -20,7 +20,7 @@
   },
   "scripts": {
     "create-full-stack": "tsc && node ./build/src/index.js",
-    "create-full-stack-debug": "tsc && node --inspect-brk ./build/src/index.js",
+    "create-full-stack-debug": "tsc && node --inspect ./build/src/index.js",
     "lint": "eslint src/**.ts"
   },
   "husky": {

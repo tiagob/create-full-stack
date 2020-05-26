@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@graphql-codegen/cli": "^1.14.0",
+    "@graphql-codegen/typescript": "^1.14.0",
+    "@graphql-codegen/typescript-operations": "^1.14.0",
+    "@graphql-codegen/typescript-react-apollo": "^1.14.0",
+    "@graphql-codegen/typescript-resolvers": "^1.14.0",
+    "concurrently": "^5.2.0",
+    "graphql": "^14.2.1",
+    "graphql-tag": "^2.0.0"
+  },
+  "scripts": {
+    "generate": "graphql-codegen --watch"
+  }
+}

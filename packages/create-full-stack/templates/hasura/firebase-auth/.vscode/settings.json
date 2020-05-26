@@ -1,0 +1,12 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "editor.tabSize": 2,
+  "eslint.workingDirectories": [
+    {
+      "directory": "packages/firebase-functions",
+      "changeProcessCWD": true
+    }
+  ]
+}

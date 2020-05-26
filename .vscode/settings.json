@@ -49,5 +49,6 @@
       "directory": "packages/create-full-stack/templates/web/hasura/no-auth",
       "changeProcessCWD": true
     }
-  ]
+  ],
+  "debug.node.autoAttach": "on"
 }
