@@ -6,47 +6,63 @@
   "eslint.workingDirectories": [
     { "directory": "packages/create-full-stack", "changeProcessCWD": true },
     {
-      "directory": "packages/create-full-stack/templates/backend/apollo-server-express/firebase-auth",
+      "directory": "packages/create-full-stack/templates/apollo-server-express/firebase-auth/packages/mobile",
       "changeProcessCWD": true
     },
     {
-      "directory": "packages/create-full-stack/templates/backend/apollo-server-express/no-auth",
+      "directory": "packages/create-full-stack/templates/apollo-server-express/firebase-auth/packages/server",
       "changeProcessCWD": true
     },
     {
-      "directory": "packages/create-full-stack/templates/backend/hasura/firebase-auth/packages/firebase-functions",
+      "directory": "packages/create-full-stack/templates/apollo-server-express/firebase-auth/packages/web",
       "changeProcessCWD": true
     },
     {
-      "directory": "packages/create-full-stack/templates/mobile/apollo-server-express/no-auth",
+      "directory": "packages/create-full-stack/templates/apollo-server-express/no-auth/packages/mobile",
       "changeProcessCWD": true
     },
     {
-      "directory": "packages/create-full-stack/templates/mobile/apollo-server-express/firebase-auth",
+      "directory": "packages/create-full-stack/templates/apollo-server-express/no-auth/packages/server",
       "changeProcessCWD": true
     },
     {
-      "directory": "packages/create-full-stack/templates/web/apollo-server-express/firebase-auth",
+      "directory": "packages/create-full-stack/templates/apollo-server-express/no-auth/packages/web",
       "changeProcessCWD": true
     },
     {
-      "directory": "packages/create-full-stack/templates/web/apollo-server-express/no-auth",
+      "directory": "packages/create-full-stack/templates/firestore/firebase-auth/packages/mobile",
       "changeProcessCWD": true
     },
     {
-      "directory": "packages/create-full-stack/templates/web/firestore/firebase-auth",
+      "directory": "packages/create-full-stack/templates/firestore/firebase-auth/packages/web",
       "changeProcessCWD": true
     },
     {
-      "directory": "packages/create-full-stack/templates/web/firestore/no-auth",
+      "directory": "packages/create-full-stack/templates/firestore/no-auth/packages/mobile",
       "changeProcessCWD": true
     },
     {
-      "directory": "packages/create-full-stack/templates/web/hasura/firebase-auth",
+      "directory": "packages/create-full-stack/templates/firestore/no-auth/packages/web",
       "changeProcessCWD": true
     },
     {
-      "directory": "packages/create-full-stack/templates/web/hasura/no-auth",
+      "directory": "packages/create-full-stack/templates/hasura/firebase-auth/packages/firebase-functions",
+      "changeProcessCWD": true
+    },
+    {
+      "directory": "packages/create-full-stack/templates/hasura/firebase-auth/packages/mobile",
+      "changeProcessCWD": true
+    },
+    {
+      "directory": "packages/create-full-stack/templates/hasura/firebase-auth/packages/web",
+      "changeProcessCWD": true
+    },
+    {
+      "directory": "packages/create-full-stack/templates/hasura/no-auth/packages/mobile",
+      "changeProcessCWD": true
+    },
+    {
+      "directory": "packages/create-full-stack/templates/hasura/no-auth/packages/web",
       "changeProcessCWD": true
     }
   ],
