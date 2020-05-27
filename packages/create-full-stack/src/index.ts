@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import chalk from "chalk";
 import commander from "commander";
 import fs from "fs-extra";

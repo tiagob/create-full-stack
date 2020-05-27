@@ -238,6 +238,18 @@ async function updatePackage(
   );
 }
 
+function recursiveRename(dir: string, src: string, dst: string) {
+  const files = fs.readdirSync(dir);
+
+  for (const file of files) {
+    if (fs.statSync(path.join(dir, file)).isDirectory()) {
+      recursiveRename(path.join(dir, file), src, dst);
+    } else if (file === src) {
+      fs.renameSync(path.join(dir, file), path.join(dir, dst));
+    }
+  }
+}
+
 export default async function copyTemplate(
   projectName: string,
   backend: Backend,
@@ -252,7 +264,13 @@ export default async function copyTemplate(
   if (!hasWeb) {
     excludeList.push("web");
   }
-  copySync(`./templates/${backend}/${auth}`, projectName, false, excludeList);
+  copySync(
+    `${__dirname}/../../templates/${backend}/${auth}`,
+    projectName,
+    false,
+    excludeList
+  );
+  recursiveRename(projectName, "gitignore", ".gitignore");
 
   if (backend === Backend.apolloServerExpress || backend === Backend.hasura) {
     addApolloCodegen(projectName, backend, hasMobile, hasWeb);
