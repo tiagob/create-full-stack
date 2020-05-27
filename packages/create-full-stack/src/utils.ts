@@ -1,4 +1,5 @@
 import spawn from "cross-spawn";
+import path from "path";
 
 export function installDependencies(projectName: string) {
   const command = "yarnpkg";
@@ -15,7 +16,7 @@ export function installDependencies(projectName: string) {
 
 export function buildNodeServer(projectName: string) {
   const command = "yarnpkg";
-  const args = ["--cwd", `${projectName}/packages/server`, "build"];
+  const args = ["--cwd", path.join(projectName, "packages/server"), "build"];
   console.log(`Building the node server...`);
   console.log();
 

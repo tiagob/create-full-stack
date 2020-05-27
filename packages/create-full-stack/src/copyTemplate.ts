@@ -95,7 +95,7 @@ function addApolloCodegen(
           },
         }),
       },
-    }) + os.EOL
+    })
   );
 }
 
@@ -112,7 +112,7 @@ async function updateVSCodeSettings(
   hasWeb: boolean
 ) {
   const { default: vscodeSettings }: { default: VSCodeSettings } = await import(
-    `${projectName}/.vscode/settings.json`
+    path.join(projectName, ".vscode/settings.json")
   );
   if (hasMobile) {
     vscodeSettings["eslint.workingDirectories"].push({
@@ -128,7 +128,7 @@ async function updateVSCodeSettings(
   }
   fs.ensureDirSync(`${projectName}/.vscode`);
   fs.writeFileSync(
-    `${projectName}/.vscode/settings.json`,
+    path.join(projectName, ".vscode/settings.json"),
     JSON.stringify(vscodeSettings, undefined, 2) + os.EOL
   );
 }
@@ -148,7 +148,7 @@ interface VSCodeLaunch {
 
 async function updateVSCodeLaunch(projectName: string, hasWeb: boolean) {
   const { default: vscodeLaunch }: { default: VSCodeLaunch } = await import(
-    `${projectName}/.vscode/launch.json`
+    path.join(projectName, ".vscode/launch.json")
   );
   if (hasWeb) {
     vscodeLaunch.configurations.push({
@@ -164,9 +164,8 @@ async function updateVSCodeLaunch(projectName: string, hasWeb: boolean) {
       },
     });
   }
-  fs.ensureDirSync(`${projectName}/.vscode`);
   fs.writeFileSync(
-    `${projectName}/.vscode/launch.json`,
+    path.join(projectName, ".vscode/launch.json"),
     JSON.stringify(vscodeLaunch, undefined, 2) + os.EOL
   );
 }
@@ -195,7 +194,7 @@ async function updatePackage(
   const {
     default: appPackage,
   }: { default: JSONSchemaForNPMPackageJsonFiles } = await import(
-    `${projectName}/package.json`
+    path.join(projectName, "package.json")
   );
   appPackage.name = appName;
   const commands: Command[] = [];
@@ -233,7 +232,7 @@ async function updatePackage(
     watch: getWatchCommand(commands),
   };
   fs.writeFileSync(
-    `${projectName}/package.json`,
+    path.join(projectName, "package.json"),
     JSON.stringify(appPackage, undefined, 2) + os.EOL
   );
 }
@@ -265,11 +264,13 @@ export default async function copyTemplate(
     excludeList.push("web");
   }
   copySync(
-    `${__dirname}/../../templates/${backend}/${auth}`,
+    path.join(__dirname, "../../templates", backend, auth),
     projectName,
     false,
     excludeList
   );
+  // ".gitignore" isn't included in "npm publish" so copy it over as gitingore
+  // and rename (CRA does this)
   recursiveRename(projectName, "gitignore", ".gitignore");
 
   if (backend === Backend.apolloServerExpress || backend === Backend.hasura) {
