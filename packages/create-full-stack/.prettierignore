@@ -1,0 +1,11 @@
+# generated files
+__generated__
+
+# web
+react-app-env.d.ts
+serviceWorker.ts
+setupTests.ts
+
+# mobile
+babel.config.js
+metro.config.js
