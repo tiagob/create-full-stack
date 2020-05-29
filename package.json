@@ -20,7 +20,6 @@
     "src/**.{ts,tsx}": "eslint --fix"
   },
   "devDependencies": {
-    "eslint-config-create-full-stack": "0.1.5",
     "husky": "^4.2.5",
     "lerna": "^3.22.0",
     "lint-staged": "^10.2.2"
