@@ -4,6 +4,7 @@ import fs from "fs-extra";
 import yaml from "js-yaml";
 import os from "os";
 import path from "path";
+import sortPackageJson from "sort-package-json";
 
 import { Auth, Backend } from "./constants";
 
@@ -55,7 +56,6 @@ const templateToGraphqlSchema = {
     ],
   },
 };
-type TemplateToGraphqlSchema = typeof templateToGraphqlSchema;
 
 function addApolloCodegen(
   projectName: string,
@@ -258,7 +258,7 @@ async function updatePackage(
   };
   fs.writeFileSync(
     path.join(projectName, "package.json"),
-    JSON.stringify(appPackage, undefined, 2) + os.EOL
+    JSON.stringify(sortPackageJson(appPackage), undefined, 2) + os.EOL
   );
 }
 

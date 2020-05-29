@@ -6,19 +6,11 @@
   "bin": {
     "create-full-stack": "./build/src/index.js"
   },
-  "devDependencies": {
-    "@types/cross-spawn": "^6.0.2",
-    "@types/fs-extra": "^9.0.0",
-    "@types/js-yaml": "^3.12.4",
-    "@types/node": "^14.0.5",
-    "@types/validate-npm-package-name": "^3.0.0",
-    "typescript": "^3.9.2"
-  },
   "scripts": {
     "build": "tsc",
-    "prepare": "yarn build",
     "create-full-stack": "tsc && node ./build/src/index.js",
-    "create-full-stack-debug": "tsc && node --inspect-brk ./build/src/index.js"
+    "create-full-stack-debug": "tsc && node --inspect-brk ./build/src/index.js",
+    "prepare": "yarn build"
   },
   "dependencies": {
     "@schemastore/package": "^0.0.5",
@@ -28,6 +20,15 @@
     "fs-extra": "^9.0.0",
     "js-yaml": "^3.13.1",
     "path": "^0.12.7",
+    "sort-package-json": "^1.44.0",
     "validate-npm-package-name": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/cross-spawn": "^6.0.2",
+    "@types/fs-extra": "^9.0.0",
+    "@types/js-yaml": "^3.12.4",
+    "@types/node": "^14.0.5",
+    "@types/validate-npm-package-name": "^3.0.0",
+    "typescript": "^3.9.2"
   }
 }

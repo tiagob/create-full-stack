@@ -1,8 +1,20 @@
 {
   "name": "server",
   "version": "0.1.0",
-  "main": "./src/index.ts",
   "private": true,
+  "main": "./src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "yarn build",
+    "serve-debug": "nodemon --inspect-brk ./build/index.js",
+    "start": "node ./build/index.js",
+    "sync-db": "tsc && node ./build/index.js --sync-db",
+    "sync-db-debug": "tsc && node --inspect-brk ./build/index.js --sync-db",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"green.bold,cyan.bold\" \"yarn watch-ts\" \"yarn watch-node\"",
+    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"green.bold,cyan.bold\" \"yarn watch-ts\" \"yarn serve-debug\"",
+    "watch-node": "nodemon ./build/index.js",
+    "watch-ts": "tsc -w"
+  },
   "dependencies": {
     "@firebase/app-types": "0.x",
     "apollo-server-express": "^2.13.1",
@@ -20,17 +32,5 @@
     "concurrently": "^5.2.0",
     "nodemon": "^2.0.4",
     "ts-node": "^8.10.1"
-  },
-  "scripts": {
-    "start": "node ./build/index.js",
-    "build": "tsc",
-    "prepare": "yarn build",
-    "sync-db": "tsc && node ./build/index.js --sync-db",
-    "sync-db-debug": "tsc && node --inspect-brk ./build/index.js --sync-db",
-    "watch-node": "nodemon ./build/index.js",
-    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"green.bold,cyan.bold\" \"yarn watch-ts\" \"yarn watch-node\"",
-    "watch-ts": "tsc -w",
-    "serve-debug": "nodemon --inspect-brk ./build/index.js",
-    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"green.bold,cyan.bold\" \"yarn watch-ts\" \"yarn serve-debug\""
   }
 }

@@ -1,15 +1,15 @@
 {
   "name": "mobile",
   "version": "0.1.0",
-  "main": "__generated__/AppEntry.js",
   "private": true,
+  "main": "__generated__/AppEntry.js",
   "scripts": {
-    "start": "expo start",
     "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
     "eject": "expo eject",
-    "postinstall": "expo-yarn-workspaces postinstall && prettier --write ./__generated__"
+    "postinstall": "expo-yarn-workspaces postinstall && prettier --write ./__generated__",
+    "ios": "expo start --ios",
+    "start": "expo start",
+    "web": "expo start --web"
   },
   "dependencies": {
     "@apollo/react-common": "^3.1.4",
