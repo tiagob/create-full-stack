@@ -5,7 +5,9 @@
   ],
   "scripts": {
     "lint": "eslint packages/create-full-stack/src/**/*.ts --fix",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "publish": "lerna publish",
+    "lerna-version": "lerna version"
   },
   "husky": {
     "hooks": {
@@ -19,6 +21,8 @@
   "devDependencies": {
     "eslint-config-create-full-stack": "0.1.4",
     "husky": "^4.2.5",
+    "lerna": "^3.22.0",
     "lint-staged": "^10.2.2"
-  }
+  },
+  "version": "0.0.0"
 }
