@@ -4,10 +4,11 @@
     "packages/*"
   ],
   "scripts": {
-    "lint": "eslint packages/create-full-stack/src/**/*.ts --fix",
-    "prettier": "prettier --write .",
+    "lerna:changed": "lerna changed",
     "lerna:publish": "lerna publish",
-    "lerna:version": "lerna version"
+    "lerna:version": "lerna version",
+    "lint": "eslint packages/create-full-stack/src/**/*.ts --fix",
+    "prettier": "prettier --write ."
   },
   "husky": {
     "hooks": {
@@ -23,6 +24,5 @@
     "husky": "^4.2.5",
     "lerna": "^3.22.0",
     "lint-staged": "^10.2.2"
-  },
-  "version": "0.0.0"
+  }
 }
