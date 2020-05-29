@@ -20,7 +20,7 @@ import {
   shouldUseYarn,
   tryGitInit,
 } from "./createReactAppUtils";
-import { buildNodeServer, installDependencies, runPrettier } from "./utils";
+import { runYarn } from "./utils";
 
 let projectName = "";
 
@@ -68,12 +68,12 @@ async function run() {
     process.exit(1);
   }
 
-  const root = path.resolve(projectName);
-  const appName = path.basename(root);
+  const projectPath = path.resolve(projectName);
+  const appName = path.basename(projectPath);
 
   checkAppName(appName);
   fs.ensureDirSync(projectName);
-  if (!isSafeToCreateProjectIn(root, projectName)) {
+  if (!isSafeToCreateProjectIn(projectPath, projectName)) {
     process.exit(1);
   }
   console.log();
@@ -86,20 +86,24 @@ async function run() {
     );
     process.exit(1);
   }
-  console.log(`Creating a new full-stack app in ${chalk.green(root)}.`);
+  console.log(`Creating a new full-stack app in ${chalk.green(projectPath)}.`);
   console.log();
 
   const auth = authChoiceToType[(program.auth || "") as keyof AuthChoiceToType];
-  await copyTemplate(
-    root,
-    program.backend,
+  await copyTemplate({
+    projectPath,
+    backend: program.backend,
     auth,
-    Boolean(program.mobile),
-    Boolean(program.web)
-  );
+    hasMobile: Boolean(program.mobile),
+    hasWeb: Boolean(program.web),
+  });
 
-  installDependencies(projectName);
-  runPrettier(projectName);
+  console.log(`Installing packages using yarnpkg...`);
+  console.log();
+  // Also, uninstalls the template
+  runYarn(projectName);
+
+  runYarn(projectName, ["prettier"]);
 
   if (tryGitInit(projectName)) {
     console.log();
@@ -107,7 +111,9 @@ async function run() {
   }
   // TODO: Generate local development initialization script ex. install postgres, sync-db, buildNodeServer etc.
   if (isNodeBackend) {
-    buildNodeServer(projectName);
+    console.log(`Building the node server...`);
+    console.log();
+    runYarn(path.join(projectName, "packages/server"), ["build"]);
   }
   console.log();
   console.log(`Success! Created ${appName} at ${projectName}`);

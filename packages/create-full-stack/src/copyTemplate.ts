@@ -7,6 +7,7 @@ import path from "path";
 import sortPackageJson from "sort-package-json";
 
 import { Auth, Backend } from "./constants";
+import { runYarn } from "./utils";
 
 // Don't include any local files. node_modules and yarn.lock will be different
 // depending on what packages are included because yarn puts these at the root
@@ -25,12 +26,12 @@ function filterCopySyncWithExcludeList(
 
 function copySync(
   templatePath: string,
-  appPath: string,
+  projectPath: string,
   silent = false,
   excludePathList: string[] = []
 ) {
   if (fs.existsSync(templatePath)) {
-    fs.copySync(templatePath, appPath, {
+    fs.copySync(templatePath, projectPath, {
       filter: filterCopySyncWithExcludeList(excludePathList),
     });
   } else if (!silent) {
@@ -57,15 +58,21 @@ const templateToGraphqlSchema = {
   },
 };
 
-function addApolloCodegen(
-  projectName: string,
-  backend: Backend,
-  auth: Auth,
-  hasMobile: boolean,
-  hasWeb: boolean
-) {
+function addApolloCodegen({
+  projectPath,
+  backend,
+  auth,
+  hasMobile,
+  hasWeb,
+}: {
+  projectPath: string;
+  backend: Backend;
+  auth: Auth;
+  hasMobile: boolean;
+  hasWeb: boolean;
+}) {
   fs.writeFileSync(
-    `${projectName}/codegen.yml`,
+    `${projectPath}/codegen.yml`,
     yaml.safeDump({
       schema: templateToGraphqlSchema[backend][auth],
       hooks: {
@@ -127,40 +134,6 @@ function addApolloCodegen(
   );
 }
 
-interface VSCodeSettings {
-  "eslint.workingDirectories": {
-    directory: string;
-    changeProcessCWD: boolean;
-  }[];
-}
-
-async function updateVSCodeSettings(
-  projectName: string,
-  hasMobile: boolean,
-  hasWeb: boolean
-) {
-  const { default: vscodeSettings }: { default: VSCodeSettings } = await import(
-    path.join(projectName, ".vscode/settings.json")
-  );
-  if (hasMobile) {
-    vscodeSettings["eslint.workingDirectories"].push({
-      directory: "packages/mobile",
-      changeProcessCWD: true,
-    });
-  }
-  if (hasWeb) {
-    vscodeSettings["eslint.workingDirectories"].push({
-      directory: "packages/web",
-      changeProcessCWD: true,
-    });
-  }
-  fs.ensureDirSync(`${projectName}/.vscode`);
-  fs.writeFileSync(
-    path.join(projectName, ".vscode/settings.json"),
-    JSON.stringify(vscodeSettings, undefined, 2) + os.EOL
-  );
-}
-
 interface VSCodeLaunch {
   configurations: {
     type: string;
@@ -174,9 +147,15 @@ interface VSCodeLaunch {
   }[];
 }
 
-async function updateVSCodeLaunch(projectName: string, hasWeb: boolean) {
+async function updateVSCodeLaunch({
+  projectPath,
+  hasWeb,
+}: {
+  projectPath: string;
+  hasWeb: boolean;
+}) {
   const { default: vscodeLaunch }: { default: VSCodeLaunch } = await import(
-    path.join(projectName, ".vscode/launch.json")
+    path.join(projectPath, ".vscode/launch.json")
   );
   if (hasWeb) {
     vscodeLaunch.configurations.push({
@@ -193,7 +172,7 @@ async function updateVSCodeLaunch(projectName: string, hasWeb: boolean) {
     });
   }
   fs.writeFileSync(
-    path.join(projectName, ".vscode/launch.json"),
+    path.join(projectPath, ".vscode/launch.json"),
     JSON.stringify(vscodeLaunch, undefined, 2) + os.EOL
   );
 }
@@ -212,17 +191,22 @@ function getWatchCommand(commands: Command[]) {
     .join('" "')}"`;
 }
 
-async function updatePackage(
-  projectName: string,
-  backend: Backend,
-  hasMobile: boolean,
-  hasWeb: boolean
-) {
-  const appName = path.basename(projectName);
+async function updatePackage({
+  projectPath,
+  backend,
+  hasMobile,
+  hasWeb,
+}: {
+  projectPath: string;
+  backend: Backend;
+  hasMobile: boolean;
+  hasWeb: boolean;
+}) {
+  const appName = path.basename(projectPath);
   const {
     default: appPackage,
   }: { default: JSONSchemaForNPMPackageJsonFiles } = await import(
-    path.join(projectName, "package.json")
+    path.join(projectPath, "package.json")
   );
   appPackage.name = appName;
   const commands: Command[] = [];
@@ -257,7 +241,7 @@ async function updatePackage(
     watch: getWatchCommand(commands),
   };
   fs.writeFileSync(
-    path.join(projectName, "package.json"),
+    path.join(projectPath, "package.json"),
     JSON.stringify(sortPackageJson(appPackage), undefined, 2) + os.EOL
   );
 }
@@ -274,13 +258,23 @@ function recursiveRename(dir: string, src: string, dst: string) {
   }
 }
 
-export default async function copyTemplate(
-  projectName: string,
-  backend: Backend,
-  auth: Auth,
-  hasMobile: boolean,
-  hasWeb: boolean
-) {
+export default async function copyTemplate(options: {
+  projectPath: string;
+  backend: Backend;
+  auth: Auth;
+  hasMobile: boolean;
+  hasWeb: boolean;
+}) {
+  const { projectPath, backend, auth, hasMobile, hasWeb } = options;
+
+  const templateName = `cfs-template-${backend}-${auth}`;
+  runYarn(projectPath, ["add", templateName]);
+  const templatePath = path.dirname(
+    require.resolve(path.join(templateName, "package.json"), {
+      paths: [projectPath],
+    })
+  );
+
   const excludeList = [];
   if (!hasMobile) {
     excludeList.push("mobile");
@@ -288,18 +282,16 @@ export default async function copyTemplate(
   if (!hasWeb) {
     excludeList.push("web");
   }
-  copySync(
-    path.join(__dirname, "../../templates", backend, auth),
-    projectName,
-    false,
-    excludeList
-  );
+  copySync(templatePath, projectPath, false, excludeList);
   // ".gitignore" isn't included in "npm publish" so copy it over as gitingore
   // and rename (CRA does this)
-  recursiveRename(projectName, "gitignore", ".gitignore");
+  recursiveRename(projectPath, "gitignore", ".gitignore");
+  fs.renameSync(
+    path.join(projectPath, "template.json"),
+    path.join(projectPath, "package.json")
+  );
 
-  addApolloCodegen(projectName, backend, auth, hasMobile, hasWeb);
-  await updateVSCodeSettings(projectName, hasMobile, hasWeb);
-  await updateVSCodeLaunch(projectName, hasWeb);
-  await updatePackage(projectName, backend, hasMobile, hasWeb);
+  addApolloCodegen(options);
+  await updateVSCodeLaunch(options);
+  await updatePackage(options);
 }
