@@ -1,0 +1,4 @@
+build
+
+# generated hasura metadata
+**/hasura/metadata

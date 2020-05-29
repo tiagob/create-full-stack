@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "mobile": ["./packages/mobile/src"],
+      "web": ["./packages/web/src"]
+    }
+  }
+}

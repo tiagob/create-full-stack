@@ -39,28 +39,48 @@ function copySync(
   }
 }
 
-const backendToGraphqlSchema = {
-  [Backend.apolloServerExpress]: "packages/backend/src/graphql/schema.ts",
-  [Backend.hasura]: "http://localhost:8080/v1/graphql",
+const templateToGraphqlSchema = {
+  [Backend.apolloServerExpress]: {
+    [Auth.noAuth]: "packages/server/src/graphql/schema.ts",
+    [Auth.firebase]: "packages/server/src/graphql/schema.ts",
+  },
+  [Backend.hasura]: {
+    [Auth.noAuth]: "http://localhost:8080/v1/graphql",
+    [Auth.firebase]: [
+      {
+        "http://localhost:8080/v1/graphql": {
+          headers: { "x-hasura-admin-secret": "myadminsecretkey" },
+        },
+      },
+    ],
+  },
 };
-type BackendToGraphqlSchema = typeof backendToGraphqlSchema;
+type TemplateToGraphqlSchema = typeof templateToGraphqlSchema;
 
 function addApolloCodegen(
   projectName: string,
-  backend: keyof BackendToGraphqlSchema,
+  backend: Backend,
+  auth: Auth,
   hasMobile: boolean,
   hasWeb: boolean
 ) {
   fs.writeFileSync(
     `${projectName}/codegen.yml`,
     yaml.safeDump({
-      schema: backendToGraphqlSchema[backend],
+      schema: templateToGraphqlSchema[backend][auth],
+      hooks: {
+        afterOneFileWrite: ["prettier --write", "eslint --fix"],
+      },
       generates: {
         ...(backend === Backend.apolloServerExpress && {
-          "packages/backend/src/graphql/__generated__/index.ts": {
+          "packages/server/src/graphql/__generated__/index.ts": {
             plugins: ["typescript", "typescript-resolvers"],
             config: {
               useIndexSignature: true,
+              namingConvention: {
+                typeNames: "pascal-case#pascalCase",
+                transformUnderscore: true,
+              },
             },
           },
         }),
@@ -76,6 +96,10 @@ function addApolloCodegen(
               withHOC: false,
               withComponent: false,
               withHooks: true,
+              namingConvention: {
+                typeNames: "pascal-case#pascalCase",
+                transformUnderscore: true,
+              },
             },
           },
         }),
@@ -91,6 +115,10 @@ function addApolloCodegen(
               withHOC: false,
               withComponent: false,
               withHooks: true,
+              namingConvention: {
+                typeNames: "pascal-case#pascalCase",
+                transformUnderscore: true,
+              },
             },
           },
         }),
@@ -198,14 +226,11 @@ async function updatePackage(
   );
   appPackage.name = appName;
   const commands: Command[] = [];
-  const hasGraphql = backend in backendToGraphqlSchema;
-  if (hasGraphql) {
-    commands.push({
-      name: "Generate",
-      color: "magenta.bold",
-      command: "yarn generate",
-    });
-  }
+  commands.push({
+    name: "Generate",
+    color: "magenta.bold",
+    command: "yarn generate",
+  });
   if (backend === Backend.apolloServerExpress) {
     commands.push({
       name: "Server",
@@ -273,9 +298,7 @@ export default async function copyTemplate(
   // and rename (CRA does this)
   recursiveRename(projectName, "gitignore", ".gitignore");
 
-  if (backend === Backend.apolloServerExpress || backend === Backend.hasura) {
-    addApolloCodegen(projectName, backend, hasMobile, hasWeb);
-  }
+  addApolloCodegen(projectName, backend, auth, hasMobile, hasWeb);
   await updateVSCodeSettings(projectName, hasMobile, hasWeb);
   await updateVSCodeLaunch(projectName, hasWeb);
   await updatePackage(projectName, backend, hasMobile, hasWeb);

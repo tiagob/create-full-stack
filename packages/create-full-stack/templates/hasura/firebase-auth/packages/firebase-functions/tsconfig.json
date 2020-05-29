@@ -16,7 +16,5 @@
     "allowJs": false
   },
   "compileOnSave": true,
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

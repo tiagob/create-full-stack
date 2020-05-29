@@ -46,7 +46,6 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.1.5",
-    "eslint-config-create-full-stack": "^0.1.2"
+    "@types/react-router-dom": "^5.1.5"
   }
 }

@@ -25,6 +25,7 @@ async function run() {
     try {
       await sequelize.authenticate();
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error("Can't connect to the database.\n", error);
     }
     const app = express();
@@ -62,6 +63,7 @@ async function run() {
     dns.lookup(os.hostname(), async (_, localIp) => {
       const port = process.env.PORT || 4000;
       await app.listen(port);
+      // eslint-disable-next-line no-console
       console.log(
         `🚀  Server ready at http://localhost:${port}/graphql and http://${localIp}:${port}/graphql`
       );

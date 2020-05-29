@@ -1,9 +1,0 @@
-{
-  "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
-  "devDependencies": {
-    "concurrently": "^5.2.0"
-  }
-}

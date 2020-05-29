@@ -2,5 +2,23 @@
   "private": true,
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "eslint-config-create-full-stack": "0.1.3",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.2"
+  },
+  "scripts": {
+    "lint": "eslint packages/create-full-stack/src/**/*.ts --fix",
+    "prettier": "prettier --write ."
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,graphql,json,md,yaml,yml,html,css}": "prettier --write",
+    "src/**.{ts,tsx}": "eslint --fix"
+  }
 }

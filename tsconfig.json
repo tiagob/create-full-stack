@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "create-full-stack": ["./packages/create-full-stack/src"]
+    }
+  }
+}

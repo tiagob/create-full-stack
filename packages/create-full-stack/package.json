@@ -12,24 +12,13 @@
     "@types/js-yaml": "^3.12.4",
     "@types/node": "^14.0.5",
     "@types/validate-npm-package-name": "^3.0.0",
-    "eslint": "^6.8.0",
-    "eslint-config-create-full-stack": "0.1.2",
-    "husky": "^4.2.5",
-    "lint-staged": "^10.2.2",
-    "prettier": "^2.0.5",
     "typescript": "^3.9.2"
   },
   "scripts": {
     "build": "tsc",
     "prepare": "yarn build",
     "create-full-stack": "tsc && node ./build/src/index.js",
-    "create-full-stack-debug": "tsc && node --inspect-brk ./build/src/index.js",
-    "lint": "lint-staged"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "create-full-stack-debug": "tsc && node --inspect-brk ./build/src/index.js"
   },
   "dependencies": {
     "@schemastore/package": "^0.0.5",
@@ -40,9 +29,5 @@
     "js-yaml": "^3.13.1",
     "path": "^0.12.7",
     "validate-npm-package-name": "^3.0.0"
-  },
-  "lint-staged": {
-    "*.{js,ts,tsx,graphql,json,md,yaml,yml,html,css}": "prettier --write",
-    "src/**.{ts,tsx}": "eslint --fix"
   }
 }

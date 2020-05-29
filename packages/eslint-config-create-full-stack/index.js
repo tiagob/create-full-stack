@@ -2,9 +2,9 @@
 // https://github.com/iamturns/create-exposed-app/blob/master/.eslintrc.js
 module.exports = {
   root: true,
-  parser: '@typescript-eslint/parser',
+  parser: "@typescript-eslint/parser",
   parserOptions: {
-    project: './tsconfig.json',
+    project: "./tsconfig.json",
   },
   plugins: [
     "@typescript-eslint",
@@ -12,7 +12,7 @@ module.exports = {
     "jest",
     "promise",
     "unicorn",
-    "simple-import-sort"
+    "simple-import-sort",
   ],
   extends: [
     "airbnb-typescript",
@@ -26,7 +26,7 @@ module.exports = {
     "prettier/@typescript-eslint",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "plugin:import/typescript"
+    "plugin:import/typescript",
   ],
   env: {
     node: true,
@@ -38,20 +38,20 @@ module.exports = {
     "unicorn/prevent-abbreviations": "off",
     // Overload airbnb definition to allow 'ForOfStatement'
     // https://github.com/airbnb/javascript/blob/b6fc6dc7c3cb76497db0bb81edaa54d8f3427796/packages/eslint-config-airbnb-base/rules/style.js#L257
-    'no-restricted-syntax': [
-      'error',
-      'ForInStatement',
-      'LabeledStatement',
-      'WithStatement',
+    "no-restricted-syntax": [
+      "error",
+      "ForInStatement",
+      "LabeledStatement",
+      "WithStatement",
     ],
     "unicorn/filename-case": [
-        "error",
+      "error",
       {
-        "cases": {
-          "camelCase": true,
-          "pascalCase": true
-        }
-      }
+        cases: {
+          camelCase: true,
+          pascalCase: true,
+        },
+      },
     ],
     "simple-import-sort/sort": "error",
     "@typescript-eslint/prefer-optional-chain": "error",
@@ -60,7 +60,19 @@ module.exports = {
     "react/jsx-props-no-spreading": "off",
     // TypeScript can infer return types
     // https://www.typescriptlang.org/docs/handbook/type-inference.html
-    "@typescript-eslint/explicit-function-return-type": "off"
+    "@typescript-eslint/explicit-function-return-type": "off",
   },
-  ignorePatterns: ["node_modules", "build", "__generated__"]
-}
+  ignorePatterns: [
+    "node_modules",
+    "build",
+    // graphql-codegen and mobile (expo)
+    "__generated__",
+    // web (CRA)
+    "react-app-env.d.ts",
+    "serviceWorker.ts",
+    "setupTests.ts",
+    // mobile (expo)
+    "babel.config.js",
+    "metro.config.js",
+  ],
+};

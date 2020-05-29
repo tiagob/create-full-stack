@@ -6,6 +6,8 @@
   "dependencies": {
     "apollo-server-express": "^2.13.1",
     "commander": "^5.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "graphql": "^14.2.1",
     "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
@@ -14,12 +16,8 @@
   },
   "devDependencies": {
     "concurrently": "^5.2.0",
-    "husky": "^4.2.5",
     "nodemon": "^2.0.4",
-    "prettier": "^2.0.5",
-    "pretty-quick": "^2.0.1",
-    "ts-node": "^8.10.1",
-    "eslint-config-create-full-stack": "^0.1.2"
+    "ts-node": "^8.10.1"
   },
   "scripts": {
     "start": "node ./build/index.js",
@@ -32,10 +30,5 @@
     "watch-ts": "tsc -w",
     "serve-debug": "nodemon --inspect-brk ./build/index.js",
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"green.bold,cyan.bold\" \"yarn watch-ts\" \"yarn serve-debug\""
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
   }
 }

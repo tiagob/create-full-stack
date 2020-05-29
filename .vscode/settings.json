@@ -6,6 +6,10 @@
   "eslint.workingDirectories": [
     { "directory": "packages/create-full-stack", "changeProcessCWD": true },
     {
+      "directory": "packages/eslint-config-create-full-stack",
+      "changeProcessCWD": true
+    },
+    {
       "directory": "packages/create-full-stack/templates/apollo-server-express/firebase-auth/packages/mobile",
       "changeProcessCWD": true
     },

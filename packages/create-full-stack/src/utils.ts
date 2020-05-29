@@ -26,3 +26,13 @@ export function buildNodeServer(projectName: string) {
     process.exit(1);
   }
 }
+
+export function runPrettier(projectName: string) {
+  const command = "yarnpkg";
+  const args = ["--cwd", projectName, "prettier"];
+  const proc = spawn.sync(command, args, { stdio: "inherit" });
+  if (proc.status !== 0) {
+    console.error(`\`${command} ${args.join(" ")}\` failed`);
+    process.exit(1);
+  }
+}

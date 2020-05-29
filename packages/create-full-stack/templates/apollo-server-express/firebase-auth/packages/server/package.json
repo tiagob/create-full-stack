@@ -18,11 +18,7 @@
   },
   "devDependencies": {
     "concurrently": "^5.2.0",
-    "eslint-config-create-full-stack": "^0.1.2",
-    "husky": "^4.2.5",
     "nodemon": "^2.0.4",
-    "prettier": "^2.0.5",
-    "pretty-quick": "^2.0.1",
     "ts-node": "^8.10.1"
   },
   "scripts": {
@@ -36,10 +32,5 @@
     "watch-ts": "tsc -w",
     "serve-debug": "nodemon --inspect-brk ./build/index.js",
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"green.bold,cyan.bold\" \"yarn watch-ts\" \"yarn serve-debug\""
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
   }
 }

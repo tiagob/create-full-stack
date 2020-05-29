@@ -20,7 +20,7 @@ import {
   shouldUseYarn,
   tryGitInit,
 } from "./createReactAppUtils";
-import { buildNodeServer, installDependencies } from "./utils";
+import { buildNodeServer, installDependencies, runPrettier } from "./utils";
 
 let projectName = "";
 
@@ -99,6 +99,7 @@ async function run() {
   );
 
   installDependencies(projectName);
+  runPrettier(projectName);
 
   if (tryGitInit(projectName)) {
     console.log();
