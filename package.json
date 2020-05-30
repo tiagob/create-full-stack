@@ -5,7 +5,7 @@
   ],
   "scripts": {
     "lerna:changed": "lerna changed",
-    "lerna:publish": "lerna publish",
+    "lerna:publish": "lerna publish --contents build",
     "lerna:version": "lerna version",
     "lint": "eslint packages/create-full-stack/src/**/*.ts --fix",
     "prettier": "prettier --write ."
