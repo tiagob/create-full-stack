@@ -4,7 +4,7 @@
   "description": "Configuration and scripts for Create Full Stack.",
   "license": "MIT",
   "bin": {
-    "create-full-stack": "./src/index.js"
+    "create-full-stack": "./build/src/index.js"
   },
   "scripts": {
     "build": "tsc",
