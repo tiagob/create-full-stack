@@ -115,8 +115,27 @@ async function run() {
     console.log();
     runYarn(path.join(projectName, "packages/server"), ["build"]);
   }
+
+  // Display the most elegant way to cd.
+  // This needs to handle an undefined originalDirectory for
+  // backward compatibility with old global-cli's.
+  const originalDirectory = process.cwd();
+  let cdpath;
+  if (
+    originalDirectory &&
+    path.join(originalDirectory, appName) === projectPath
+  ) {
+    cdpath = appName;
+  } else {
+    cdpath = projectPath;
+  }
   console.log();
   console.log(`Success! Created ${appName} at ${projectName}`);
+  console.log();
+  console.log("We suggest that you begin by typing:");
+  console.log();
+  console.log(chalk.cyan("  cd"), cdpath);
+  console.log(`  ${chalk.cyan("yarn watch")}`);
   console.log();
   console.log("Happy hacking!");
 }
