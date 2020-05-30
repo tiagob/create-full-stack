@@ -1,6 +1,6 @@
 {
   "name": "create-full-stack",
-  "version": "0.1.12",
+  "version": "0.1.15",
   "description": "Configuration and scripts for Create Full Stack.",
   "license": "MIT",
   "bin": {
@@ -10,7 +10,8 @@
     "build": "tsc",
     "create-full-stack": "tsc && node ./build/src/index.js",
     "create-full-stack-debug": "tsc && node --inspect-brk ./build/src/index.js",
-    "prepare": "yarn build"
+    "prepare": "yarn build",
+    "publish": "publish ./build"
   },
   "dependencies": {
     "@schemastore/package": "^0.0.5",
