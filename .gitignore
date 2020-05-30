@@ -22,6 +22,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# lerna
+lerna-debug.log
+
 # templates
 packages/create-full-stack/templates/**/yarn.lock
 
