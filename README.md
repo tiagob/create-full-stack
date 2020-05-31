@@ -47,7 +47,7 @@ Usage: create-full-stack <project-directory> [options]
 
 Options:
   -V, --version            output the version number
-  -b, --backend <backend>  backend type [apollo|hasura|firestore]
+  -b, --backend <backend>  backend type [apollo|hasura]
   -w, --web                include react website
   -m, --mobile             include react-native mobile app
   -a, --auth <auth>        auth type [firebase|]
@@ -67,6 +67,10 @@ The config files (`.vscode/`) are included which formats on save.
 ### Install recommended [extensions](https://code.visualstudio.com/docs/editor/extension-gallery)
 
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
+- [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
+- [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 
 ## Generated project notes
 
@@ -76,7 +80,7 @@ Check specific package READMEs for additional information.
 
 ### Code generation
 
-Repo uses [graphql-code-generator](https://graphql-code-generator.com/). Client React components for GraphQL queries and mutations are automatically generated via the [typescript-react-apollo plugin](https://graphql-code-generator.com/docs/plugins/typescript-react-apollo#usage) from the `*.graphql` files. The backend relies on type generation via the [typescript-resolvers plugin](https://graphql-code-generator.com/docs/plugins/typescript-resolvers). This code is automattically generated when running commands from the workspace root.
+Repo uses [graphql-code-generator](https://graphql-code-generator.com/). Client React components for GraphQL queries and mutations are automatically generated via the [typescript-react-apollo plugin](https://graphql-code-generator.com/docs/plugins/typescript-react-apollo#usage) from the `*.graphql` files. The backend relies on type generation via the [typescript-resolvers plugin](https://graphql-code-generator.com/docs/plugins/typescript-resolvers). This code is automatically generated when running commands from the workspace root.
 
 ### Gotchas
 
