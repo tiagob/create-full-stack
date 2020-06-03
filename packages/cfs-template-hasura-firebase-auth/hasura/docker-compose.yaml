@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_PASSWORD: postgrespassword
   graphql-engine:
-    image: hasura/graphql-engine:v1.2.1.cli-migrations-v2
+    build: "./"
     ports:
       - "8080:8080"
     depends_on:
@@ -19,8 +19,7 @@ services:
       # Access the console via "hasura console" CLI to automate migration creation
       HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
-      HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
-      # TODO: Automate creating and setting HASURA_GRAPHQL_JWT_SECRET
-      HASURA_GRAPHQL_JWT_SECRET: "***REMOVED***"
+      ## uncomment next line to set an admin secret
+      # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
 volumes:
   db_data:
