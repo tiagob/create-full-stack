@@ -1,0 +1,6 @@
+config:
+  aws:region: us-east-1
+  hasura-no-auth:dbName: hasura
+  hasura-no-auth:dbPassword:
+    secure: AAABAEBdBECONlmHAg6cJPVymCPaVll71Rwf3zDaXUTGIh81VYgFdn5mmm+LDehuVaV7wK6nCcI=
+  hasura-no-auth:dbUsername: hasura
