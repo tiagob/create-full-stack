@@ -7,11 +7,8 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { Todos as TodoType, useDestroyTodo, useUpdateTodo } from "common";
 import React from "react";
-
-import { Todos as TodoType } from "../graphql/__generated__";
-import useDestroyTodo from "../graphql/useDestroyTodo";
-import useUpdateTodo from "../graphql/useUpdateTodo";
 
 const useStyles = makeStyles({
   complete: {
