@@ -91,28 +91,9 @@ function addApolloCodegen({
             },
           },
         }),
-        ...(hasMobile && {
-          "packages/mobile/src/graphql/__generated__/index.ts": {
-            documents: "packages/mobile/src/graphql/*.graphql",
-            plugins: [
-              "typescript",
-              "typescript-operations",
-              "typescript-react-apollo",
-            ],
-            config: {
-              withHOC: false,
-              withComponent: false,
-              withHooks: true,
-              namingConvention: {
-                typeNames: "pascal-case#pascalCase",
-                transformUnderscore: true,
-              },
-            },
-          },
-        }),
-        ...(hasWeb && {
-          "packages/web/src/graphql/__generated__/index.ts": {
-            documents: "packages/web/src/graphql/*.graphql",
+        ...((hasMobile || hasWeb) && {
+          "packages/common/src/graphql/__generated__/index.ts": {
+            documents: "packages/common/src/graphql/*.graphql",
             plugins: [
               "typescript",
               "typescript-operations",
