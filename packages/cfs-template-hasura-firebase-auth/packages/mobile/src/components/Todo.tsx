@@ -1,9 +1,6 @@
+import { Todos as TodoType, useDestroyTodo, useUpdateTodo } from "common";
 import React from "react";
 import { Button, CheckBox, Icon, ListItem } from "react-native-elements";
-
-import { Todo as TodoType } from "../graphql/__generated__";
-import useDestroyTodo from "../graphql/useDestroyTodo";
-import useUpdateTodo from "../graphql/useUpdateTodo";
 
 interface Props {
   todo: TodoType;
@@ -27,9 +24,11 @@ export default function Todo({ todo }: Props) {
       }
       title={todo.name}
       titleStyle={
-        todo.complete && {
-          textDecorationLine: "line-through",
-        }
+        todo.complete
+          ? {
+              textDecorationLine: "line-through",
+            }
+          : undefined
       }
       rightElement={
         <Button

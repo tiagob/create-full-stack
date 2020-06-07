@@ -1,7 +1,6 @@
 import { TextField } from "@material-ui/core";
+import { useCreateTodo } from "common";
 import React, { useState } from "react";
-
-import useCreateTodo from "../graphql/useCreateTodo";
 
 export default function CreateTodo() {
   const [name, setName] = useState("");

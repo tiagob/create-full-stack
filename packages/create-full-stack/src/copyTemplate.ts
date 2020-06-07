@@ -91,28 +91,9 @@ function addApolloCodegen({
             },
           },
         }),
-        ...(hasMobile && {
-          "packages/mobile/src/graphql/__generated__/index.ts": {
-            documents: "packages/mobile/src/graphql/*.graphql",
-            plugins: [
-              "typescript",
-              "typescript-operations",
-              "typescript-react-apollo",
-            ],
-            config: {
-              withHOC: false,
-              withComponent: false,
-              withHooks: true,
-              namingConvention: {
-                typeNames: "pascal-case#pascalCase",
-                transformUnderscore: true,
-              },
-            },
-          },
-        }),
-        ...(hasWeb && {
-          "packages/web/src/graphql/__generated__/index.ts": {
-            documents: "packages/web/src/graphql/*.graphql",
+        ...((hasMobile || hasWeb) && {
+          "packages/common/src/graphql/__generated__/index.ts": {
+            documents: "packages/common/src/graphql/*.graphql",
             plugins: [
               "typescript",
               "typescript-operations",
@@ -222,6 +203,13 @@ async function updatePackage({
       command: "yarn --cwd packages/server watch",
     });
   }
+  if (hasMobile || hasWeb) {
+    commands.push({
+      name: "Build Common",
+      color: "yellow.bold",
+      command: "yarn --cwd packages/common watch",
+    });
+  }
   if (hasMobile) {
     commands.push({
       name: "Mobile",
@@ -282,8 +270,11 @@ export default async function copyTemplate(options: {
   if (!hasWeb) {
     excludeList.push("web");
   }
+  if (!hasMobile && !hasWeb) {
+    excludeList.push("common");
+  }
   copySync(templatePath, projectPath, false, excludeList);
-  // ".gitignore" isn't included in "npm publish" so copy it over as gitingore
+  // ".gitignore" isn't included in "npm publish" so copy it over as gitignore
   // and rename (CRA does this)
   recursiveRename(projectPath, "gitignore", ".gitignore");
   fs.renameSync(

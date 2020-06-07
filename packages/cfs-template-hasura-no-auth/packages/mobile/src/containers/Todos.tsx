@@ -1,11 +1,11 @@
 import { StackNavigationProp } from "@react-navigation/stack";
+import { useTodosQuery } from "common";
 import React from "react";
 import { FlatList, View } from "react-native";
 import { Header, Icon } from "react-native-elements";
 
 import CreateTodo from "../components/CreateTodo";
 import Todo from "../components/Todo";
-import { useTodosQuery } from "../graphql/__generated__";
 import { RootStackParamList } from "../utils/types";
 
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList, "Todos">;

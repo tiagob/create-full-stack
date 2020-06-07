@@ -1,8 +1,7 @@
+import { useCreateTodo } from "common";
 import React, { useState } from "react";
 import { View } from "react-native";
 import { Icon, Input } from "react-native-elements";
-
-import useCreateTodo from "../graphql/useCreateTodo";
 
 export default function CreateTodo() {
   const [name, setName] = useState("");
