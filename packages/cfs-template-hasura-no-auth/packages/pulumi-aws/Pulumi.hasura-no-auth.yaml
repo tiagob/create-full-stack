@@ -4,3 +4,4 @@ config:
   hasura-no-auth:dbPassword:
     secure: AAABAEBdBECONlmHAg6cJPVymCPaVll71Rwf3zDaXUTGIh81VYgFdn5mmm+LDehuVaV7wK6nCcI=
   hasura-no-auth:dbUsername: hasura
+  hasura-no-auth:targetDomain: demo-full-stack.com
