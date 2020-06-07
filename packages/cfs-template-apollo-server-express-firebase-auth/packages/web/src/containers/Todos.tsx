@@ -1,9 +1,9 @@
 import { List, makeStyles, Paper } from "@material-ui/core";
+import { useTodosQuery } from "common";
 import React from "react";
 
 import CreateTodo from "../components/CreateTodo";
 import Todo from "../components/Todo";
-import { useTodosQuery } from "../graphql/__generated__";
 
 const useStyles = makeStyles(({ spacing }) => ({
   root: {
