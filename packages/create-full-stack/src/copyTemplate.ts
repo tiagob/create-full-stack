@@ -225,7 +225,7 @@ async function updatePackage({
   if (hasMobile || hasWeb) {
     commands.push({
       name: "Build Common",
-      color: "white.yellow",
+      color: "yellow.bold",
       command: "yarn --cwd packages/common watch",
     });
   }
