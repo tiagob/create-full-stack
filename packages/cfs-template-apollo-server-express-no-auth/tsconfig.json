@@ -8,13 +8,13 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    // Required for CRA and RN. RN works with "react" not only "react-native"
+    // React Native works with "react" not only "react-native"
     // https://reactnative.dev/docs/typescript#adding-typescript-to-an-existing-project
     "jsx": "react",
-    // Libs required by Create React App (CRA), React Native (RN) and Node
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    // Libs required by React Native and Node
+    "lib": ["DOM", "ESNext"],
     "module": "ESNext",
-    // Required by CRA and RN. Node uses "CommonJS" which is overridden in child config
+    // Required by React Native. Node uses "CommonJS" which is overridden in child config
     "moduleResolution": "Node",
     "noImplicitAny": true,
     "paths": {

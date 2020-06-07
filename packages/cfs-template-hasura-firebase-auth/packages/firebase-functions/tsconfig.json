@@ -1,20 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es2017",
-    "noImplicitAny": true,
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "outDir": "build",
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "allowJs": false
+    "outDir": "build"
   },
-  "compileOnSave": true,
-  "include": ["src"]
+  "extends": "../../tsconfig"
 }

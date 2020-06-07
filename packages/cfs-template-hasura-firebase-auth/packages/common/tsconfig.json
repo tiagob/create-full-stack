@@ -1,16 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "moduleResolution": "node",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
+    // Include declarations so mobile and web can read the types properly
     "declaration": true,
-    "resolveJsonModule": true,
     "outDir": "build"
   },
-  "include": ["src"]
+  "extends": "../../tsconfig"
 }

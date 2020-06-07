@@ -1,10 +1,23 @@
 {
+  // Can't extend CRA tsconfig.json
+  // https://github.com/facebook/create-react-app/issues/6269
   "compilerOptions": {
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "jsx": "react",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "noEmit": true,
-    // Target ES5 for IE support
-    // https://kangax.github.io/compat-table/es5/
+    "noImplicitAny": true,
+    "preserveWatchOutput": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
     "target": "ES5"
   },
-  "extends": "../../tsconfig",
   "include": ["src"]
 }
