@@ -1,7 +1,16 @@
 import { useCreateTodo } from "common";
 import React, { useState } from "react";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Icon, Input } from "react-native-elements";
+
+const styles = StyleSheet.create({
+  root: {
+    flexDirection: "row",
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 10,
+  },
+});
 
 export default function CreateTodo() {
   const [name, setName] = useState("");
@@ -13,14 +22,7 @@ export default function CreateTodo() {
   }
 
   return (
-    <View
-      style={{
-        flexDirection: "row",
-        marginLeft: 10,
-        marginRight: 10,
-        marginTop: 10,
-      }}
-    >
+    <View style={styles.root}>
       <Input
         placeholder="What needs to be done?"
         value={name}
