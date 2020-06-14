@@ -12,7 +12,7 @@ import { runYarn } from "./utils";
 // Don't include any local files. node_modules and yarn.lock will be different
 // depending on what packages are included because yarn puts these at the root
 // of the project
-const excludeFiles = new Set(["node_modules", "build", "yarn.lock"]);
+const excludeFiles = new Set(["node_modules", "build", "yarn.lock", "LICENSE"]);
 function filterCopySyncWithExcludeList(
   excludePathList: string[]
 ): (src: string) => boolean {
@@ -44,11 +44,11 @@ function copySync(
 const templateToGraphqlSchema = {
   [Backend.apolloServerExpress]: {
     [Auth.noAuth]: "packages/server/src/graphql/schema.ts",
-    [Auth.firebase]: "packages/server/src/graphql/schema.ts",
+    [Auth.auth0]: "packages/server/src/graphql/schema.ts",
   },
   [Backend.hasura]: {
     [Auth.noAuth]: "http://localhost:8080/v1/graphql",
-    [Auth.firebase]: [
+    [Auth.auth0]: [
       {
         "http://localhost:8080/v1/graphql": {
           headers: { "x-hasura-admin-secret": "myadminsecretkey" },

@@ -1,6 +1,0 @@
-{
-  "name": "cfs-template-apollo-server-express-firebase-auth",
-  "version": "0.1.7",
-  "description": "The apollo-server-express with Firebase auth template for Create Full Stack.",
-  "license": "MIT"
-}

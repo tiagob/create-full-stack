@@ -1,6 +1,6 @@
 {
   "name": "cfs-template-hasura-no-auth",
   "version": "0.1.6",
-  "description": "The apollo-server-express with Firebase auth template for Create Full Stack.",
+  "description": "The Hasura without auth template for Create Full Stack.",
   "license": "MIT"
 }
