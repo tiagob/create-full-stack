@@ -2,6 +2,7 @@ import gql from "graphql-tag";
 import * as ApolloReactCommon from "@apollo/react-common";
 import * as ApolloReactHooks from "@apollo/react-hooks";
 export type Maybe<T> = T | null;
+export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -467,7 +468,7 @@ export type TodosVarianceOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
-export type TodosQueryVariables = {};
+export type TodosQueryVariables = Exact<{ [key: string]: never }>;
 
 export type TodosQuery = { __typename?: "query_root" } & {
   todos: Array<
@@ -475,9 +476,9 @@ export type TodosQuery = { __typename?: "query_root" } & {
   >;
 };
 
-export type CreateTodoMutationVariables = {
+export type CreateTodoMutationVariables = Exact<{
   name: Scalars["String"];
-};
+}>;
 
 export type CreateTodoMutation = { __typename?: "mutation_root" } & {
   insert_todos?: Maybe<
@@ -489,10 +490,10 @@ export type CreateTodoMutation = { __typename?: "mutation_root" } & {
   >;
 };
 
-export type UpdateTodoMutationVariables = {
+export type UpdateTodoMutationVariables = Exact<{
   id: Scalars["Int"];
   complete: Scalars["Boolean"];
-};
+}>;
 
 export type UpdateTodoMutation = { __typename?: "mutation_root" } & {
   update_todos?: Maybe<
@@ -504,9 +505,9 @@ export type UpdateTodoMutation = { __typename?: "mutation_root" } & {
   >;
 };
 
-export type DestroyTodoMutationVariables = {
+export type DestroyTodoMutationVariables = Exact<{
   id: Scalars["Int"];
-};
+}>;
 
 export type DestroyTodoMutation = { __typename?: "mutation_root" } & {
   delete_todos?: Maybe<

@@ -15,6 +15,7 @@ module.exports = {
     "simple-import-sort",
   ],
   extends: [
+    "react-app",
     "airbnb-typescript",
     "plugin:@typescript-eslint/recommended",
     "plugin:eslint-comments/recommended",

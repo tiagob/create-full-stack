@@ -24,7 +24,9 @@ const onRedirectCallback = (appState: AppState) => {
 ReactDOM.render(
   <React.StrictMode>
     <Auth0Provider
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       domain={process.env.REACT_APP_AUTH0_DOMAIN!}
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       client_id={process.env.REACT_APP_AUTH0_CLIENT_ID!}
       redirect_uri={window.location.origin}
       onRedirectCallback={onRedirectCallback}
