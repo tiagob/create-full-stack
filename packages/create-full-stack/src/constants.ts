@@ -4,13 +4,12 @@ export enum Backend {
 }
 export const backends = Object.values(Backend);
 export const nodeBackends = new Set([Backend.apolloServerExpress]);
-// TODO: Add auth0
 export enum Auth {
-  firebase = "firebase-auth",
+  auth0 = "auth0",
   noAuth = "no-auth",
 }
 export const authChoiceToType = {
-  firebase: Auth.firebase,
+  auth0: Auth.auth0,
   "": Auth.noAuth,
 } as const;
 export type AuthChoiceToType = typeof authChoiceToType;

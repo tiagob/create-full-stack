@@ -1,6 +1,0 @@
-{
-  "name": "cfs-template-hasura-firebase-auth",
-  "version": "0.1.8",
-  "description": "The Hasura with Firebase auth template for Create Full Stack.",
-  "license": "MIT"
-}
