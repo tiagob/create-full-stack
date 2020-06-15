@@ -50,7 +50,7 @@ Options:
   -b, --backend <backend>  backend type [apollo|hasura]
   -w, --web                include react website
   -m, --mobile             include react-native mobile app
-  -a, --auth <auth>        auth type [firebase|]
+  -a, --auth <auth>        auth type [auth0|]
   -h, --help               display help for command
 ```
 

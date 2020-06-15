@@ -1,0 +1,37 @@
+{
+  "name": "server",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "yarn build",
+    "serve-debug": "nodemon --inspect-brk -r dotenv/config ./build/index.js",
+    "start": "node -r dotenv/config ./build/index.js",
+    "sync-db": "tsc && node -r dotenv/config ./build/index.js --sync-db",
+    "sync-db-debug": "tsc && node --inspect-brk -r dotenv/config ./build/index.js --sync-db",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"green.bold,cyan.bold\" \"yarn watch-ts\" \"yarn watch-node\"",
+    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"green.bold,cyan.bold\" \"yarn watch-ts\" \"yarn serve-debug\"",
+    "watch-node": "nodemon -r dotenv/config ./build/index.js",
+    "watch-ts": "tsc -w"
+  },
+  "dependencies": {
+    "apollo-server-express": "^2.13.1",
+    "commander": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-jwt": "^5.3.3",
+    "graphql": "^14.2.1",
+    "jwks-rsa": "^1.8.0",
+    "pg": "^8.2.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.21.9",
+    "typescript": "3.9.2"
+  },
+  "devDependencies": {
+    "concurrently": "^5.2.0",
+    "nodemon": "^2.0.4",
+    "ts-node": "^8.10.1"
+  }
+}

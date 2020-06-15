@@ -1,9 +1,35 @@
 {
   "compilerOptions": {
+    // Despite "allowJs": false being the default it gets added in packages/web/tsconfig.json
+    // set as true if this isn't set
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    // React Native works with "react" not only "react-native"
+    // https://reactnative.dev/docs/typescript#adding-typescript-to-an-existing-project
+    "jsx": "react",
+    // Libs required by React Native and Node
+    "lib": ["DOM", "ESNext"],
+    "module": "ESNext",
+    // Required by React Native. Node uses "CommonJS" which is overridden in child config
+    "moduleResolution": "Node",
+    "noImplicitAny": true,
     "paths": {
-      "mobile": ["./packages/mobile/src"],
-      "web": ["./packages/web/src"]
-    }
-  }
+      "packages/*": ["packages/*"]
+    },
+    // Preserve the watch output so when concurrently is run with multiple "tsc --watch"
+    // commands it doesn't continuously clear the screen
+    "preserveWatchOutput": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    // Latest Node supported target
+    // https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping#node-12
+    "target": "ES2019"
+  },
+  "exclude": ["**/build/"]
 }

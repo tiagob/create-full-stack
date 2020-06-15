@@ -12,7 +12,7 @@ import { runYarn } from "./utils";
 // Don't include any local files. node_modules and yarn.lock will be different
 // depending on what packages are included because yarn puts these at the root
 // of the project
-const excludeFiles = new Set(["node_modules", "build", "yarn.lock"]);
+const excludeFiles = new Set(["node_modules", "build", "yarn.lock", "LICENSE"]);
 function filterCopySyncWithExcludeList(
   excludePathList: string[]
 ): (src: string) => boolean {
@@ -44,11 +44,11 @@ function copySync(
 const templateToGraphqlSchema = {
   [Backend.apolloServerExpress]: {
     [Auth.noAuth]: "packages/server/src/graphql/schema.ts",
-    [Auth.firebase]: "packages/server/src/graphql/schema.ts",
+    [Auth.auth0]: "packages/server/src/graphql/schema.ts",
   },
   [Backend.hasura]: {
     [Auth.noAuth]: "http://localhost:8080/v1/graphql",
-    [Auth.firebase]: [
+    [Auth.auth0]: [
       {
         "http://localhost:8080/v1/graphql": {
           headers: { "x-hasura-admin-secret": "myadminsecretkey" },
@@ -91,28 +91,9 @@ function addApolloCodegen({
             },
           },
         }),
-        ...(hasMobile && {
-          "packages/mobile/src/graphql/__generated__/index.ts": {
-            documents: "packages/mobile/src/graphql/*.graphql",
-            plugins: [
-              "typescript",
-              "typescript-operations",
-              "typescript-react-apollo",
-            ],
-            config: {
-              withHOC: false,
-              withComponent: false,
-              withHooks: true,
-              namingConvention: {
-                typeNames: "pascal-case#pascalCase",
-                transformUnderscore: true,
-              },
-            },
-          },
-        }),
-        ...(hasWeb && {
-          "packages/web/src/graphql/__generated__/index.ts": {
-            documents: "packages/web/src/graphql/*.graphql",
+        ...((hasMobile || hasWeb) && {
+          "packages/common/src/graphql/__generated__/index.ts": {
+            documents: "packages/common/src/graphql/*.graphql",
             plugins: [
               "typescript",
               "typescript-operations",
@@ -222,6 +203,13 @@ async function updatePackage({
       command: "yarn --cwd packages/server watch",
     });
   }
+  if (hasMobile || hasWeb) {
+    commands.push({
+      name: "Build Common",
+      color: "yellow.bold",
+      command: "yarn --cwd packages/common watch",
+    });
+  }
   if (hasMobile) {
     commands.push({
       name: "Mobile",
@@ -282,8 +270,11 @@ export default async function copyTemplate(options: {
   if (!hasWeb) {
     excludeList.push("web");
   }
+  if (!hasMobile && !hasWeb) {
+    excludeList.push("common");
+  }
   copySync(templatePath, projectPath, false, excludeList);
-  // ".gitignore" isn't included in "npm publish" so copy it over as gitingore
+  // ".gitignore" isn't included in "npm publish" so copy it over as gitignore
   // and rename (CRA does this)
   recursiveRename(projectPath, "gitignore", ".gitignore");
   fs.renameSync(

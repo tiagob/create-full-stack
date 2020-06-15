@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    // Include declarations so mobile and web can read the types properly
+    "declaration": true,
+    "outDir": "build"
+  },
+  "extends": "../../tsconfig"
+}
