@@ -10,7 +10,7 @@ import About from "./containers/About";
 import Todos from "./containers/Todos";
 
 export const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql",
+  uri: process.env.REACT_APP_GRAPHQL_URL,
 });
 
 const useStyles = makeStyles({

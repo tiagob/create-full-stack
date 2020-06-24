@@ -1,0 +1,7 @@
+config:
+  aws:region: us-east-1
+  my-full-stack:dbName: todo
+  my-full-stack:dbPassword:
+    secure: AAABALsdPwEFJn0V3ukVKo3A8Nu5ksajdCCZuBH3wYPagoymVcQqrUq1Nfcv
+  my-full-stack:dbUsername: todo
+  my-full-stack:targetDomain: demo-full-stack.com

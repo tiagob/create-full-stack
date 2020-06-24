@@ -1,0 +1,18 @@
+{
+  "name": "pulumi-aws",
+  "version": "0.1.0",
+  "license": "MIT",
+  "dependencies": {
+    "@pulumi/aws": "^2.7.0",
+    "@pulumi/awsx": "^0.20.0",
+    "@pulumi/pulumi": "^2.0.0",
+    "aws-sdk": "^2.691.0",
+    "cross-spawn": "^7.0.3",
+    "mime": "^2.4.6",
+    "server": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/cross-spawn": "^6.0.2",
+    "@types/node": "^10.0.0"
+  }
+}

@@ -8,12 +8,12 @@ export class Todo extends Model {
   public complete!: boolean;
 }
 
-export const sequelize = new Sequelize({
-  database: process.env.DB_NAME || "todo",
-  username: process.env.DB_USER || "todo",
-  password: process.env.DB_PASS || "todo",
-  dialect: "postgres",
-});
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+export const sequelize = new Sequelize(
+  process.env.DATABASE_URL ||
+    // TODO: Should this be in a .env instead?
+    "postgres://postgres:postgrespassword@localhost:5432/postgres"
+);
 
 Todo.init(
   {
