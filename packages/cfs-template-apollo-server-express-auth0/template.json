@@ -22,7 +22,7 @@
     "@graphql-codegen/typescript-react-apollo": "^1.14.0",
     "@graphql-codegen/typescript-resolvers": "^1.14.0",
     "concurrently": "^5.2.0",
-    "eslint-config-create-full-stack": "^0.1.7",
+    "eslint-config-create-full-stack": "^0.1.8",
     "graphql": "^14.2.1",
     "graphql-tag": "^2.0.0",
     "husky": "^4.2.5",
