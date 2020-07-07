@@ -10,12 +10,11 @@ export class Todo extends Model {
   public uid!: string;
 }
 
-export const sequelize = new Sequelize({
-  database: process.env.DB_NAME || "todo",
-  username: process.env.DB_USER || "todo",
-  password: process.env.DB_PASS || "todo",
-  dialect: "postgres",
-});
+export const sequelize = new Sequelize(
+  process.env.DATABASE_URL ||
+    // TODO: Should this be in a .env instead?
+    "postgres://postgres:postgrespassword@localhost:5432/postgres"
+);
 
 Todo.init(
   {

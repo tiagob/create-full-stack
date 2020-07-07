@@ -1,0 +1,4 @@
+# TODO: Name project same as create-full-stack project
+name: my-full-stack
+runtime: nodejs
+description: A minimal AWS TypeScript Pulumi program

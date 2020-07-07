@@ -1,0 +1,12 @@
+config:
+  auth0:clientId:
+    secure: AAABACxHkE+gltSVj+bnrskWHWn8Ejkh8ceUJtwMXJv7qIoIu/A4PJfDzfBcwnSMm3YiwxWSu3DbcH/3xhkc2w==
+  auth0:clientSecret:
+    secure: AAABAKzvorDH7cInZD4ZR0ifp9T7G+JPkbT/gR44PkN3GGrcUKwkddf7j+fC8bCVLPw2Zo/ruls+G6kKBsM7ISNUJfeBRprpWgpxF9BCPoqbhMl8E36A7MS60LvyMfBf
+  auth0:domain: create-full-stack.auth0.com
+  aws:region: us-east-1
+  my-full-stack:dbName: todo
+  my-full-stack:dbPassword:
+    secure: AAABALsdPwEFJn0V3ukVKo3A8Nu5ksajdCCZuBH3wYPagoymVcQqrUq1Nfcv
+  my-full-stack:dbUsername: todo
+  my-full-stack:targetDomain: demo-full-stack.com
