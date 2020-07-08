@@ -93,6 +93,7 @@ export default function createStaticWebsite(
   // Sync the contents of the source directory with the S3 bucket, which will in-turn show up on the CDN.
   const webContentsRootPath = path.join(process.cwd(), pathToWebsiteContents);
   console.log("Syncing contents from local disk at", webContentsRootPath);
+  // TODO: Preview needs to match what is actually uploaded to pulumi. It isn't set until auth0 resources are created
   crawlDirectory(webContentsRootPath, (filePath: string) => {
     const relativeFilePath = filePath.replace(`${webContentsRootPath}/`, "");
     new aws.s3.BucketObject(
