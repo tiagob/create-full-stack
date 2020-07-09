@@ -43,11 +43,11 @@ function copySync(
 
 const templateToGraphqlSchema = {
   [Backend.apolloServerExpress]: {
-    [Auth.noAuth]: "packages/server/src/graphql/schema.ts",
+    [Auth.none]: "packages/server/src/graphql/schema.ts",
     [Auth.auth0]: "packages/server/src/graphql/schema.ts",
   },
   [Backend.hasura]: {
-    [Auth.noAuth]: "http://localhost:8080/v1/graphql",
+    [Auth.none]: "http://localhost:8080/v1/graphql",
     [Auth.auth0]: [
       {
         "http://localhost:8080/v1/graphql": {
@@ -250,15 +250,17 @@ export default async function copyTemplate(options: {
   projectPath: string;
   backend: Backend;
   auth: Auth;
+  template: string;
   hasMobile: boolean;
   hasWeb: boolean;
 }) {
-  const { projectPath, backend, auth, hasMobile, hasWeb } = options;
+  const { projectPath, template, hasMobile, hasWeb } = options;
 
-  const templateName = `cfs-template-${backend}-${auth}`;
-  runYarn(projectPath, ["add", templateName]);
+  const fullTemplate = `cfs-template-${template}`;
+
+  runYarn(projectPath, ["add", fullTemplate]);
   const templatePath = path.dirname(
-    require.resolve(path.join(templateName, "package.json"), {
+    require.resolve(path.join(fullTemplate, "package.json"), {
       paths: [projectPath],
     })
   );

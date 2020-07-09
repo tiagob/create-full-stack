@@ -3,15 +3,20 @@
 import chalk from "chalk";
 import commander from "commander";
 import fs from "fs-extra";
+import inquirer from "inquirer";
 import path from "path";
 
 import packageJson from "../package.json";
 import {
-  AuthChoiceToType,
-  authChoiceToType,
+  Auth,
+  auths,
   Backend,
   backends,
+  getTemplateTypeKey,
   nodeBackends,
+  TemplateToTypes,
+  templateToTypes,
+  typesToTemplate,
 } from "./constants";
 import copyTemplate from "./copyTemplate";
 import {
@@ -25,10 +30,9 @@ import { runYarn } from "./utils";
 let projectName = "";
 
 interface Program extends commander.Command {
-  backend?: Backend;
+  template?: string;
   web?: boolean;
   mobile?: boolean;
-  auth?: keyof AuthChoiceToType;
 }
 
 const program: Program = new commander.Command(packageJson.name)
@@ -38,12 +42,9 @@ const program: Program = new commander.Command(packageJson.name)
   .action((name) => {
     projectName = name;
   })
-  .option("-b, --backend <backend>", `backend type [${backends.join("|")}]`)
-  .option("-w, --web", "include react website")
-  .option("-m, --mobile", "include react-native mobile app")
   .option(
-    "-a, --auth <auth>",
-    `auth type [${Object.keys(authChoiceToType).join("|")}]`
+    "-t, --template <template>",
+    "specify a template for the created project"
   )
   .parse(process.argv);
 
@@ -52,21 +53,51 @@ const isNodeBackend = program.backend
   : false;
 
 async function run() {
-  // Validation
-  if (!program.backend || !backends.includes(program.backend)) {
-    console.error(
-      `Specified backend-type not valid. Must be one of [${backends.join("|")}]`
-    );
-    process.exit(1);
+  // What is your app named?
+  // default: My Todos
+  let { template } = program;
+  let backend: Backend = Backend.hasura;
+  let auth: Auth = Auth.none;
+  if (!template || !(template in templateToTypes)) {
+    const backendAnswer = await inquirer.prompt({
+      type: "list",
+      choices: backends,
+      name: "backend",
+      message: "Which backend?",
+      default: Backend.hasura,
+    });
+    const authAnswer = await inquirer.prompt({
+      type: "list",
+      choices: auths,
+      name: "auth",
+      message: "Which auth method?",
+      default: Auth.none,
+    });
+    template =
+      typesToTemplate[
+        getTemplateTypeKey({
+          backend: backendAnswer.backend,
+          auth: authAnswer.auth,
+        })
+      ];
+  } else {
+    const templateTypes = templateToTypes[template as keyof TemplateToTypes];
+    backend = templateTypes.backend;
+    auth = templateTypes.auth;
   }
-  if (program.auth && !(program.auth in authChoiceToType)) {
-    console.error(
-      `Specified auth-type not valid. Must be one of [${Object.keys(
-        authChoiceToType
-      ).join("|")}]`
-    );
-    process.exit(1);
-  }
+
+  const hasWebAnswer = await inquirer.prompt({
+    type: "confirm",
+    name: "hasWeb",
+    message: "Include a React website?",
+  });
+  const { hasWeb } = hasWebAnswer;
+  const hasMobileAnswer = await inquirer.prompt({
+    type: "confirm",
+    name: "hasMobile",
+    message: "Include a React Native iOS and Android app?",
+  });
+  const { hasMobile } = hasMobileAnswer;
 
   const projectPath = path.resolve(projectName);
   const appName = path.basename(projectPath);
@@ -89,13 +120,13 @@ async function run() {
   console.log(`Creating a new full-stack app in ${chalk.green(projectPath)}.`);
   console.log();
 
-  const auth = authChoiceToType[(program.auth || "") as keyof AuthChoiceToType];
   await copyTemplate({
     projectPath,
-    backend: program.backend,
+    backend,
     auth,
-    hasMobile: Boolean(program.mobile),
-    hasWeb: Boolean(program.web),
+    template,
+    hasMobile,
+    hasWeb,
   });
 
   console.log(`Installing packages using yarnpkg...`);
@@ -140,8 +171,4 @@ async function run() {
   console.log("Happy hacking!");
 }
 
-if (projectName && program.backend) {
-  run();
-} else {
-  program.outputHelp();
-}
+run();
