@@ -32,5 +32,9 @@
     "@types/node": "^14.0.5",
     "@types/validate-npm-package-name": "^3.0.0",
     "typescript": "^3.9.2"
+  },
+  "engines": {
+    "node": ">=12.10",
+    "yarn": ">=1.22.4"
   }
 }
