@@ -1,7 +1,6 @@
 import spawn from "cross-spawn";
 
-// eslint-disable-next-line import/prefer-default-export
-export function runYarn(cwd: string, args: string[] = []) {
+export default function runYarn(cwd: string, args: string[] = []) {
   const command = "yarnpkg";
   const argsWithCwd = ["--cwd", cwd, ...args];
   const proc = spawn.sync(command, argsWithCwd, { stdio: "inherit" });

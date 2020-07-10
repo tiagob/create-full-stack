@@ -5,7 +5,6 @@
   "main": "./src/index.ts",
   "scripts": {
     "build": "tsc",
-    "prepare": "yarn build",
     "serve-debug": "nodemon --inspect-brk -r dotenv/config ./build/index.js",
     "start": "node -r dotenv/config ./build/index.js",
     "sync-db": "tsc && node -r dotenv/config ./build/index.js --sync-db",

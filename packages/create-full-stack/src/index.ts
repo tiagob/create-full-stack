@@ -25,7 +25,7 @@ import {
   shouldUseYarn,
   tryGitInit,
 } from "./createReactAppUtils";
-import { runYarn } from "./utils";
+import runYarn from "./runYarn";
 
 let projectName = "";
 
@@ -142,9 +142,14 @@ async function run() {
   }
   // TODO: Generate local development initialization script ex. install postgres, sync-db, buildNodeServer etc.
   if (isNodeBackend) {
-    console.log(`Building the node server...`);
+    console.log("Building the node server...");
     console.log();
     runYarn(path.join(projectName, "packages/server"), ["build"]);
+  }
+  if (hasMobile || hasWeb) {
+    console.log("Building common...");
+    console.log();
+    runYarn(path.join(projectName, "packages/common"), ["build"]);
   }
 
   // Display the most elegant way to cd.

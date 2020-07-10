@@ -7,7 +7,7 @@ import path from "path";
 import sortPackageJson from "sort-package-json";
 
 import { Auth, Backend } from "./constants";
-import { runYarn } from "./utils";
+import runYarn from "./runYarn";
 
 // Don't include any local files. node_modules and yarn.lock will be different
 // depending on what packages are included because yarn puts these at the root
