@@ -48,10 +48,6 @@ const program: Program = new commander.Command(packageJson.name)
   )
   .parse(process.argv);
 
-const isNodeBackend = program.backend
-  ? nodeBackends.has(program.backend)
-  : false;
-
 async function run() {
   // What is your app named?
   // default: My Todos
@@ -66,6 +62,7 @@ async function run() {
       message: "Which backend?",
       default: Backend.hasura,
     });
+    backend = backendAnswer.backend;
     const authAnswer = await inquirer.prompt({
       type: "list",
       choices: auths,
@@ -73,11 +70,12 @@ async function run() {
       message: "Which auth method?",
       default: Auth.none,
     });
+    auth = authAnswer.auth;
     template =
       typesToTemplate[
         getTemplateTypeKey({
-          backend: backendAnswer.backend,
-          auth: authAnswer.auth,
+          backend,
+          auth,
         })
       ];
   } else {
@@ -139,9 +137,10 @@ async function run() {
   if (tryGitInit(projectName)) {
     console.log();
     console.log("Initialized a git repository.");
+    console.log();
   }
   // TODO: Generate local development initialization script ex. install postgres, sync-db, buildNodeServer etc.
-  if (isNodeBackend) {
+  if (nodeBackends.has(backend)) {
     console.log("Building the node server...");
     console.log();
     runYarn(path.join(projectName, "packages/server"), ["build"]);
