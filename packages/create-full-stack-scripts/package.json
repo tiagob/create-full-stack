@@ -1,5 +1,5 @@
 {
-  "name": "full-stack-scripts",
+  "name": "create-full-stack-scripts",
   "version": "0.1.0",
   "license": "MIT",
   "main": "build/index.js",
