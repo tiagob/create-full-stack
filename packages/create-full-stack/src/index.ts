@@ -96,6 +96,13 @@ async function run() {
     message: "Include a React Native iOS and Android app?",
   });
   const { hasMobile } = hasMobileAnswer;
+  const hasPulumiAwsAnswer = await inquirer.prompt({
+    type: "confirm",
+    name: "hasPulumiAws",
+    message:
+      "Include Pulumi infrastructure as code (IAC) for AWS deployment? This includes all the code required to setup this full stack in the cloud on AWS managed by Pulumi.",
+  });
+  const { hasPulumiAws } = hasPulumiAwsAnswer;
 
   const projectPath = path.resolve(projectName);
   const appName = path.basename(projectPath);
@@ -125,6 +132,7 @@ async function run() {
     template,
     hasMobile,
     hasWeb,
+    hasPulumiAws,
   });
 
   console.log(`Installing packages using yarnpkg...`);

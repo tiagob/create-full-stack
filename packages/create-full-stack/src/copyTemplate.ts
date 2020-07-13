@@ -253,8 +253,9 @@ export default async function copyTemplate(options: {
   template: string;
   hasMobile: boolean;
   hasWeb: boolean;
+  hasPulumiAws: boolean;
 }) {
-  const { projectPath, template, hasMobile, hasWeb } = options;
+  const { projectPath, template, hasMobile, hasWeb, hasPulumiAws } = options;
 
   const fullTemplate = `cfs-template-${template}`;
 
@@ -274,6 +275,9 @@ export default async function copyTemplate(options: {
   }
   if (!hasMobile && !hasWeb) {
     excludeList.push("common");
+  }
+  if (!hasPulumiAws) {
+    excludeList.push("pulumi-aws");
   }
   copySync(templatePath, projectPath, false, excludeList);
   // ".gitignore" isn't included in "npm publish" so copy it over as gitignore
