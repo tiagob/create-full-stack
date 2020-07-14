@@ -25,7 +25,7 @@ import {
   shouldUseYarn,
   tryGitInit,
 } from "./createReactAppUtils";
-import runYarn from "./runYarn";
+import { checkPulumiAndAws, runYarn } from "./utils";
 
 let projectName = "";
 
@@ -49,8 +49,7 @@ const program: Program = new commander.Command(packageJson.name)
   .parse(process.argv);
 
 async function run() {
-  // What is your app named?
-  // default: My Todos
+  // Which template should be used?
   let { template } = program;
   let backend: Backend = Backend.hasura;
   let auth: Auth = Auth.none;
@@ -83,7 +82,18 @@ async function run() {
     backend = templateTypes.backend;
     auth = templateTypes.auth;
   }
-
+  // What packages should be included/ignored in the template?
+  const hasPulumiAwsAnswer = await inquirer.prompt({
+    type: "confirm",
+    name: "hasPulumiAws",
+    message:
+      "Include Pulumi infrastructure as code (IAC) for AWS deployment? This requires the Pulumi and AWS CLIs.",
+  });
+  const { hasPulumiAws } = hasPulumiAwsAnswer;
+  if (hasPulumiAws) {
+    // Error as soon as possible if pulumi and aws aren't installed.
+    checkPulumiAndAws();
+  }
   const hasWebAnswer = await inquirer.prompt({
     type: "confirm",
     name: "hasWeb",
@@ -96,13 +106,6 @@ async function run() {
     message: "Include a React Native iOS and Android app?",
   });
   const { hasMobile } = hasMobileAnswer;
-  const hasPulumiAwsAnswer = await inquirer.prompt({
-    type: "confirm",
-    name: "hasPulumiAws",
-    message:
-      "Include Pulumi infrastructure as code (IAC) for AWS deployment? This includes all the code required to setup this full stack in the cloud on AWS managed by Pulumi.",
-  });
-  const { hasPulumiAws } = hasPulumiAwsAnswer;
 
   const projectPath = path.resolve(projectName);
   const appName = path.basename(projectPath);
