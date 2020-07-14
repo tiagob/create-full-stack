@@ -209,6 +209,5 @@ export default function createStaticWebsite(
     contentBucketUri: pulumi.interpolate`s3://${contentBucket.bucket}`,
     contentBucketWebsiteEndpoint: contentBucket.websiteEndpoint,
     cloudFrontDomain: cdn.domainName,
-    targetDomainEndpoint: `https://${targetDomain}/`,
   };
 }

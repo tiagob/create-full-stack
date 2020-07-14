@@ -8,12 +8,12 @@ import createStaticWebsite from "./src/createStaticWebsite";
 const config = new pulumi.Config();
 
 const { connectionString, cluster } = createRds(config);
-const fargate = createFargate(config, connectionString, cluster);
-export const { graphqlUrl } = fargate;
+export const { graphqlUrl } = createFargate(config, connectionString, cluster);
+
+export const webUrl = `https://${config.require("targetDomain")}`;
 
 export const {
   contentBucketUri,
   contentBucketWebsiteEndpoint,
   cloudFrontDomain,
-  targetDomainEndpoint,
 } = createStaticWebsite(config, graphqlUrl);

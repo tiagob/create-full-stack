@@ -16,9 +16,10 @@ export const { graphqlUrl } = createFargate(
   "apollo-server-express"
 );
 
+export const webUrl = `https://${config.require("targetDomain")}`;
+
 export const {
   contentBucketUri,
   contentBucketWebsiteEndpoint,
   cloudFrontDomain,
-  targetDomainEndpoint,
 } = createStaticWebsite(config, graphqlUrl);
