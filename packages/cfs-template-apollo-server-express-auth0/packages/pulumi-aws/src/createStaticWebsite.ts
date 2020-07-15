@@ -5,12 +5,10 @@ import * as auth0 from "@pulumi/auth0";
 import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
 import * as fs from "fs";
-import * as mime from "mime";
-import * as path from "path";
 
-import { BuildWeb } from "./buildWebClientProvider";
 import createCertificate from "./createCertificate";
 import { InvalidateCloudfront } from "./invalidateCloudfrontProvider";
+import { SyncWeb } from "./syncWebProvider";
 import { getDomainAndSubdomain } from "./utils";
 
 // Creates a new Route53 DNS record pointing the domain to the CloudFront distribution.
@@ -37,8 +35,6 @@ function createAliasRecord(
 }
 
 const tenMinutes = 60 * 10;
-// pathToWebsiteContents is a relative path to the website's contents.
-const pathToWebsiteContents = "../web/build";
 
 export default function createStaticWebsite(
   stackConfig: pulumi.Config,
@@ -52,13 +48,6 @@ export default function createStaticWebsite(
     "../web/.env.production.local",
     `REACT_APP_GRAPHQL_URL=${graphqlUrl}\n`
   );
-  // TODO: Set REACT_APP_AUTH0_DOMAIN from CLI
-  // TODO: Same API for production and development?
-  const buildWebClient = new BuildWeb("build-web", {
-    pathToWebsiteContents,
-    graphqlUrl,
-    clientId: webClient.clientId,
-  });
 
   // contentBucket is the S3 bucket that the website's contents will be stored in.
   const contentBucket = new aws.s3.Bucket("contentBucket", {
@@ -74,42 +63,15 @@ export default function createStaticWebsite(
     forceDestroy: true,
   });
 
-  // crawlDirectory recursive crawls the provided directory, applying the provided function
-  // to every file it contains. Doesn't handle cycles from symlinks.
-  function crawlDirectory(dir: string, f: (_: string) => void) {
-    const files = fs.readdirSync(dir);
-    for (const file of files) {
-      const filePath = `${dir}/${file}`;
-      const stat = fs.statSync(filePath);
-      if (stat.isDirectory()) {
-        crawlDirectory(filePath, f);
-      }
-      if (stat.isFile()) {
-        f(filePath);
-      }
-    }
-  }
-
   // Sync the contents of the source directory with the S3 bucket, which will in-turn show up on the CDN.
-  const webContentsRootPath = path.join(process.cwd(), pathToWebsiteContents);
-  console.log("Syncing contents from local disk at", webContentsRootPath);
-  crawlDirectory(webContentsRootPath, (filePath: string) => {
-    const relativeFilePath = filePath.replace(`${webContentsRootPath}/`, "");
-    new aws.s3.BucketObject(
-      relativeFilePath,
-      {
-        key: relativeFilePath,
-
-        acl: "public-read",
-        bucket: contentBucket,
-        contentType: mime.getType(filePath) || undefined,
-        source: new pulumi.asset.FileAsset(filePath),
-      },
-      {
-        parent: contentBucket,
-        dependsOn: [buildWebClient],
-      }
-    );
+  // TODO: Set REACT_APP_AUTH0_DOMAIN from CLI
+  // TODO: Same API for production and development?
+  // pathToWebsiteContents is a relative path to the website's contents.
+  new SyncWeb("sync-web", {
+    pathToWebsiteContents: "../web",
+    graphqlUrl,
+    clientId: webClient.clientId,
+    bucketName: contentBucket.bucket,
   });
 
   // logsBucket is an S3 bucket that will contain the CDN's request logs.

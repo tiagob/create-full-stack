@@ -29,7 +29,17 @@ export default function createCertificate(domain: string) {
       domainName: domain,
       validationMethod: "DNS",
     },
-    { provider: eastRegion }
+    {
+      provider: eastRegion,
+      // There's a hidden limit for the number of certificates an AWS account can create.
+      // Protect this resource so it doesn't get deleted on destroy. Otherwise, if you create
+      // this 20 times you'll have to contact AWS to increase your limit.
+      // https://github.com/aws/aws-cdk/issues/5889#issuecomment-599609939
+      //
+      //   aws:acm:Certificate:
+      // error: Error requesting certificate: LimitExceededException: Error: you have reached your limit of 20 certificates in the last year.
+      protect: true,
+    }
   );
 
   const certificateValidationDomain = new aws.route53.Record(
