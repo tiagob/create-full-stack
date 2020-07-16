@@ -1,7 +1,17 @@
 import * as pulumi from "@pulumi/pulumi";
-import * as AWS from "aws-sdk";
+import AWS from "aws-sdk";
 import { PutObjectOutput } from "aws-sdk/clients/s3";
-import * as spawn from "cross-spawn";
+import spawn from "cross-spawn";
+
+// Build web and upload to S3. This is handled as a dynamic provider because these steps are
+// interlinked.
+// Dependencies are:
+// 1. Auth0 resource creation to get the Auth0 client id
+// 2. Build web with the Auth0 client id in the environment
+// 3. Upload files to s3
+// This process fails if the files are aws.s3.BucketObject resources because they're not known
+// during the planning stage. A resource difference between planning and apply stages isn't allowed.
+
 // Dynamically import some modules that use native code to prevent error:
 // PromiseRejectionHandledWarning: Promise rejection was handled asynchronously
 // Function code:
@@ -9,6 +19,7 @@ import * as spawn from "cross-spawn";
 // https://www.pulumi.com/docs/tutorials/aws/serializing-functions/#capturing-modules-in-a-javascript-function
 
 export interface SyncWebResourceInputs {
+  auth0Domain: pulumi.Input<string>;
   pathToWebsiteContents: pulumi.Input<string>;
   graphqlUrl: pulumi.Input<string>;
   clientId: pulumi.Input<string>;
@@ -16,6 +27,7 @@ export interface SyncWebResourceInputs {
 }
 
 interface SyncWebInputs {
+  auth0Domain: string;
   pathToWebsiteContents: string;
   graphqlUrl: string;
   clientId: string;
@@ -42,7 +54,7 @@ function runYarn(cwd: string, args: string[] = []) {
   return proc.output;
 }
 
-// crawlDirectory recursive crawls the provided directory, applying the provided function
+// Recursively crawl the provided directory, applying the provided function
 // to every file it contains. Doesn't handle cycles from symlinks.
 async function crawlDirectory(dir: string, f: (_: string) => void) {
   const fsModule = await import("fs");
@@ -60,9 +72,9 @@ async function crawlDirectory(dir: string, f: (_: string) => void) {
   }
 }
 
-// https://github.com/pulumi/pulumi-aws/issues/916
-// https://www.pulumi.com/docs/intro/concepts/programming-model/#dynamicproviders
-async function syncWeb(inputs: SyncWebInputs) {
+async function syncWeb(
+  inputs: SyncWebInputs
+): Promise<{ id: string; outs: SyncWebOutputs }> {
   const fsModule = await import("fs");
   const fs = fsModule.default;
   const folderHashModule = await import("folder-hash");
@@ -72,15 +84,28 @@ async function syncWeb(inputs: SyncWebInputs) {
   const mimeModule = await import("mime");
   const mime = mimeModule.default;
   const s3 = new AWS.S3();
+  const {
+    graphqlUrl,
+    auth0Domain,
+    clientId,
+    pathToWebsiteContents,
+    bucketName,
+  } = inputs;
 
-  // TODO: Set REACT_APP_AUTH0_DOMAIN from CLI
-  // TODO: Same API for production and development?
   fs.writeFileSync(
-    "../web/.env.local",
-    `REACT_APP_AUTH0_AUDIENCE=${inputs.graphqlUrl}\nREACT_APP_AUTH0_DOMAIN=create-full-stack.auth0.com\nREACT_APP_AUTH0_CLIENT_ID=${inputs.clientId}\n`
+    "../web/.env",
+    // Broken up for readability.
+    `${[
+      `EXTEND_ESLINT=true`,
+      `REACT_APP_AUTH0_AUDIENCE=${graphqlUrl}`,
+      `REACT_APP_AUTH0_DOMAIN=${auth0Domain}`,
+      "# REACT_APP_AUTH0_CLIENT_ID can be publicly shared (checked into git)",
+      "# https://community.auth0.com/t/client-id-vs-secret/9558/2",
+      `REACT_APP_AUTH0_CLIENT_ID=${clientId}`,
+    ].join("\n")}\n`
   );
-  runYarn(inputs.pathToWebsiteContents, ["build"]);
-  const pathToBuild = `${inputs.pathToWebsiteContents}/build`;
+  runYarn(pathToWebsiteContents, ["build"]);
+  const pathToBuild = `${pathToWebsiteContents}/build`;
   const webContentsRootPath = path.join(process.cwd(), pathToBuild);
   console.log("Syncing contents from local disk at", webContentsRootPath);
   const objectOutputs: ObjectOutput[] = [];
@@ -88,7 +113,7 @@ async function syncWeb(inputs: SyncWebInputs) {
     const relativeFilePath = filePath.replace(`${webContentsRootPath}/`, "");
     s3.putObject(
       {
-        Bucket: inputs.bucketName,
+        Bucket: bucketName,
         Key: relativeFilePath,
         Body: fs.readFileSync(filePath),
         ACL: "public-read",
@@ -100,7 +125,7 @@ async function syncWeb(inputs: SyncWebInputs) {
         } else {
           objectOutputs.push({ Key: relativeFilePath, ...data });
           console.log(
-            `Successfully uploaded ${relativeFilePath} to ${inputs.bucketName}`
+            `Successfully uploaded ${relativeFilePath} to ${bucketName}`
           );
         }
       }
@@ -109,7 +134,7 @@ async function syncWeb(inputs: SyncWebInputs) {
   const hash = await hashElement(pathToBuild);
   return {
     id: hash.hash,
-    outs: { objectOutputs, bucketName: inputs.bucketName },
+    outs: { objectOutputs, bucketName },
   };
 }
 
@@ -123,7 +148,6 @@ const syncWebProvider: pulumi.dynamic.ResourceProvider = {
     return { outs };
   },
 
-  // TODO: Delete isn't getting called
   async delete(_, props: SyncWebOutputs) {
     const s3 = new AWS.S3();
 
@@ -132,7 +156,10 @@ const syncWebProvider: pulumi.dynamic.ResourceProvider = {
       {
         Bucket: props.bucketName,
         Delete: {
-          Objects: props.objectOutputs.map((obj) => ({ Key: obj.Key })),
+          Objects: props.objectOutputs.map((obj) => ({
+            Key: obj.Key,
+            VersionId: obj.VersionId,
+          })),
         },
       },
       (err) => {
@@ -147,11 +174,20 @@ const syncWebProvider: pulumi.dynamic.ResourceProvider = {
 };
 
 export class SyncWeb extends pulumi.dynamic.Resource {
+  public readonly bucketName!: pulumi.Output<string>;
+
+  public readonly objectOutputs!: pulumi.Output<ObjectOutput[]>;
+
   constructor(
     name: string,
-    args: SyncWebResourceInputs,
+    props: SyncWebResourceInputs,
     opts?: pulumi.CustomResourceOptions
   ) {
-    super(syncWebProvider, name, args, opts);
+    super(
+      syncWebProvider,
+      name,
+      { bucketName: undefined, objectOutputs: undefined, ...props },
+      opts
+    );
   }
 }

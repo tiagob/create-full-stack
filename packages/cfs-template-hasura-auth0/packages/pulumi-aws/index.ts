@@ -1,58 +1,54 @@
 import * as pulumi from "@pulumi/pulumi";
-import * as fs from "fs";
+import fs from "fs";
 
-import createAuth0 from "./src/createAuth0";
-import createFargate from "./src/createFargate";
-import createRds from "./src/createRds";
-import createStaticWebsite from "./src/createStaticWebsite";
+import Auth0 from "./src/components/auth0";
+import Fargate from "./src/components/fargate";
+import Rds from "./src/components/rds";
+import StaticWebsite from "./src/components/staticWebsite";
 
-// Import our Pulumi configuration.
 const config = new pulumi.Config();
+const domain = config.require("targetDomain");
+const serverDomain = `api.${domain}`;
+export const graphqlUrl = `https://${serverDomain}/v1/graphql`;
+export const webUrl = `https://${domain}`;
+const auth0Domain = config.require("auth0Domain");
 
-async function run() {
-  const { connectionString, cluster } = createRds(config);
-  const { graphqlUrl } = await createFargate(
-    config,
-    connectionString,
-    cluster,
-    "hasura",
-    "hasura"
+const dbName = config.require("dbName");
+const dbUsername = config.require("dbUsername");
+const dbPassword = config.requireSecret("dbPassword");
+const { connectionString, cluster } = new Rds("server-db", {
+  dbName,
+  dbUsername,
+  dbPassword,
+});
+new Fargate("server", {
+  domain: serverDomain,
+  webUrl,
+  connectionString,
+  cluster,
+  graphqlUrl,
+  auth0Domain,
+});
+
+const auth0MobileCallback = config.require("auth0MobileCallback");
+const { webClientId, mobileClientId } = new Auth0("auth0", {
+  webUrl,
+  graphqlUrl,
+  auth0MobileCallback,
+});
+
+new StaticWebsite("web", { domain, graphqlUrl, auth0Domain, webClientId });
+
+mobileClientId.apply((clientId) => {
+  fs.writeFileSync(
+    "../mobile/.env",
+    // Broken up for readability.
+    `${[
+      `AUTH0_AUDIENCE=${graphqlUrl}`,
+      `AUTH0_DOMAIN=${auth0Domain}`,
+      "# AUTH0_CLIENT_ID can be publicly shared (checked into git)",
+      "# https://community.auth0.com/t/client-id-vs-secret/9558/2",
+      `AUTH0_CLIENT_ID=${clientId}`,
+    ].join("\n")}\n`
   );
-
-  const webUrl = `http://${config.require("targetDomain")}`;
-  const { webClient, mobileClient } = createAuth0(webUrl, graphqlUrl);
-
-  const {
-    contentBucketUri,
-    contentBucketWebsiteEndpoint,
-    cloudFrontDomain,
-  } = createStaticWebsite(config, graphqlUrl, webClient);
-
-  // TODO: Set REACT_APP_AUTH0_DOMAIN from CLI
-  // TODO: Same API for production and development?
-  mobileClient.clientId.apply((clientId) => {
-    fs.writeFileSync(
-      "../mobile/.env",
-      `AUTH0_AUDIENCE=${graphqlUrl}\nAUTH0_DOMAIN=create-full-stack.auth0.com\nAUTH0_CLIENT_ID=${clientId}\n`
-    );
-  });
-
-  return {
-    graphqlUrl,
-    webUrl,
-    contentBucketUri,
-    contentBucketWebsiteEndpoint,
-    cloudFrontDomain,
-  };
-}
-
-// Export pattern from
-// https://github.com/pulumi/pulumi/issues/2910#issuecomment-511932533
-const runResult = run();
-export const graphqlUrl = runResult.then((r) => r.graphqlUrl);
-export const webUrl = runResult.then((r) => r.webUrl);
-export const contentBucketUri = runResult.then((r) => r.contentBucketUri);
-export const contentBucketWebsiteEndpoint = runResult.then(
-  (r) => r.contentBucketWebsiteEndpoint
-);
-export const cloudFrontDomain = runResult.then((r) => r.cloudFrontDomain);
+});
