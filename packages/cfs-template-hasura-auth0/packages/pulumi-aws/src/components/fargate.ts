@@ -10,7 +10,6 @@ import Certificate from "./certificate";
 export interface FargateArgs {
   certificate: Certificate;
   domain: string;
-  webUrl: string;
   connectionString: pulumi.Output<string>;
   cluster: Cluster;
   graphqlUrl: string;

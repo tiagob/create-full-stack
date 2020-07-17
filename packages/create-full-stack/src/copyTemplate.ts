@@ -234,16 +234,41 @@ async function updatePackage({
   );
 }
 
-function recursiveRename(dir: string, src: string, dst: string) {
+function recursiveFileFunc(
+  dir: string,
+  src: RegExp,
+  func: (dir: string, file: string) => void
+) {
   const files = fs.readdirSync(dir);
 
   for (const file of files) {
     if (fs.statSync(path.join(dir, file)).isDirectory()) {
-      recursiveRename(path.join(dir, file), src, dst);
-    } else if (file === src) {
-      fs.renameSync(path.join(dir, file), path.join(dir, dst));
+      recursiveFileFunc(path.join(dir, file), src, func);
+    } else if (src.test(file)) {
+      func(dir, file);
     }
   }
+}
+
+// Adapted from CRA's on-eject
+// https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/scripts/eject.js#L155-L164
+function removeInFile(file: string, keys: string[]) {
+  let content = fs.readFileSync(file, "utf8");
+
+  if (content.match(`// @remove-file-(${keys.join("|")})`)) {
+    fs.removeSync(file);
+    return;
+  }
+  content = `${content
+    .replace(
+      new RegExp(
+        `// @remove-(${keys.join("|")})-begin([\\S\\s]*?)// @remove-\\1-end`,
+        "gm"
+      ),
+      ""
+    )
+    .trim()}\n`;
+  fs.writeFileSync(file, content);
 }
 
 export default async function copyTemplate(options: {
@@ -282,7 +307,9 @@ export default async function copyTemplate(options: {
   copySync(templatePath, projectPath, false, excludeList);
   // ".gitignore" isn't included in "npm publish" so copy it over as gitignore
   // and rename (CRA does this)
-  recursiveRename(projectPath, "gitignore", ".gitignore");
+  recursiveFileFunc(projectPath, /^gitignore$/, (dir, file) =>
+    fs.renameSync(path.join(dir, file), path.join(dir, ".gitignore"))
+  );
   fs.renameSync(
     path.join(projectPath, "template.json"),
     path.join(projectPath, "package.json")
@@ -291,4 +318,15 @@ export default async function copyTemplate(options: {
   addApolloCodegen(options);
   await updateVSCodeLaunch(options);
   await updatePackage(options);
+
+  const removeBlockInFileKeys: string[] = [];
+  if (!hasMobile) {
+    removeBlockInFileKeys.push("mobile");
+  }
+  if (!hasWeb) {
+    removeBlockInFileKeys.push("web");
+  }
+  recursiveFileFunc(projectPath, /.ts$/, (dir, file) =>
+    removeInFile(path.join(dir, file), removeBlockInFileKeys)
+  );
 }

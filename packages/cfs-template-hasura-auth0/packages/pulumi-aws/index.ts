@@ -11,15 +11,19 @@ const config = new pulumi.Config();
 const domain = config.require("targetDomain");
 const serverDomain = `api.${domain}`;
 export const graphqlUrl = `https://${serverDomain}/v1/graphql`;
+// @remove-web-begin
 export const webUrl = `https://${domain}`;
+// @remove-web-end
 const auth0Domain = config.require("auth0Domain");
 
 const serverCertificate = new Certificate("server-certificate", {
   domain,
 });
+// @remove-web-begin
 const webCertificate = new Certificate("web-certificate", {
   domain,
 });
+// @remove-web-end
 
 const dbName = config.require("dbName");
 const dbUsername = config.require("dbUsername");
@@ -35,7 +39,6 @@ const hasuraGraphqlAdminSecret = config.requireSecret(
 new Fargate("server", {
   certificate: serverCertificate,
   domain: serverDomain,
-  webUrl,
   connectionString,
   cluster,
   graphqlUrl,
@@ -43,22 +46,31 @@ new Fargate("server", {
   hasuraGraphqlAdminSecret,
 });
 
+// @remove-mobile-begin
 const auth0MobileCallback = config.require("auth0MobileCallback");
-const { webClientId, mobileClientId } = new Auth0("auth0", {
+// @remove-mobile-end
+const auth0 = new Auth0("auth0", {
+  // @remove-web-begin
   webUrl,
+  // @remove-web-end
   graphqlUrl,
+  // @remove-mobile-begin
   auth0MobileCallback,
+  // @remove-mobile-end
 });
 
+// @remove-web-begin
 new StaticWebsite("web", {
   certificate: webCertificate,
   domain,
   graphqlUrl,
   auth0Domain,
-  webClientId,
+  webClientId: auth0.webClientId,
 });
+// @remove-web-end
 
-mobileClientId.apply((clientId) => {
+// @remove-mobile-begin
+auth0.mobileClientId.apply((clientId) => {
   fs.writeFileSync(
     "../mobile/.env",
     // Broken up for readability.
@@ -72,3 +84,4 @@ mobileClientId.apply((clientId) => {
     ].join("\n")}\n`
   );
 });
+// @remove-mobile-end
