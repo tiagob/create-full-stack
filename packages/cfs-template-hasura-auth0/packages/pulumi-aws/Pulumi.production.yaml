@@ -11,4 +11,6 @@ config:
   my-full-stack:dbPassword:
     secure: AAABALsdPwEFJn0V3ukVKo3A8Nu5ksajdCCZuBH3wYPagoymVcQqrUq1Nfcv
   my-full-stack:dbUsername: todo
+  my-full-stack:hasuraGraphqlAdminSecret:
+    secure: AAABAOoRzNgrDy713epRtW2vd5xKeA3xS/OXxbGv/zkAjiNrChyuEp9cZQV1ab45
   my-full-stack:targetDomain: demo-full-stack.com

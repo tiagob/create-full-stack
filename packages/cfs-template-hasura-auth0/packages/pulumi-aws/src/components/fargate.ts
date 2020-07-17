@@ -14,11 +14,18 @@ export interface FargateArgs {
   cluster: Cluster;
   graphqlUrl: string;
   auth0Domain: string;
+  hasuraGraphqlAdminSecret: pulumi.Output<string>;
 }
 
 export default class Fargate extends pulumi.ComponentResource {
   constructor(name: string, args: FargateArgs, opts?: pulumi.ResourceOptions) {
-    const { domain, connectionString, cluster, auth0Domain } = args;
+    const {
+      domain,
+      connectionString,
+      cluster,
+      auth0Domain,
+      hasuraGraphqlAdminSecret,
+    } = args;
     super("aws:Fargate", name, args, opts);
     const domainParts = getDomainAndSubdomain(domain);
 
@@ -71,10 +78,9 @@ export default class Fargate extends pulumi.ComponentResource {
               // Enable downloading plugins which are not present.
               // https://github.com/hasura/graphql-engine/issues/4651#issuecomment-623414531
               { name: "HASURA_GRAPHQL_CLI_ENVIRONMENT", value: "default" },
-              // TODO: Value from config
               {
                 name: "HASURA_GRAPHQL_ADMIN_SECRET",
-                value: "myadminsecretkey",
+                value: hasuraGraphqlAdminSecret,
               },
               {
                 name: "HASURA_GRAPHQL_JWT_SECRET",

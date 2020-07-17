@@ -21,6 +21,9 @@ const { connectionString, cluster } = new Rds("server-db", {
   dbUsername,
   dbPassword,
 });
+const hasuraGraphqlAdminSecret = config.requireSecret(
+  "hasuraGraphqlAdminSecret"
+);
 new Fargate("server", {
   domain: serverDomain,
   webUrl,
@@ -28,6 +31,7 @@ new Fargate("server", {
   cluster,
   graphqlUrl,
   auth0Domain,
+  hasuraGraphqlAdminSecret,
 });
 
 const auth0MobileCallback = config.require("auth0MobileCallback");
