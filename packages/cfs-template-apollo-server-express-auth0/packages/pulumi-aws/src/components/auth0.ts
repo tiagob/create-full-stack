@@ -1,23 +1,40 @@
 import * as auth0 from "@pulumi/auth0";
 import * as pulumi from "@pulumi/pulumi";
 
+// @remove-web-begin
 const localDevUrl = "http://localhost:3000";
+// @remove-web-end
 
 export interface Auth0Args {
+  // @remove-web-begin
   webUrl: string;
+  // @remove-web-end
   graphqlUrl: string;
+  // @remove-mobile-begin
   auth0MobileCallback: string;
+  // @remove-mobile-end
 }
 
 export default class Auth0 extends pulumi.ComponentResource {
+  // @remove-web-begin
   webClientId: pulumi.Output<string>;
+  // @remove-web-end
 
+  // @remove-mobile-begin
   mobileClientId: pulumi.Output<string>;
+  // @remove-mobile-end
 
   constructor(name: string, args: Auth0Args, opts?: pulumi.ResourceOptions) {
-    const { webUrl, graphqlUrl, auth0MobileCallback } = args;
+    const {
+      // @remove-web-begin
+      webUrl,
+      // @remove-web-end
+      graphqlUrl,
+      auth0MobileCallback,
+    } = args;
     super("auth0:Auth0", name, args, opts);
 
+    // @remove-web-begin
     this.webClientId = new auth0.Client(
       `${name}-web-client`,
       {
@@ -42,8 +59,9 @@ export default class Auth0 extends pulumi.ComponentResource {
       },
       { parent: this }
     ).clientId;
+    // @remove-web-end
 
-    // TODO: Conditionally create based on if mobile is selected
+    // @remove-mobile-begin
     this.mobileClientId = new auth0.Client(
       `${name}-mobile-client`,
       {
@@ -66,6 +84,7 @@ export default class Auth0 extends pulumi.ComponentResource {
       },
       { parent: this }
     ).clientId;
+    // @remove-mobile-end
 
     new auth0.ResourceServer(
       `${name}-resource-server`,
@@ -82,8 +101,12 @@ export default class Auth0 extends pulumi.ComponentResource {
     );
 
     this.registerOutputs({
+      // @remove-web-begin
       webClientId: this.webClientId,
+      // @remove-web-end
+      // @remove-mobile-begin
       mobileClient: this.mobileClientId,
+      // @remove-mobile-end
     });
   }
 }

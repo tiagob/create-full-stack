@@ -1,7 +1,9 @@
 import * as auth0 from "@pulumi/auth0";
 import * as pulumi from "@pulumi/pulumi";
 
+// @remove-web-begin
 const localDevUrl = "http://localhost:3000";
+// @remove-web-end
 
 export interface Auth0Args {
   // @remove-web-begin
@@ -23,7 +25,13 @@ export default class Auth0 extends pulumi.ComponentResource {
   // @remove-mobile-end
 
   constructor(name: string, args: Auth0Args, opts?: pulumi.ResourceOptions) {
-    const { webUrl, graphqlUrl, auth0MobileCallback } = args;
+    const {
+      // @remove-web-begin
+      webUrl,
+      // @remove-web-end
+      graphqlUrl,
+      auth0MobileCallback,
+    } = args;
     super("auth0:Auth0", name, args, opts);
 
     // @remove-web-begin

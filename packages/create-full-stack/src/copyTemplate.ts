@@ -262,11 +262,12 @@ function removeInFile(file: string, keys: string[]) {
   content = `${content
     .replace(
       new RegExp(
-        `// @remove-(${keys.join("|")})-begin([\\S\\s]*?)// @remove-\\1-end`,
+        `// @remove-(${keys.join("|")})-begin([\\S\\s]*?)// @remove-\\1-end\\n`,
         "gm"
       ),
       ""
     )
+    .replace(new RegExp("// @remove-.*?-(begin|end)\\n", "gm"), "")
     .trim()}\n`;
   fs.writeFileSync(file, content);
 }

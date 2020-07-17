@@ -5,21 +5,27 @@ import Auth0 from "./src/components/auth0";
 import Certificate from "./src/components/certificate";
 import Fargate from "./src/components/fargate";
 import Rds from "./src/components/rds";
+// @remove-web-begin
 import StaticWebsite from "./src/components/staticWebsite";
+// @remove-web-end
 
 const config = new pulumi.Config();
 const domain = config.require("targetDomain");
 const serverDomain = `api.${domain}`;
 export const graphqlUrl = `https://${serverDomain}/graphql`;
+// @remove-web-begin
 export const webUrl = `https://${domain}`;
+// @remove-web-end
 const auth0Domain = config.require("auth0Domain");
 
 const serverCertificate = new Certificate("server-certificate", {
   domain,
 });
+// @remove-web-begin
 const webCertificate = new Certificate("web-certificate", {
   domain,
 });
+// @remove-web-end
 
 const dbName = config.require("dbName");
 const dbUsername = config.require("dbUsername");
@@ -39,13 +45,20 @@ new Fargate("server", {
   auth0Domain,
 });
 
+// @remove-mobile-begin
 const auth0MobileCallback = config.require("auth0MobileCallback");
+// @remove-mobile-end
 const { webClientId, mobileClientId } = new Auth0("auth0", {
+  // @remove-web-begin
   webUrl,
+  // @remove-web-end
   graphqlUrl,
+  // @remove-mobile-begin
   auth0MobileCallback,
+  // @remove-mobile-end
 });
 
+// @remove-web-begin
 new StaticWebsite("web", {
   certificate: webCertificate,
   domain,
@@ -53,7 +66,9 @@ new StaticWebsite("web", {
   auth0Domain,
   webClientId,
 });
+// @remove-web-end
 
+// @remove-mobile-begin
 mobileClientId.apply((clientId) => {
   fs.writeFileSync(
     "../mobile/.env",
@@ -68,3 +83,4 @@ mobileClientId.apply((clientId) => {
     ].join("\n")}\n`
   );
 });
+// @remove-mobile-end

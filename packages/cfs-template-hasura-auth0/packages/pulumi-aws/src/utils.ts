@@ -1,6 +1,5 @@
 // Split a domain name into its subdomain and parent domain names.
 // e.g. "www.example.com" => "www", "example.com".
-// eslint-disable-next-line import/prefer-default-export
 export function getDomainAndSubdomain(domain: string) {
   const parts = domain.split(".");
   if (parts.length < 2) {

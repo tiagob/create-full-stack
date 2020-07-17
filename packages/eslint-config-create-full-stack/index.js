@@ -35,8 +35,7 @@ module.exports = {
     jest: true,
   },
   rules: {
-    // Common abbreviations are known and readable
-    "unicorn/prevent-abbreviations": "off",
+    "import/prefer-default-export": "off",
     // Overload airbnb definition to allow 'ForOfStatement'
     // https://github.com/airbnb/javascript/blob/b6fc6dc7c3cb76497db0bb81edaa54d8f3427796/packages/eslint-config-airbnb-base/rules/style.js#L257
     "no-restricted-syntax": [
@@ -45,6 +44,9 @@ module.exports = {
       "LabeledStatement",
       "WithStatement",
     ],
+    "object-shorthand": "error",
+    "react/jsx-props-no-spreading": "off",
+    "simple-import-sort/sort": "error",
     "unicorn/filename-case": [
       "error",
       {
@@ -54,14 +56,13 @@ module.exports = {
         },
       },
     ],
-    "simple-import-sort/sort": "error",
-    "@typescript-eslint/prefer-optional-chain": "error",
-    "@typescript-eslint/no-explicit-any": "error",
-    "object-shorthand": "error",
-    "react/jsx-props-no-spreading": "off",
+    // Common abbreviations are known and readable
+    "unicorn/prevent-abbreviations": "off",
     // TypeScript can infer return types
     // https://www.typescriptlang.org/docs/handbook/type-inference.html
     "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/prefer-optional-chain": "error",
   },
   ignorePatterns: [
     "node_modules",

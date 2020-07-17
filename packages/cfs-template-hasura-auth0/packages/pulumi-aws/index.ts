@@ -5,7 +5,9 @@ import Auth0 from "./src/components/auth0";
 import Certificate from "./src/components/certificate";
 import Fargate from "./src/components/fargate";
 import Rds from "./src/components/rds";
+// @remove-web-begin
 import StaticWebsite from "./src/components/staticWebsite";
+// @remove-web-end
 
 const config = new pulumi.Config();
 const domain = config.require("targetDomain");
