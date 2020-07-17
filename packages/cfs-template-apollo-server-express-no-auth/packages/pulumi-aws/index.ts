@@ -1,4 +1,5 @@
 import * as pulumi from "@pulumi/pulumi";
+import fs from "fs";
 
 import Fargate from "./src/components/fargate";
 import Rds from "./src/components/rds";
@@ -26,3 +27,5 @@ new Fargate("server", {
 });
 
 new StaticWebsite("web", { domain, graphqlUrl });
+
+fs.writeFileSync("../mobile/.env", `GRAPHQL_URL=${graphqlUrl}\n`);

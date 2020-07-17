@@ -22,9 +22,7 @@ export default function App(): ReactElement {
     <Auth0Provider
       clientId={Constants.manifest.extra.auth0ClientId}
       audience={Constants.manifest.extra.auth0Audience}
-      authorizationEndpoint={
-        Constants.manifest.extra.auth0AuthorizationEndpoint
-      }
+      authorizationEndpoint={`https://${Constants.manifest.extra.auth0Domain}/authorize`}
       onRedirectCallback={() => {
         navigationRef.current?.navigate("Todos");
       }}

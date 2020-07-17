@@ -20,10 +20,10 @@ export default {
     supportsTablet: true,
   },
   extra: {
+    graphqlUrl: process.env.GRAPHQL_URL,
     auth0Domain: process.env.AUTH0_DOMAIN,
     auth0ClientId: process.env.AUTH0_CLIENT_ID,
     auth0Audience: process.env.AUTH0_AUDIENCE,
-    auth0AuthorizationEndpoint: process.env.AUTH0_AUTHORIZATION_ENDPOINT,
   },
   // TODO: Set this
   // https://docs.expo.io/workflow/linking/#in-a-standalone-app

@@ -48,6 +48,7 @@ mobileClientId.apply((clientId) => {
     "../mobile/.env",
     // Broken up for readability.
     `${[
+      `GRAPHQL_URL=${graphqlUrl}`,
       `AUTH0_AUDIENCE=${graphqlUrl}`,
       `AUTH0_DOMAIN=${auth0Domain}`,
       "# AUTH0_CLIENT_ID can be publicly shared (checked into git)",

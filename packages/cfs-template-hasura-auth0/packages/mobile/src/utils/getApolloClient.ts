@@ -5,9 +5,9 @@ import Constants from "expo-constants";
 
 const { manifest } = Constants;
 const uri =
-  manifest.debuggerHost && manifest.debuggerHost.includes(":")
+  manifest.debuggerHost && manifest.packagerOpts?.dev
     ? `http://${manifest.debuggerHost.split(`:`)[0].concat(`:8080`)}/v1/graphql`
-    : undefined;
+    : manifest.extra.graphqlUrl;
 
 const httpLink = createHttpLink({ uri });
 
