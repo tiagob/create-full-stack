@@ -2,6 +2,7 @@ import * as pulumi from "@pulumi/pulumi";
 import fs from "fs";
 
 import Auth0 from "./src/components/auth0";
+import Certificate from "./src/components/certificate";
 import Fargate from "./src/components/fargate";
 import Rds from "./src/components/rds";
 import StaticWebsite from "./src/components/staticWebsite";
@@ -13,6 +14,13 @@ export const graphqlUrl = `https://${serverDomain}/graphql`;
 export const webUrl = `https://${domain}`;
 const auth0Domain = config.require("auth0Domain");
 
+const serverCertificate = new Certificate("server-certificate", {
+  domain,
+});
+const webCertificate = new Certificate("web-certificate", {
+  domain,
+});
+
 const dbName = config.require("dbName");
 const dbUsername = config.require("dbUsername");
 const dbPassword = config.requireSecret("dbPassword");
@@ -22,6 +30,7 @@ const { connectionString, cluster } = new Rds("server-db", {
   dbPassword,
 });
 new Fargate("server", {
+  certificate: serverCertificate,
   domain: serverDomain,
   webUrl,
   connectionString,
@@ -37,7 +46,13 @@ const { webClientId, mobileClientId } = new Auth0("auth0", {
   auth0MobileCallback,
 });
 
-new StaticWebsite("web", { domain, graphqlUrl, auth0Domain, webClientId });
+new StaticWebsite("web", {
+  certificate: webCertificate,
+  domain,
+  graphqlUrl,
+  auth0Domain,
+  webClientId,
+});
 
 mobileClientId.apply((clientId) => {
   fs.writeFileSync(

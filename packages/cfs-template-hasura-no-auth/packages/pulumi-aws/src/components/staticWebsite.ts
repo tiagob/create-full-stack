@@ -42,6 +42,7 @@ async function crawlDirectory(dir: string, f: (_: string) => void) {
 const tenMinutes = 60 * 10;
 
 export interface StaticWebsiteArgs {
+  certificate: Certificate;
   domain: string;
   graphqlUrl: string;
 }
@@ -52,16 +53,8 @@ export default class StaticWebsite extends pulumi.ComponentResource {
     args: StaticWebsiteArgs,
     opts?: pulumi.ResourceOptions
   ) {
-    const { domain, graphqlUrl } = args;
+    const { certificate, domain, graphqlUrl } = args;
     super("aws:StaticWebsite", name, args, opts);
-
-    const certificate = new Certificate(
-      `${name}-certificate`,
-      {
-        domain,
-      },
-      { parent: this }
-    );
 
     const contentBucket = new aws.s3.Bucket(
       `${name}-content-bucket`,

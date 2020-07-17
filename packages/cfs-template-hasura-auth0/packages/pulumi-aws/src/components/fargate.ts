@@ -8,6 +8,7 @@ import { getDomainAndSubdomain } from "../utils";
 import Certificate from "./certificate";
 
 export interface FargateArgs {
+  certificate: Certificate;
   domain: string;
   webUrl: string;
   connectionString: pulumi.Output<string>;
@@ -20,6 +21,7 @@ export interface FargateArgs {
 export default class Fargate extends pulumi.ComponentResource {
   constructor(name: string, args: FargateArgs, opts?: pulumi.ResourceOptions) {
     const {
+      certificate,
       domain,
       connectionString,
       cluster,
@@ -29,13 +31,6 @@ export default class Fargate extends pulumi.ComponentResource {
     super("aws:Fargate", name, args, opts);
     const domainParts = getDomainAndSubdomain(domain);
 
-    const certificate = new Certificate(
-      `${name}-certificate`,
-      {
-        domain,
-      },
-      { parent: this }
-    );
     const listener = new awsx.lb.NetworkLoadBalancer(
       // There's a 32 character limit on names so abbreviate to "nlb".
       `${name}-nlb`,

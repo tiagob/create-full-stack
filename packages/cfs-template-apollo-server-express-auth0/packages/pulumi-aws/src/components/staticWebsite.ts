@@ -13,6 +13,7 @@ import Certificate from "./certificate";
 const tenMinutes = 60 * 10;
 
 export interface StaticWebsiteArgs {
+  certificate: Certificate;
   domain: string;
   graphqlUrl: string;
   auth0Domain: string;
@@ -25,16 +26,9 @@ export default class StaticWebsite extends pulumi.ComponentResource {
     args: StaticWebsiteArgs,
     opts?: pulumi.ResourceOptions
   ) {
-    const { domain, graphqlUrl, auth0Domain, webClientId } = args;
+    const { certificate, domain, graphqlUrl, auth0Domain, webClientId } = args;
     super("aws:StaticWebsite", name, args, opts);
 
-    const certificate = new Certificate(
-      `${name}-certificate`,
-      {
-        domain,
-      },
-      { parent: this }
-    );
     fs.writeFileSync(
       "../web/.env.production",
       `REACT_APP_GRAPHQL_URL=${graphqlUrl}\n`
