@@ -255,7 +255,7 @@ function recursiveFileFunc(
 function removeInFile(file: string, keys: string[]) {
   let content = fs.readFileSync(file, "utf8");
 
-  if (content.match(`// @remove-file-(${keys.join("|")})`)) {
+  if (content.match(new RegExp(`// @remove-file-(${keys.join("|")})`))) {
     fs.removeSync(file);
     return;
   }
@@ -326,7 +326,7 @@ export default async function copyTemplate(options: {
   if (!hasWeb) {
     removeBlockInFileKeys.push("web");
   }
-  recursiveFileFunc(projectPath, /.ts$/, (dir, file) =>
+  recursiveFileFunc(projectPath, /\.(ts|tsx)$/, (dir, file) =>
     removeInFile(path.join(dir, file), removeBlockInFileKeys)
   );
 }
