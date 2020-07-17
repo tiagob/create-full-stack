@@ -7,8 +7,6 @@
     "build": "tsc",
     "serve-debug": "nodemon --inspect-brk -r dotenv/config ./build/index.js",
     "start": "node -r dotenv/config ./build/index.js",
-    "sync-db": "tsc && node -r dotenv/config ./build/index.js --sync-db",
-    "sync-db-debug": "tsc && node --inspect-brk -r dotenv/config ./build/index.js --sync-db",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"green.bold,cyan.bold\" \"yarn watch-ts\" \"yarn watch-node\"",
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"green.bold,cyan.bold\" \"yarn watch-ts\" \"yarn serve-debug\"",
     "watch-node": "nodemon -r dotenv/config ./build/index.js",

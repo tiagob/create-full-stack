@@ -19,9 +19,8 @@ brew services start postgres
 Create database and sync (creating tables).
 
 ```bash
-cd packages/backend
+cd packages/server
 ./createDb.sh  # Assumes Postgres is installed and running
-yarn sync-db
 ```
 
 ### Auth0 setup
