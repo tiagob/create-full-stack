@@ -22,10 +22,11 @@ async function hasuraGraphqlJwtSecret(
       headers: { origin: "https://hasura.io" },
     }
   );
+  const body = await response.text();
   return {
     value: JSON.stringify({
       type: "RS512",
-      key: response.body,
+      key: body,
     }),
   };
 }
