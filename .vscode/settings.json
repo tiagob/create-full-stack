@@ -5,6 +5,5 @@
     "source.fixAll": true
   },
   "editor.tabSize": 2,
-  "debug.node.autoAttach": "on",
   "cSpell.words": ["HASURA", "POSTGRES", "postgresql"]
 }

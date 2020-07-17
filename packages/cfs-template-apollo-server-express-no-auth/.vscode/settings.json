@@ -4,6 +4,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   },
-  "editor.tabSize": 2,
-  "debug.node.autoAttach": "on"
+  "editor.tabSize": 2
 }
