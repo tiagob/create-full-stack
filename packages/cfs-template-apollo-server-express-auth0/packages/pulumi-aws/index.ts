@@ -39,7 +39,9 @@ const { connectionString, cluster } = new Rds("server-db", {
 new Fargate("server", {
   certificate: serverCertificate,
   domain: serverDomain,
+  // @remove-web-begin
   webUrl,
+  // @remove-web-end
   connectionString,
   cluster,
   graphqlUrl,

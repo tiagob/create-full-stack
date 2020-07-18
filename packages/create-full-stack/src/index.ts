@@ -90,9 +90,16 @@ async function run() {
       "Include Pulumi infrastructure as code (IAC) for AWS deployment? This requires the Pulumi and AWS CLIs.",
   });
   const { hasPulumiAws } = hasPulumiAwsAnswer;
+  let hasGithubActions = false;
   if (hasPulumiAws) {
     // Error as soon as possible if pulumi and aws aren't installed.
     checkPulumiAndAws();
+    const hasGithubActionsAnswer = await inquirer.prompt({
+      type: "confirm",
+      name: "hasGithubActions",
+      message: "Include GitHub Actions CI/CD?",
+    });
+    hasGithubActions = hasGithubActionsAnswer.hasGithubActions;
   }
   const hasWebAnswer = await inquirer.prompt({
     type: "confirm",
@@ -136,6 +143,7 @@ async function run() {
     hasMobile,
     hasWeb,
     hasPulumiAws,
+    hasGithubActions,
   });
 
   console.log(`Installing packages using yarnpkg...`);
@@ -143,7 +151,10 @@ async function run() {
   // Also, uninstalls the template
   runYarn(projectName);
 
+  console.log("Formatting files...");
+  console.log();
   runYarn(projectName, ["prettier"]);
+  runYarn(projectName, ["lint"]);
 
   if (tryGitInit(projectName)) {
     console.log();

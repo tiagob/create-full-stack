@@ -1,0 +1,28 @@
+schema: packages/server/src/graphql/schema.ts
+hooks:
+  afterOneFileWrite:
+    - prettier --write
+    - eslint --fix
+generates:
+  packages/server/src/graphql/__generated__/index.ts:
+    plugins:
+      - typescript
+      - typescript-resolvers
+    config:
+      useIndexSignature: true
+      namingConvention:
+        typeNames: pascal-case#pascalCase
+        transformUnderscore: true
+  packages/common/src/graphql/__generated__/index.ts:
+    documents: packages/common/src/graphql/*.graphql
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      withHOC: false
+      withComponent: false
+      withHooks: true
+      namingConvention:
+        typeNames: pascal-case#pascalCase
+        transformUnderscore: true

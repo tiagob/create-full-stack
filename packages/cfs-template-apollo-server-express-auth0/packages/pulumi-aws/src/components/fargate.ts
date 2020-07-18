@@ -10,7 +10,9 @@ import Certificate from "./certificate";
 export interface FargateArgs {
   certificate: Certificate;
   domain: string;
+  // @remove-web-begin
   webUrl: string;
+  // @remove-web-end
   connectionString: pulumi.Output<string>;
   cluster: Cluster;
   graphqlUrl: string;
@@ -22,7 +24,9 @@ export default class Fargate extends pulumi.ComponentResource {
     const {
       certificate,
       domain,
+      // @remove-web-begin
       webUrl,
+      // @remove-web-end
       connectionString,
       cluster,
       graphqlUrl,
@@ -74,7 +78,9 @@ export default class Fargate extends pulumi.ComponentResource {
             portMappings: [listener],
             environment: [
               { name: "DATABASE_URL", value: connectionString },
+              // @remove-web-begin
               { name: "CORS_ORIGIN", value: webUrl },
+              // @remove-web-end
             ],
           },
         },

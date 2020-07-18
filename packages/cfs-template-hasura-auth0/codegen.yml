@@ -1,0 +1,22 @@
+schema:
+  - "http://localhost:8080/v1/graphql":
+      headers:
+        x-hasura-admin-secret: myadminsecretkey
+hooks:
+  afterOneFileWrite:
+    - prettier --write
+    - eslint --fix
+generates:
+  packages/common/src/graphql/__generated__/index.ts:
+    documents: packages/common/src/graphql/*.graphql
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      withHOC: false
+      withComponent: false
+      withHooks: true
+      namingConvention:
+        typeNames: pascal-case#pascalCase
+        transformUnderscore: true

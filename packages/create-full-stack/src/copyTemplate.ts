@@ -1,7 +1,6 @@
 import { JSONSchemaForNPMPackageJsonFiles } from "@schemastore/package";
 import chalk from "chalk";
 import fs from "fs-extra";
-import yaml from "js-yaml";
 import os from "os";
 import path from "path";
 import sortPackageJson from "sort-package-json";
@@ -39,80 +38,6 @@ function copySync(
       `Could not locate supplied template: ${chalk.green(templatePath)}`
     );
   }
-}
-
-const templateToGraphqlSchema = {
-  [Backend.apolloServerExpress]: {
-    [Auth.none]: "packages/server/src/graphql/schema.ts",
-    [Auth.auth0]: "packages/server/src/graphql/schema.ts",
-  },
-  [Backend.hasura]: {
-    [Auth.none]: "http://localhost:8080/v1/graphql",
-    [Auth.auth0]: [
-      {
-        "http://localhost:8080/v1/graphql": {
-          headers: { "x-hasura-admin-secret": "myadminsecretkey" },
-        },
-      },
-    ],
-  },
-};
-
-function addApolloCodegen({
-  projectPath,
-  backend,
-  auth,
-  hasMobile,
-  hasWeb,
-}: {
-  projectPath: string;
-  backend: Backend;
-  auth: Auth;
-  hasMobile: boolean;
-  hasWeb: boolean;
-}) {
-  fs.writeFileSync(
-    `${projectPath}/codegen.yml`,
-    yaml.safeDump({
-      schema: templateToGraphqlSchema[backend][auth],
-      hooks: {
-        afterOneFileWrite: ["prettier --write", "eslint --fix"],
-      },
-      generates: {
-        ...(backend === Backend.apolloServerExpress && {
-          "packages/server/src/graphql/__generated__/index.ts": {
-            plugins: ["typescript", "typescript-resolvers"],
-            config: {
-              useIndexSignature: true,
-              namingConvention: {
-                typeNames: "pascal-case#pascalCase",
-                transformUnderscore: true,
-              },
-            },
-          },
-        }),
-        ...((hasMobile || hasWeb) && {
-          "packages/common/src/graphql/__generated__/index.ts": {
-            documents: "packages/common/src/graphql/*.graphql",
-            plugins: [
-              "typescript",
-              "typescript-operations",
-              "typescript-react-apollo",
-            ],
-            config: {
-              withHOC: false,
-              withComponent: false,
-              withHooks: true,
-              namingConvention: {
-                typeNames: "pascal-case#pascalCase",
-                transformUnderscore: true,
-              },
-            },
-          },
-        }),
-      },
-    })
-  );
 }
 
 interface VSCodeLaunch {
@@ -203,13 +128,11 @@ async function updatePackage({
       command: "yarn --cwd packages/server watch",
     });
   }
-  if (hasMobile || hasWeb) {
-    commands.push({
-      name: "Build Common",
-      color: "yellow.bold",
-      command: "yarn --cwd packages/common watch",
-    });
-  }
+  commands.push({
+    name: "Build Common",
+    color: "yellow.bold",
+    command: "yarn --cwd packages/common watch",
+  });
   if (hasMobile) {
     commands.push({
       name: "Mobile",
@@ -236,40 +159,68 @@ async function updatePackage({
 
 function recursiveFileFunc(
   dir: string,
-  src: RegExp,
   func: (dir: string, file: string) => void
 ) {
   const files = fs.readdirSync(dir);
 
   for (const file of files) {
     if (fs.statSync(path.join(dir, file)).isDirectory()) {
-      recursiveFileFunc(path.join(dir, file), src, func);
-    } else if (src.test(file)) {
+      recursiveFileFunc(path.join(dir, file), func);
+    } else {
       func(dir, file);
     }
   }
 }
 
+const fileExtToComment = {
+  "\\.(ts|tsx)$": "//",
+  "\\.(yml|yaml)$": "#",
+};
+
 // Adapted from CRA's on-eject
 // https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/scripts/eject.js#L155-L164
 function removeInFile(file: string, keys: string[]) {
+  const fileExtTuple = Object.entries(fileExtToComment).find(([ext]) =>
+    new RegExp(ext).test(file)
+  );
+  if (!fileExtTuple) {
+    return;
+  }
+  const comment = fileExtTuple[1];
   let content = fs.readFileSync(file, "utf8");
 
-  if (content.match(new RegExp(`// @remove-file-(${keys.join("|")})`))) {
+  if (
+    content.match(new RegExp(`${comment} @remove-file-(${keys.join("|")})`))
+  ) {
     fs.removeSync(file);
     return;
   }
   content = `${content
     .replace(
       new RegExp(
-        `// @remove-(${keys.join("|")})-begin([\\S\\s]*?)// @remove-\\1-end\\n`,
+        `${comment} @remove-(${keys.join(
+          "|"
+        )})-begin([\\S\\s]*?)${comment} @remove-\\1-end\\n`,
         "gm"
       ),
       ""
     )
-    .replace(new RegExp("// @remove-.*?\\n", "gm"), "")
+    .replace(new RegExp(`${comment} @remove-.*?\\n`, "gm"), "")
     .trim()}\n`;
   fs.writeFileSync(file, content);
+}
+
+function recursiveRemoveEmptyDir(dir: string) {
+  const files = fs.readdirSync(dir);
+  if (files.length === 0) {
+    fs.removeSync(dir);
+  }
+
+  for (const file of files) {
+    if (fs.statSync(path.join(dir, file)).isDirectory()) {
+      recursiveRemoveEmptyDir(path.join(dir, file));
+    }
+  }
 }
 
 export default async function copyTemplate(options: {
@@ -280,8 +231,16 @@ export default async function copyTemplate(options: {
   hasMobile: boolean;
   hasWeb: boolean;
   hasPulumiAws: boolean;
+  hasGithubActions: boolean;
 }) {
-  const { projectPath, template, hasMobile, hasWeb, hasPulumiAws } = options;
+  const {
+    projectPath,
+    template,
+    hasMobile,
+    hasWeb,
+    hasPulumiAws,
+    hasGithubActions,
+  } = options;
 
   const fullTemplate = `cfs-template-${template}`;
 
@@ -299,24 +258,22 @@ export default async function copyTemplate(options: {
   if (!hasWeb) {
     excludeList.push("web");
   }
-  if (!hasMobile && !hasWeb) {
-    excludeList.push("common");
-  }
   if (!hasPulumiAws) {
     excludeList.push("pulumi-aws");
   }
   copySync(templatePath, projectPath, false, excludeList);
   // ".gitignore" isn't included in "npm publish" so copy it over as gitignore
   // and rename (CRA does this)
-  recursiveFileFunc(projectPath, /^gitignore$/, (dir, file) =>
-    fs.renameSync(path.join(dir, file), path.join(dir, ".gitignore"))
-  );
+  recursiveFileFunc(projectPath, (dir, file) => {
+    if (/^gitignore$/.test(file)) {
+      fs.renameSync(path.join(dir, file), path.join(dir, ".gitignore"));
+    }
+  });
   fs.renameSync(
     path.join(projectPath, "template.json"),
     path.join(projectPath, "package.json")
   );
 
-  addApolloCodegen(options);
   await updateVSCodeLaunch(options);
   await updatePackage(options);
 
@@ -327,7 +284,11 @@ export default async function copyTemplate(options: {
   if (!hasWeb) {
     removeBlockInFileKeys.push("web");
   }
-  recursiveFileFunc(projectPath, /\.(ts|tsx)$/, (dir, file) =>
+  if (!hasGithubActions) {
+    removeBlockInFileKeys.push("github-actions");
+  }
+  recursiveFileFunc(projectPath, (dir, file) =>
     removeInFile(path.join(dir, file), removeBlockInFileKeys)
   );
+  recursiveRemoveEmptyDir(projectPath);
 }

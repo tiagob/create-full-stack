@@ -9,14 +9,24 @@ import Certificate from "./certificate";
 export interface FargateArgs {
   certificate: Certificate;
   domain: string;
+  // @remove-web-begin
   webUrl: string;
+  // @remove-web-end
   connectionString: pulumi.Output<string>;
   cluster: Cluster;
 }
 
 export default class Fargate extends pulumi.ComponentResource {
   constructor(name: string, args: FargateArgs, opts?: pulumi.ResourceOptions) {
-    const { certificate, domain, webUrl, connectionString, cluster } = args;
+    const {
+      certificate,
+      domain,
+      // @remove-web-begin
+      webUrl,
+      // @remove-web-end
+      connectionString,
+      cluster,
+    } = args;
     super("aws:Fargate", name, args, opts);
     const domainParts = getDomainAndSubdomain(domain);
 
@@ -58,7 +68,9 @@ export default class Fargate extends pulumi.ComponentResource {
             portMappings: [listener],
             environment: [
               { name: "DATABASE_URL", value: connectionString },
+              // @remove-web-begin
               { name: "CORS_ORIGIN", value: webUrl },
+              // @remove-web-end
             ],
           },
         },
