@@ -30,7 +30,9 @@ export default class Auth0 extends pulumi.ComponentResource {
       webUrl,
       // @remove-web-end
       graphqlUrl,
+      // @remove-mobile-begin
       auth0MobileCallback,
+      // @remove-mobile-end
     } = args;
     super("auth0:Auth0", name, args, opts);
 

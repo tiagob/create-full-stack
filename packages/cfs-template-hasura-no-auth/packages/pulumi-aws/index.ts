@@ -1,5 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
-import fs from "fs";
+// @remove-mobile-begin
+import fs from "fs"; // @remove-mobile-end
 
 import Certificate from "./src/components/certificate";
 import Fargate from "./src/components/fargate";

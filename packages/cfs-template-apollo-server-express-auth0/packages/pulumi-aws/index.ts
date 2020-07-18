@@ -1,5 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
-import fs from "fs";
+// @remove-mobile-begin
+import fs from "fs"; // @remove-mobile-end
 
 import Auth0 from "./src/components/auth0";
 import Certificate from "./src/components/certificate";
@@ -48,7 +49,7 @@ new Fargate("server", {
 // @remove-mobile-begin
 const auth0MobileCallback = config.require("auth0MobileCallback");
 // @remove-mobile-end
-const { webClientId, mobileClientId } = new Auth0("auth0", {
+const auth0 = new Auth0("auth0", {
   // @remove-web-begin
   webUrl,
   // @remove-web-end
@@ -64,12 +65,12 @@ new StaticWebsite("web", {
   domain,
   graphqlUrl,
   auth0Domain,
-  webClientId,
+  webClientId: auth0.webClientId,
 });
 // @remove-web-end
 
 // @remove-mobile-begin
-mobileClientId.apply((clientId) => {
+auth0.mobileClientId.apply((clientId) => {
   fs.writeFileSync(
     "../mobile/.env",
     // Broken up for readability.

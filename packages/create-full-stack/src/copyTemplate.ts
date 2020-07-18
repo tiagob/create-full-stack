@@ -267,7 +267,7 @@ function removeInFile(file: string, keys: string[]) {
       ),
       ""
     )
-    .replace(new RegExp("// @remove-.*?-(begin|end)\\n", "gm"), "")
+    .replace(new RegExp("// @remove-.*?\\n", "gm"), "")
     .trim()}\n`;
   fs.writeFileSync(file, content);
 }
