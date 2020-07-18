@@ -1,5 +1,6 @@
 import * as auth0 from "@pulumi/auth0";
 import * as pulumi from "@pulumi/pulumi";
+import fs from "fs";
 
 // @remove-web-begin
 const localDevUrl = "http://localhost:3000";
@@ -101,6 +102,12 @@ export default class Auth0 extends pulumi.ComponentResource {
       },
       { parent: this }
     );
+
+    new auth0.Rule(`${name}-rule`, {
+      name: "Hasura Access Token",
+      enabled: true,
+      script: fs.readFileSync("./auth0-rules/hasuraAccessToken.js", "utf8"),
+    });
 
     this.registerOutputs({
       // @remove-web-begin

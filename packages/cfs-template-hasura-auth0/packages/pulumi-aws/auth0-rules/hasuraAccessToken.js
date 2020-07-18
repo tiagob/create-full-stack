@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function hasuraAccessToken(user, context, callback) {
   const namespace = "https://hasura.io/jwt/claims";
   // eslint-disable-next-line no-param-reassign
@@ -6,6 +7,5 @@ function hasuraAccessToken(user, context, callback) {
     "x-hasura-allowed-roles": ["user"],
     "x-hasura-user-id": user.user_id,
   };
-  // eslint-disable-next-line unicorn/no-null
-  callback(null, user, context);
+  callback(undefined, user, context);
 }
