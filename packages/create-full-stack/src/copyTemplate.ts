@@ -211,15 +211,17 @@ function removeInFile(file: string, keys: string[]) {
 }
 
 function recursiveRemoveEmptyDir(dir: string) {
-  const files = fs.readdirSync(dir);
-  if (files.length === 0) {
-    fs.removeSync(dir);
-  }
-
+  let files = fs.readdirSync(dir);
   for (const file of files) {
     if (fs.statSync(path.join(dir, file)).isDirectory()) {
       recursiveRemoveEmptyDir(path.join(dir, file));
     }
+  }
+
+  // Files length can change after deletes so update this
+  files = fs.readdirSync(dir);
+  if (files.length === 0) {
+    fs.removeSync(dir);
   }
 }
 

@@ -151,16 +151,6 @@ async function run() {
   // Also, uninstalls the template
   runYarn(projectName);
 
-  console.log("Formatting files...");
-  console.log();
-  runYarn(projectName, ["prettier"]);
-  runYarn(projectName, ["lint"]);
-
-  if (tryGitInit(projectName)) {
-    console.log();
-    console.log("Initialized a git repository.");
-    console.log();
-  }
   // TODO: Generate local development initialization script ex. install postgres, sync-db, buildNodeServer etc.
   if (nodeBackends.has(backend)) {
     console.log("Building the node server...");
@@ -171,6 +161,18 @@ async function run() {
     console.log("Building common...");
     console.log();
     runYarn(path.join(projectName, "packages/common"), ["build"]);
+  }
+
+  console.log("Formatting files...");
+  console.log();
+  runYarn(projectName, ["prettier"]);
+  // Running eslint requires that common is built so imports resolve
+  runYarn(projectName, ["lint"]);
+
+  if (tryGitInit(projectName)) {
+    console.log();
+    console.log("Initialized a git repository.");
+    console.log();
   }
 
   // Display the most elegant way to cd.
