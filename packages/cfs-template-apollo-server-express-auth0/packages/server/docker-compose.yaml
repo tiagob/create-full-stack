@@ -3,20 +3,11 @@ services:
   postgres:
     image: postgres:12
     restart: always
+    ports:
+      - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: postgrespassword
-  apollo-server-express:
-    build:
-      context: "../.."
-      dockerfile: "./packages/server/Dockerfile"
-    ports:
-      - "8080:8080"
-    depends_on:
-      - "postgres"
-    restart: always
-    environment:
-      DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
 volumes:
   db_data:

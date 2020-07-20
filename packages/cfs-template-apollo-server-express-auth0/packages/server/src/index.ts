@@ -5,10 +5,10 @@ import express from "express";
 import jwt from "express-jwt";
 import jwksRsa from "jwks-rsa";
 import * as os from "os";
+import { Connection, createConnection, QueryFailedError } from "typeorm";
 
+import getResolvers, { DecodedJwt } from "./getResolvers";
 import typeDefs from "./graphql/schema";
-import { sequelize } from "./models";
-import resolvers, { DecodedJwt } from "./resolvers";
 
 require("dotenv").config();
 
@@ -22,13 +22,21 @@ if (process.env.CORS_ORIGIN) {
 }
 
 async function run() {
+  let connection: Connection;
   try {
-    await sequelize.authenticate();
+    connection = await createConnection();
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error("Can't connect to the database.\n", error);
+    if (error instanceof QueryFailedError) {
+      // eslint-disable-next-line no-console
+      console.error(
+        "Database is out of sync. To fix run `typeorm schema:drop && typeorm schema:sync`\n",
+        "NOTE: This drops all data in the existing database.\n"
+      );
+    }
+    throw error;
   }
-  sequelize.sync();
+  const resolvers = getResolvers(connection);
+
   const app = express();
   app.use(
     cors({

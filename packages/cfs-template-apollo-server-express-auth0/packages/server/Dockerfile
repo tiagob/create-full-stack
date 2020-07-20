@@ -33,4 +33,4 @@ RUN yarn install --pure-lockfile --non-interactive --production
 WORKDIR /usr/src/app/packages/server
 
 EXPOSE 8080
-CMD ["yarn", "start"]
+CMD ["yarn", "start-production"]

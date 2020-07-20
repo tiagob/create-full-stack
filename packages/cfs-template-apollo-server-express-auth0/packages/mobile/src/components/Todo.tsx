@@ -1,4 +1,4 @@
-import { Todos as TodoType, useDestroyTodo, useUpdateTodo } from "common";
+import { Todo as TodoType, useDeleteTodo, useUpdateTodo } from "common";
 import React from "react";
 import { StyleSheet } from "react-native";
 import { Button, CheckBox, Icon, ListItem } from "react-native-elements";
@@ -15,7 +15,7 @@ interface Props {
 
 export default function Todo({ todo }: Props) {
   const [updateTodo] = useUpdateTodo();
-  const [destroyTodo] = useDestroyTodo();
+  const [deleteTodo] = useDeleteTodo();
   const onPress = () =>
     updateTodo({
       variables: { id: todo.id, complete: !todo.complete },
@@ -32,7 +32,7 @@ export default function Todo({ todo }: Props) {
           icon={
             <Icon
               name="delete"
-              onPress={() => destroyTodo({ variables: { id: todo.id } })}
+              onPress={() => deleteTodo({ variables: { id: todo.id } })}
             />
           }
           type="outline"

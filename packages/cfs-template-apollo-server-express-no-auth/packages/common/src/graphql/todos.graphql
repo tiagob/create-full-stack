@@ -22,8 +22,8 @@ mutation UpdateTodo($id: Int!, $complete: Boolean!) {
   }
 }
 
-mutation DestroyTodo($id: Int!) {
-  destroyTodo(id: $id) {
+mutation DeleteTodo($id: Int!) {
+  deleteTodo(id: $id) {
     id
   }
 }

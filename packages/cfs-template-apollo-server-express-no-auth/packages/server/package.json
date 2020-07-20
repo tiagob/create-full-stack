@@ -5,10 +5,8 @@
   "main": "./src/index.ts",
   "scripts": {
     "build": "tsc",
-    "serve-debug": "nodemon --inspect-brk ./build/index.js",
-    "start": "node ./build/index.js",
-    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"green.bold,cyan.bold\" \"yarn watch-ts\" \"yarn watch-node\"",
-    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"green.bold,cyan.bold\" \"yarn watch-ts\" \"yarn serve-debug\"",
+    "start": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"green.bold,cyan.bold\" \"yarn watch-ts\" \"yarn watch-node\"",
+    "start-production": "node ./build/index.js",
     "watch-node": "nodemon ./build/index.js",
     "watch-ts": "tsc -w"
   },
@@ -17,14 +15,14 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "graphql": "^14.2.1",
-    "pg": "^8.2.1",
+    "pg": "^8.3.0",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^5.21.9",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.25",
     "typescript": "3.9.2"
   },
   "devDependencies": {
     "concurrently": "^5.2.0",
-    "nodemon": "^2.0.4",
-    "ts-node": "^8.10.1"
+    "nodemon": "^2.0.4"
   }
 }

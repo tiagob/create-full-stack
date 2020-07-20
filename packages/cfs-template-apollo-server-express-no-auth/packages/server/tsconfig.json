@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
     "module": "CommonJS",
-    "outDir": "build"
+    "outDir": "build",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   },
   "extends": "../../tsconfig"
 }

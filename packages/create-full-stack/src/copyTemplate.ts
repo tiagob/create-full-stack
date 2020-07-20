@@ -89,7 +89,7 @@ interface Command {
   command: string;
 }
 
-function getWatchCommand(commands: Command[]) {
+function getStartCommand(commands: Command[]) {
   return `concurrently -k -p "[{name}]" -n "${commands
     .map((c) => c.name)
     .join(",")}" -c "${commands.map((c) => c.color).join(",")}" "${commands
@@ -125,7 +125,7 @@ async function updatePackage({
     commands.push({
       name: "Server",
       color: "green.bold",
-      command: "yarn --cwd packages/server watch",
+      command: "yarn --cwd packages/server start",
     });
   }
   commands.push({
@@ -149,7 +149,7 @@ async function updatePackage({
   }
   appPackage.scripts = {
     ...appPackage.scripts,
-    watch: getWatchCommand(commands),
+    start: getStartCommand(commands),
   };
   fs.writeFileSync(
     path.join(projectPath, "package.json"),

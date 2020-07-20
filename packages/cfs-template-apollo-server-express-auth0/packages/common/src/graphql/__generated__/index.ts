@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 import * as ApolloReactCommon from "@apollo/react-common";
 import * as ApolloReactHooks from "@apollo/react-hooks";
-export type Maybe<T> = T | null;
+export type Maybe<T> = T | undefined;
 export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -16,7 +16,7 @@ export type Mutation = {
   __typename?: "Mutation";
   createTodo: Todo;
   updateTodo?: Maybe<Todo>;
-  destroyTodo?: Maybe<Todo>;
+  deleteTodo?: Maybe<Todo>;
 };
 
 export type MutationCreateTodoArgs = {
@@ -29,7 +29,7 @@ export type MutationUpdateTodoArgs = {
   complete?: Maybe<Scalars["Boolean"]>;
 };
 
-export type MutationDestroyTodoArgs = {
+export type MutationDeleteTodoArgs = {
   id: Scalars["Int"];
 };
 
@@ -72,12 +72,12 @@ export type UpdateTodoMutation = { __typename?: "Mutation" } & {
   >;
 };
 
-export type DestroyTodoMutationVariables = Exact<{
+export type DeleteTodoMutationVariables = Exact<{
   id: Scalars["Int"];
 }>;
 
-export type DestroyTodoMutation = { __typename?: "Mutation" } & {
-  destroyTodo?: Maybe<{ __typename?: "Todo" } & Pick<Todo, "id">>;
+export type DeleteTodoMutation = { __typename?: "Mutation" } & {
+  deleteTodo?: Maybe<{ __typename?: "Todo" } & Pick<Todo, "id">>;
 };
 
 export const TodosDocument = gql`
@@ -238,53 +238,53 @@ export type UpdateTodoMutationOptions = ApolloReactCommon.BaseMutationOptions<
   UpdateTodoMutation,
   UpdateTodoMutationVariables
 >;
-export const DestroyTodoDocument = gql`
-  mutation DestroyTodo($id: Int!) {
-    destroyTodo(id: $id) {
+export const DeleteTodoDocument = gql`
+  mutation DeleteTodo($id: Int!) {
+    deleteTodo(id: $id) {
       id
     }
   }
 `;
-export type DestroyTodoMutationFn = ApolloReactCommon.MutationFunction<
-  DestroyTodoMutation,
-  DestroyTodoMutationVariables
+export type DeleteTodoMutationFn = ApolloReactCommon.MutationFunction<
+  DeleteTodoMutation,
+  DeleteTodoMutationVariables
 >;
 
 /**
- * __useDestroyTodoMutation__
+ * __useDeleteTodoMutation__
  *
- * To run a mutation, you first call `useDestroyTodoMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDestroyTodoMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useDeleteTodoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTodoMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [destroyTodoMutation, { data, loading, error }] = useDestroyTodoMutation({
+ * const [deleteTodoMutation, { data, loading, error }] = useDeleteTodoMutation({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useDestroyTodoMutation(
+export function useDeleteTodoMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
-    DestroyTodoMutation,
-    DestroyTodoMutationVariables
+    DeleteTodoMutation,
+    DeleteTodoMutationVariables
   >
 ) {
   return ApolloReactHooks.useMutation<
-    DestroyTodoMutation,
-    DestroyTodoMutationVariables
-  >(DestroyTodoDocument, baseOptions);
+    DeleteTodoMutation,
+    DeleteTodoMutationVariables
+  >(DeleteTodoDocument, baseOptions);
 }
-export type DestroyTodoMutationHookResult = ReturnType<
-  typeof useDestroyTodoMutation
+export type DeleteTodoMutationHookResult = ReturnType<
+  typeof useDeleteTodoMutation
 >;
-export type DestroyTodoMutationResult = ApolloReactCommon.MutationResult<
-  DestroyTodoMutation
+export type DeleteTodoMutationResult = ApolloReactCommon.MutationResult<
+  DeleteTodoMutation
 >;
-export type DestroyTodoMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  DestroyTodoMutation,
-  DestroyTodoMutationVariables
+export type DeleteTodoMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  DeleteTodoMutation,
+  DeleteTodoMutationVariables
 >;

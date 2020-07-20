@@ -1,5 +1,6 @@
 import { GraphQLResolveInfo } from "graphql";
-export type Maybe<T> = T | null;
+export type Maybe<T> = T | undefined;
+export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
 export type RequireFields<T, K extends keyof T> = {
   [X in Exclude<keyof T, K>]?: T[X];
 } &
@@ -17,7 +18,7 @@ export type Mutation = {
   __typename?: "Mutation";
   createTodo: Todo;
   updateTodo?: Maybe<Todo>;
-  destroyTodo?: Maybe<Todo>;
+  deleteTodo?: Maybe<Todo>;
 };
 
 export type MutationCreateTodoArgs = {
@@ -30,7 +31,7 @@ export type MutationUpdateTodoArgs = {
   complete?: Maybe<Scalars["Boolean"]>;
 };
 
-export type MutationDestroyTodoArgs = {
+export type MutationDeleteTodoArgs = {
   id: Scalars["Int"];
 };
 
@@ -198,11 +199,11 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationUpdateTodoArgs, "id">
   >;
-  destroyTodo?: Resolver<
+  deleteTodo?: Resolver<
     Maybe<ResolversTypes["Todo"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationDestroyTodoArgs, "id">
+    RequireFields<MutationDeleteTodoArgs, "id">
   >;
 }>;
 
