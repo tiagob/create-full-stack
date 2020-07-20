@@ -2,6 +2,7 @@ import gql from "graphql-tag";
 import * as ApolloReactCommon from "@apollo/react-common";
 import * as ApolloReactHooks from "@apollo/react-hooks";
 export type Maybe<T> = T | null;
+export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -199,6 +200,7 @@ export type Todos = {
   complete: Scalars["Boolean"];
   id: Scalars["Int"];
   name: Scalars["String"];
+  uid?: Maybe<Scalars["String"]>;
 };
 
 /** aggregated selection of "todos" */
@@ -270,6 +272,7 @@ export type TodosBoolExp = {
   complete?: Maybe<BooleanComparisonExp>;
   id?: Maybe<IntComparisonExp>;
   name?: Maybe<StringComparisonExp>;
+  uid?: Maybe<StringComparisonExp>;
 };
 
 /** unique or primary key constraints on table "todos" */
@@ -288,6 +291,7 @@ export type TodosInsertInput = {
   complete?: Maybe<Scalars["Boolean"]>;
   id?: Maybe<Scalars["Int"]>;
   name?: Maybe<Scalars["String"]>;
+  uid?: Maybe<Scalars["String"]>;
 };
 
 /** aggregate max on columns */
@@ -295,12 +299,14 @@ export type TodosMaxFields = {
   __typename?: "todos_max_fields";
   id?: Maybe<Scalars["Int"]>;
   name?: Maybe<Scalars["String"]>;
+  uid?: Maybe<Scalars["String"]>;
 };
 
 /** order by max() on columns of table "todos" */
 export type TodosMaxOrderBy = {
   id?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
+  uid?: Maybe<OrderBy>;
 };
 
 /** aggregate min on columns */
@@ -308,12 +314,14 @@ export type TodosMinFields = {
   __typename?: "todos_min_fields";
   id?: Maybe<Scalars["Int"]>;
   name?: Maybe<Scalars["String"]>;
+  uid?: Maybe<Scalars["String"]>;
 };
 
 /** order by min() on columns of table "todos" */
 export type TodosMinOrderBy = {
   id?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
+  uid?: Maybe<OrderBy>;
 };
 
 /** response of any mutation on the table "todos" */
@@ -343,6 +351,7 @@ export type TodosOrderBy = {
   complete?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
+  uid?: Maybe<OrderBy>;
 };
 
 /** primary key columns input for table: "todos" */
@@ -358,6 +367,8 @@ export enum TodosSelectColumn {
   Id = "id",
   /** column name */
   Name = "name",
+  /** column name */
+  Uid = "uid",
 }
 
 /** input type for updating data in table "todos" */
@@ -365,6 +376,7 @@ export type TodosSetInput = {
   complete?: Maybe<Scalars["Boolean"]>;
   id?: Maybe<Scalars["Int"]>;
   name?: Maybe<Scalars["String"]>;
+  uid?: Maybe<Scalars["String"]>;
 };
 
 /** aggregate stddev on columns */
@@ -419,6 +431,8 @@ export enum TodosUpdateColumn {
   Id = "id",
   /** column name */
   Name = "name",
+  /** column name */
+  Uid = "uid",
 }
 
 /** aggregate var_pop on columns */
@@ -454,7 +468,7 @@ export type TodosVarianceOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
-export type TodosQueryVariables = {};
+export type TodosQueryVariables = Exact<{ [key: string]: never }>;
 
 export type TodosQuery = { __typename?: "query_root" } & {
   todos: Array<
@@ -462,9 +476,9 @@ export type TodosQuery = { __typename?: "query_root" } & {
   >;
 };
 
-export type CreateTodoMutationVariables = {
+export type CreateTodoMutationVariables = Exact<{
   name: Scalars["String"];
-};
+}>;
 
 export type CreateTodoMutation = { __typename?: "mutation_root" } & {
   insert_todos?: Maybe<
@@ -476,10 +490,10 @@ export type CreateTodoMutation = { __typename?: "mutation_root" } & {
   >;
 };
 
-export type UpdateTodoMutationVariables = {
+export type UpdateTodoMutationVariables = Exact<{
   id: Scalars["Int"];
   complete: Scalars["Boolean"];
-};
+}>;
 
 export type UpdateTodoMutation = { __typename?: "mutation_root" } & {
   update_todos?: Maybe<
@@ -491,11 +505,11 @@ export type UpdateTodoMutation = { __typename?: "mutation_root" } & {
   >;
 };
 
-export type DestroyTodoMutationVariables = {
+export type DeleteTodoMutationVariables = Exact<{
   id: Scalars["Int"];
-};
+}>;
 
-export type DestroyTodoMutation = { __typename?: "mutation_root" } & {
+export type DeleteTodoMutation = { __typename?: "mutation_root" } & {
   delete_todos?: Maybe<
     { __typename?: "todos_mutation_response" } & {
       returning: Array<{ __typename?: "todos" } & Pick<Todos, "id">>;
@@ -665,8 +679,8 @@ export type UpdateTodoMutationOptions = ApolloReactCommon.BaseMutationOptions<
   UpdateTodoMutation,
   UpdateTodoMutationVariables
 >;
-export const DestroyTodoDocument = gql`
-  mutation DestroyTodo($id: Int!) {
+export const DeleteTodoDocument = gql`
+  mutation DeleteTodo($id: Int!) {
     delete_todos(where: { id: { _eq: $id } }) {
       returning {
         id
@@ -674,46 +688,46 @@ export const DestroyTodoDocument = gql`
     }
   }
 `;
-export type DestroyTodoMutationFn = ApolloReactCommon.MutationFunction<
-  DestroyTodoMutation,
-  DestroyTodoMutationVariables
+export type DeleteTodoMutationFn = ApolloReactCommon.MutationFunction<
+  DeleteTodoMutation,
+  DeleteTodoMutationVariables
 >;
 
 /**
- * __useDestroyTodoMutation__
+ * __useDeleteTodoMutation__
  *
- * To run a mutation, you first call `useDestroyTodoMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDestroyTodoMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useDeleteTodoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTodoMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [destroyTodoMutation, { data, loading, error }] = useDestroyTodoMutation({
+ * const [deleteTodoMutation, { data, loading, error }] = useDeleteTodoMutation({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useDestroyTodoMutation(
+export function useDeleteTodoMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
-    DestroyTodoMutation,
-    DestroyTodoMutationVariables
+    DeleteTodoMutation,
+    DeleteTodoMutationVariables
   >
 ) {
   return ApolloReactHooks.useMutation<
-    DestroyTodoMutation,
-    DestroyTodoMutationVariables
-  >(DestroyTodoDocument, baseOptions);
+    DeleteTodoMutation,
+    DeleteTodoMutationVariables
+  >(DeleteTodoDocument, baseOptions);
 }
-export type DestroyTodoMutationHookResult = ReturnType<
-  typeof useDestroyTodoMutation
+export type DeleteTodoMutationHookResult = ReturnType<
+  typeof useDeleteTodoMutation
 >;
-export type DestroyTodoMutationResult = ApolloReactCommon.MutationResult<
-  DestroyTodoMutation
+export type DeleteTodoMutationResult = ApolloReactCommon.MutationResult<
+  DeleteTodoMutation
 >;
-export type DestroyTodoMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  DestroyTodoMutation,
-  DestroyTodoMutationVariables
+export type DeleteTodoMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  DeleteTodoMutation,
+  DeleteTodoMutationVariables
 >;

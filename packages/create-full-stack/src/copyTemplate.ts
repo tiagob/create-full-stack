@@ -189,14 +189,14 @@ function removeInFile(file: string, keys: string[]) {
   const comment = fileExtTuple[1];
   let content = fs.readFileSync(file, "utf8");
 
-  if (
-    content.match(new RegExp(`${comment} @remove-file-(${keys.join("|")})`))
-  ) {
-    fs.removeSync(file);
-    return;
-  }
-  content = `${content
-    .replace(
+  if (keys.length > 0) {
+    if (
+      content.match(new RegExp(`${comment} @remove-file-(${keys.join("|")})`))
+    ) {
+      fs.removeSync(file);
+      return;
+    }
+    content = content.replace(
       new RegExp(
         `${comment} @remove-(${keys.join(
           "|"
@@ -204,7 +204,9 @@ function removeInFile(file: string, keys: string[]) {
         "gm"
       ),
       ""
-    )
+    );
+  }
+  content = `${content
     .replace(new RegExp(`${comment} @remove-.*?\\n`, "gm"), "")
     .trim()}\n`;
   fs.writeFileSync(file, content);

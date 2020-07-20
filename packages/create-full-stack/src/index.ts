@@ -194,7 +194,7 @@ async function run() {
   console.log("We suggest that you begin by typing:");
   console.log();
   console.log(chalk.cyan("  cd"), cdpath);
-  console.log(`  ${chalk.cyan("yarn watch")}`);
+  console.log(`  ${chalk.cyan("yarn start")}`);
   console.log();
   console.log("Happy hacking!");
 }

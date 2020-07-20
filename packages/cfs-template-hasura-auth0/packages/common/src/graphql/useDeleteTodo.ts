@@ -2,16 +2,16 @@ import {
   TodosDocument,
   TodosQuery,
   TodosQueryVariables,
-  useDestroyTodoMutation,
+  useDeleteTodoMutation,
 } from "./__generated__";
 
 export default () =>
-  useDestroyTodoMutation({
+  useDeleteTodoMutation({
     update: (cache, { data }) => {
       if (!data || !data.delete_todos) {
         return;
       }
-      const destroyTodo = data.delete_todos.returning[0];
+      const deleteTodo = data.delete_todos.returning[0];
       const query = cache.readQuery<TodosQuery, TodosQueryVariables>({
         query: TodosDocument,
       });
@@ -20,7 +20,7 @@ export default () =>
         cache.writeQuery<TodosQuery, TodosQueryVariables>({
           query: TodosDocument,
           data: {
-            todos: todos.filter((todo) => todo.id !== destroyTodo.id),
+            todos: todos.filter((todo) => todo.id !== deleteTodo.id),
           },
         });
       }
