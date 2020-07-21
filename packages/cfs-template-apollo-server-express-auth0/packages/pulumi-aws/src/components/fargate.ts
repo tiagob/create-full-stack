@@ -10,13 +10,14 @@ import Certificate from "./certificate";
 export interface FargateArgs {
   certificate: Certificate;
   domain: string;
+  connectionString: pulumi.Output<string>;
+  cluster: Cluster;
+  imagePath: string;
+  graphqlUrl: string;
+  auth0Domain: string;
   // @remove-web-begin
   webUrl: string;
   // @remove-web-end
-  connectionString: pulumi.Output<string>;
-  cluster: Cluster;
-  graphqlUrl: string;
-  auth0Domain: string;
 }
 
 export default class Fargate extends pulumi.ComponentResource {
@@ -24,13 +25,14 @@ export default class Fargate extends pulumi.ComponentResource {
     const {
       certificate,
       domain,
+      connectionString,
+      cluster,
+      imagePath,
+      graphqlUrl,
+      auth0Domain,
       // @remove-web-begin
       webUrl,
       // @remove-web-end
-      connectionString,
-      cluster,
-      graphqlUrl,
-      auth0Domain,
     } = args;
     super("aws:Fargate", name, args, opts);
     const domainParts = getDomainAndSubdomain(domain);
@@ -64,7 +66,7 @@ export default class Fargate extends pulumi.ComponentResource {
     // Build and publish a Docker image to a private ECR registry.
     const img = awsx.ecs.Image.fromDockerBuild(`${name}-image`, {
       context: "../..",
-      dockerfile: "../server/Dockerfile",
+      dockerfile: `${imagePath}/Dockerfile`,
     });
 
     // Create a Fargate service task that can scale out.

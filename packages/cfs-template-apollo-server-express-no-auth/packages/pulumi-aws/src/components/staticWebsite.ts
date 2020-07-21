@@ -46,6 +46,7 @@ export interface StaticWebsiteArgs {
   certificate: Certificate;
   domain: string;
   graphqlUrl: string;
+  webPath: string;
 }
 
 export default class StaticWebsite extends pulumi.ComponentResource {
@@ -54,7 +55,7 @@ export default class StaticWebsite extends pulumi.ComponentResource {
     args: StaticWebsiteArgs,
     opts?: pulumi.ResourceOptions
   ) {
-    const { certificate, domain, graphqlUrl } = args;
+    const { certificate, domain, graphqlUrl, webPath } = args;
     super("aws:StaticWebsite", name, args, opts);
 
     const contentBucket = new aws.s3.Bucket(
@@ -75,15 +76,11 @@ export default class StaticWebsite extends pulumi.ComponentResource {
     );
 
     fs.writeFileSync(
-      "../web/.env.production",
+      `${webPath}/.env.production`,
       `REACT_APP_GRAPHQL_URL=${graphqlUrl}\n`
     );
-    const pathToWebsiteContents = "../web";
-    runYarn(pathToWebsiteContents, ["build"]);
-    const webContentsRootPath = path.join(
-      process.cwd(),
-      `${pathToWebsiteContents}/build`
-    );
+    runYarn(webPath, ["build"]);
+    const webContentsRootPath = path.join(process.cwd(), `${webPath}/build`);
     // Sync the contents of the source directory with the S3 bucket, which will in-turn show up
     // on the CDN.
     console.log("Syncing contents from local disk at", webContentsRootPath);

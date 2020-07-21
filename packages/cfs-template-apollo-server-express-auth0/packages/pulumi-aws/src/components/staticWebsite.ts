@@ -19,6 +19,7 @@ export interface StaticWebsiteArgs {
   graphqlUrl: string;
   auth0Domain: string;
   webClientId: pulumi.Output<string>;
+  webPath: string;
 }
 
 export default class StaticWebsite extends pulumi.ComponentResource {
@@ -27,11 +28,18 @@ export default class StaticWebsite extends pulumi.ComponentResource {
     args: StaticWebsiteArgs,
     opts?: pulumi.ResourceOptions
   ) {
-    const { certificate, domain, graphqlUrl, auth0Domain, webClientId } = args;
+    const {
+      certificate,
+      domain,
+      graphqlUrl,
+      auth0Domain,
+      webClientId,
+      webPath,
+    } = args;
     super("aws:StaticWebsite", name, args, opts);
 
     fs.writeFileSync(
-      "../web/.env.production",
+      `${webPath}/.env.production`,
       `REACT_APP_GRAPHQL_URL=${graphqlUrl}\n`
     );
 
@@ -58,7 +66,7 @@ export default class StaticWebsite extends pulumi.ComponentResource {
       `${name}-sync-web`,
       {
         auth0Domain,
-        pathToWebsiteContents: "../web",
+        webPath,
         graphqlUrl,
         clientId: webClientId,
         bucketName: contentBucket.bucket,

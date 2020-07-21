@@ -15,6 +15,7 @@ export interface FargateArgs {
   graphqlUrl: string;
   auth0Domain: string;
   hasuraGraphqlAdminSecret: pulumi.Output<string>;
+  imagePath: string;
 }
 
 export default class Fargate extends pulumi.ComponentResource {
@@ -26,6 +27,7 @@ export default class Fargate extends pulumi.ComponentResource {
       cluster,
       auth0Domain,
       hasuraGraphqlAdminSecret,
+      imagePath,
     } = args;
     super("aws:Fargate", name, args, opts);
     const domainParts = getDomainAndSubdomain(domain);
@@ -52,7 +54,7 @@ export default class Fargate extends pulumi.ComponentResource {
       );
 
     // Build and publish a Docker image to a private ECR registry.
-    const img = awsx.ecs.Image.fromPath(`${name}-image`, "../../hasura");
+    const img = awsx.ecs.Image.fromPath(`${name}-image`, imagePath);
     const hasuraGraphqlJwtSecret = new HasuraGraphqlJwtSecret(
       `${name}-jwt-secret`,
       { auth0Domain }

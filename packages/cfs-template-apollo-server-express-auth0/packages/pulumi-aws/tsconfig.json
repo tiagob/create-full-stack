@@ -1,19 +1,8 @@
 {
   "compilerOptions": {
-    "strict": true,
+    "module": "CommonJS",
     "outDir": "build",
-    "target": "es2016",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
     "typeRoots": ["./node_modules/@types", "./typings"]
   },
-  "files": ["src"]
+  "extends": "../../tsconfig"
 }

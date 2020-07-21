@@ -1,6 +1,8 @@
 import * as pulumi from "@pulumi/pulumi";
 // @remove-mobile-begin
-import fs from "fs"; // @remove-mobile-end
+import fs from "fs";
+// @remove-mobile-end
+import path from "path";
 
 import Auth0 from "./src/components/auth0";
 import Certificate from "./src/components/certificate";
@@ -10,20 +12,32 @@ import Rds from "./src/components/rds";
 import StaticWebsite from "./src/components/staticWebsite";
 // @remove-web-end
 
+const serverPath = "../../hasura";
+// @remove-web-begin
+const webPath = "../web";
+// @remove-web-end
+// @remove-mobile-begin
+const mobilePath = "../mobile";
+// @remove-mobile-end
+
 const config = new pulumi.Config();
-const domain = config.require("targetDomain");
-const serverDomain = `api.${domain}`;
+const domain = config.require("domain");
+const serverDomain = `${path.basename(serverPath)}.${domain}`;
 export const graphqlUrl = `https://${serverDomain}/v1/graphql`;
 // @remove-web-begin
 export const webUrl = `https://${domain}`;
 // @remove-web-end
 const auth0Domain = config.require("auth0Domain");
 
-const serverCertificate = new Certificate("server-certificate", {
-  domain,
+// Create a wildcard certificate so it can be re-used.
+// https://docs.aws.amazon.com/acm/latest/userguide/acm-certificate.html
+// There's a hidden limit on the number of certificates an AWS account can create.
+// https://github.com/aws/aws-cdk/issues/5889#issuecomment-599609939
+const subdomainCertificate = new Certificate("subdomain-certificate", {
+  domain: `*.${domain}`,
 });
 // @remove-web-begin
-const webCertificate = new Certificate("web-certificate", {
+const domainCertificate = new Certificate("domain-certificate", {
   domain,
 });
 // @remove-web-end
@@ -39,43 +53,47 @@ const { connectionString, cluster } = new Rds("server-db", {
 const hasuraGraphqlAdminSecret = config.requireSecret(
   "hasuraGraphqlAdminSecret"
 );
-new Fargate("server", {
-  certificate: serverCertificate,
+new Fargate(path.basename(serverPath), {
+  certificate: subdomainCertificate,
   domain: serverDomain,
   connectionString,
   cluster,
   graphqlUrl,
   auth0Domain,
   hasuraGraphqlAdminSecret,
+  imagePath: serverPath,
 });
 
 // @remove-mobile-begin
 const auth0MobileCallback = config.require("auth0MobileCallback");
 // @remove-mobile-end
 const auth0 = new Auth0("auth0", {
+  resourceServerName: path.basename(serverPath),
   // @remove-web-begin
+  webClientName: path.basename(webPath),
   webUrl,
   // @remove-web-end
-  graphqlUrl,
   // @remove-mobile-begin
+  mobileClientName: path.basename(mobilePath),
   auth0MobileCallback,
   // @remove-mobile-end
 });
 
 // @remove-web-begin
-new StaticWebsite("web", {
-  certificate: webCertificate,
+new StaticWebsite(path.basename(webPath), {
+  certificate: domainCertificate,
   domain,
   graphqlUrl,
   auth0Domain,
   webClientId: auth0.webClientId,
+  webPath,
 });
 // @remove-web-end
 
 // @remove-mobile-begin
 auth0.mobileClientId.apply((clientId) => {
   fs.writeFileSync(
-    "../mobile/.env",
+    `${mobilePath}/.env`,
     // Broken up for readability.
     `${[
       `GRAPHQL_URL=${graphqlUrl}`,

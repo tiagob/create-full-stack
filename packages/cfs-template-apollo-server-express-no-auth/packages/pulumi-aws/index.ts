@@ -1,6 +1,8 @@
 import * as pulumi from "@pulumi/pulumi";
 // @remove-mobile-begin
-import fs from "fs"; // @remove-mobile-end
+import fs from "fs";
+// @remove-mobile-end
+import path from "path";
 
 import Certificate from "./src/components/certificate";
 import Fargate from "./src/components/fargate";
@@ -9,19 +11,31 @@ import Rds from "./src/components/rds";
 import StaticWebsite from "./src/components/staticWebsite";
 // @remove-web-end
 
+const serverPath = "../server";
+// @remove-web-begin
+const webPath = "../web";
+// @remove-web-end
+// @remove-mobile-begin
+const mobilePath = "../mobile";
+// @remove-mobile-end
+
 const config = new pulumi.Config();
-const domain = config.require("targetDomain");
-const serverDomain = `api.${domain}`;
+const domain = config.require("domain");
+const serverDomain = `${path.basename(serverPath)}.${domain}`;
 export const graphqlUrl = `https://${serverDomain}/graphql`;
 // @remove-web-begin
 export const webUrl = `https://${domain}`;
 // @remove-web-end
 
-const serverCertificate = new Certificate("server-certificate", {
-  domain,
+// Create a wildcard certificate so it can be re-used.
+// https://docs.aws.amazon.com/acm/latest/userguide/acm-certificate.html
+// There's a hidden limit on the number of certificates an AWS account can create.
+// https://github.com/aws/aws-cdk/issues/5889#issuecomment-599609939
+const subdomainCertificate = new Certificate("subdomain-certificate", {
+  domain: `*.${domain}`,
 });
 // @remove-web-begin
-const webCertificate = new Certificate("web-certificate", {
+const domainCertificate = new Certificate("domain-certificate", {
   domain,
 });
 // @remove-web-end
@@ -34,24 +48,26 @@ const { connectionString, cluster } = new Rds("server-db", {
   dbUsername,
   dbPassword,
 });
-new Fargate("server", {
-  certificate: serverCertificate,
+new Fargate(path.basename(serverPath), {
+  certificate: subdomainCertificate,
   domain: serverDomain,
+  connectionString,
+  cluster,
+  imagePath: serverPath,
   // @remove-web-begin
   webUrl,
   // @remove-web-end
-  connectionString,
-  cluster,
 });
 
 // @remove-web-begin
-new StaticWebsite("web", {
-  certificate: webCertificate,
+new StaticWebsite(path.basename(webPath), {
+  certificate: domainCertificate,
   domain,
   graphqlUrl,
+  webPath,
 });
 // @remove-web-end
 
 // @remove-mobile-begin
-fs.writeFileSync("../mobile/.env", `GRAPHQL_URL=${graphqlUrl}\n`);
+fs.writeFileSync(`${mobilePath}/.env`, `GRAPHQL_URL=${graphqlUrl}\n`);
 // @remove-mobile-end

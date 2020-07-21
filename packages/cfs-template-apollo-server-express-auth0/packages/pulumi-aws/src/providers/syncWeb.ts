@@ -20,7 +20,7 @@ import spawn from "cross-spawn";
 
 export interface SyncWebResourceInputs {
   auth0Domain: pulumi.Input<string>;
-  pathToWebsiteContents: pulumi.Input<string>;
+  webPath: pulumi.Input<string>;
   graphqlUrl: pulumi.Input<string>;
   clientId: pulumi.Input<string>;
   bucketName: pulumi.Input<string>;
@@ -28,7 +28,7 @@ export interface SyncWebResourceInputs {
 
 interface SyncWebInputs {
   auth0Domain: string;
-  pathToWebsiteContents: string;
+  webPath: string;
   graphqlUrl: string;
   clientId: string;
   bucketName: string;
@@ -84,16 +84,10 @@ async function syncWeb(
   const mimeModule = await import("mime");
   const mime = mimeModule.default;
   const s3 = new AWS.S3();
-  const {
-    graphqlUrl,
-    auth0Domain,
-    clientId,
-    pathToWebsiteContents,
-    bucketName,
-  } = inputs;
+  const { graphqlUrl, auth0Domain, clientId, webPath, bucketName } = inputs;
 
   fs.writeFileSync(
-    "../web/.env",
+    `${webPath}/.env`,
     // Broken up for readability.
     `${[
       `EXTEND_ESLINT=true`,
@@ -104,8 +98,8 @@ async function syncWeb(
       `REACT_APP_AUTH0_CLIENT_ID=${clientId}`,
     ].join("\n")}\n`
   );
-  runYarn(pathToWebsiteContents, ["build"]);
-  const pathToBuild = `${pathToWebsiteContents}/build`;
+  runYarn(webPath, ["build"]);
+  const pathToBuild = `${webPath}/build`;
   const webContentsRootPath = path.join(process.cwd(), pathToBuild);
   console.log("Syncing contents from local disk at", webContentsRootPath);
   const objectOutputs: ObjectOutput[] = [];

@@ -7,11 +7,13 @@ const localDevUrl = "http://localhost:3000";
 // @remove-web-end
 
 export interface Auth0Args {
+  resourceServerName: string;
   // @remove-web-begin
+  webClientName: string;
   webUrl: string;
   // @remove-web-end
-  graphqlUrl: string;
   // @remove-mobile-begin
+  mobileClientName: string;
   auth0MobileCallback: string;
   // @remove-mobile-end
 }
@@ -27,11 +29,13 @@ export default class Auth0 extends pulumi.ComponentResource {
 
   constructor(name: string, args: Auth0Args, opts?: pulumi.ResourceOptions) {
     const {
+      resourceServerName,
       // @remove-web-begin
+      webClientName,
       webUrl,
       // @remove-web-end
-      graphqlUrl,
       // @remove-mobile-begin
+      mobileClientName,
       auth0MobileCallback,
       // @remove-mobile-end
     } = args;
@@ -42,7 +46,7 @@ export default class Auth0 extends pulumi.ComponentResource {
       `${name}-web-client`,
       {
         isTokenEndpointIpHeaderTrusted: false,
-        name: "Web",
+        name: webClientName,
         isFirstParty: true,
         oidcConformant: true,
         ssoDisabled: false,
@@ -69,7 +73,7 @@ export default class Auth0 extends pulumi.ComponentResource {
       `${name}-mobile-client`,
       {
         isTokenEndpointIpHeaderTrusted: false,
-        name: "Mobile",
+        name: mobileClientName,
         isFirstParty: true,
         oidcConformant: true,
         ssoDisabled: false,
@@ -92,8 +96,8 @@ export default class Auth0 extends pulumi.ComponentResource {
     new auth0.ResourceServer(
       `${name}-resource-server`,
       {
-        name: "Apollo Server Express",
-        identifier: graphqlUrl,
+        name: resourceServerName,
+        identifier: resourceServerName,
         allowOfflineAccess: false,
         skipConsentForVerifiableFirstPartyClients: true,
         tokenLifetime: 86400,
@@ -104,7 +108,7 @@ export default class Auth0 extends pulumi.ComponentResource {
     );
 
     new auth0.Rule(`${name}-rule`, {
-      name: "Hasura Access Token",
+      name: "hasuraAccessToken",
       enabled: true,
       script: fs.readFileSync("./auth0-rules/hasuraAccessToken.js", "utf8"),
     });
