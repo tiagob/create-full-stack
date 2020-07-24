@@ -1,6 +1,7 @@
 // @remove-file-web
 import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
+import { SpawnSyncOptions } from "child_process";
 import spawn from "cross-spawn";
 import fs from "fs";
 import mime from "mime";
@@ -13,13 +14,16 @@ import Certificate from "./certificate";
 // Adapted from
 // https://github.com/pulumi/examples/blob/master/aws-ts-static-website/index.ts
 
-function runYarn(cwd: string, args: string[] = []) {
+function runYarn(
+  cwd: string,
+  args: string[] = [],
+  options: SpawnSyncOptions = {}
+) {
   const command = "yarnpkg";
   const argsWithCwd = ["--cwd", cwd, ...args];
-  const proc = spawn.sync(command, argsWithCwd, { stdio: "inherit" });
+  const proc = spawn.sync(command, argsWithCwd, options);
   if (proc.status !== 0) {
     console.error(`\`${command} ${argsWithCwd.join(" ")}\` failed`);
-    process.exit(1);
   }
   return proc.output;
 }
@@ -75,11 +79,12 @@ export default class StaticWebsite extends pulumi.ComponentResource {
       { parent: this }
     );
 
-    fs.writeFileSync(
-      `${webPath}/.env.production`,
-      `REACT_APP_GRAPHQL_URL=${graphqlUrl}\n`
-    );
-    runYarn(webPath, ["build"]);
+    runYarn(webPath, ["build"], {
+      env: {
+        ...process.env,
+        REACT_APP_GRAPHQL_URL: graphqlUrl,
+      },
+    });
     const webContentsRootPath = path.join(process.cwd(), `${webPath}/build`);
     // Sync the contents of the source directory with the S3 bucket, which will in-turn show up
     // on the CDN.
@@ -90,7 +95,6 @@ export default class StaticWebsite extends pulumi.ComponentResource {
         relativeFilePath,
         {
           key: relativeFilePath,
-
           acl: "public-read",
           bucket: contentBucket,
           contentType: mime.getType(filePath) || undefined,

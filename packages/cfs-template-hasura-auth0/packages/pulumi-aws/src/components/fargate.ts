@@ -3,7 +3,6 @@ import * as awsx from "@pulumi/awsx";
 import { Cluster } from "@pulumi/awsx/ecs";
 import * as pulumi from "@pulumi/pulumi";
 
-import { HasuraGraphqlJwtSecret } from "../providers/hasuraGraphqlJwtSecret";
 import { getDomainAndSubdomain } from "../utils";
 import Certificate from "./certificate";
 
@@ -16,6 +15,7 @@ export interface FargateArgs {
   auth0Domain: string;
   hasuraGraphqlAdminSecret: pulumi.Output<string>;
   imagePath: string;
+  auth0Audience: pulumi.Output<string | undefined>;
 }
 
 export default class Fargate extends pulumi.ComponentResource {
@@ -28,6 +28,7 @@ export default class Fargate extends pulumi.ComponentResource {
       auth0Domain,
       hasuraGraphqlAdminSecret,
       imagePath,
+      auth0Audience,
     } = args;
     super("aws:Fargate", name, args, opts);
     const domainParts = getDomainAndSubdomain(domain);
@@ -55,10 +56,6 @@ export default class Fargate extends pulumi.ComponentResource {
 
     // Build and publish a Docker image to a private ECR registry.
     const img = awsx.ecs.Image.fromPath(`${name}-image`, imagePath);
-    const hasuraGraphqlJwtSecret = new HasuraGraphqlJwtSecret(
-      `${name}-jwt-secret`,
-      { auth0Domain }
-    );
 
     // Create a Fargate service task that can scale out.
     new awsx.ecs.FargateService(
@@ -80,7 +77,7 @@ export default class Fargate extends pulumi.ComponentResource {
               },
               {
                 name: "HASURA_GRAPHQL_JWT_SECRET",
-                value: hasuraGraphqlJwtSecret.value,
+                value: pulumi.interpolate`{"jwk_url":"https://${auth0Domain}/.well-known/jwks.json","audience":"${auth0Audience}"}`,
               },
             ],
           },

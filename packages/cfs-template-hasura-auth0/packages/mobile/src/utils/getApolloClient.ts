@@ -7,7 +7,7 @@ const { manifest } = Constants;
 const uri =
   manifest.debuggerHost && manifest.packagerOpts?.dev
     ? `http://${manifest.debuggerHost.split(`:`)[0].concat(`:8080`)}/v1/graphql`
-    : manifest.extra.graphqlUrl;
+    : process.env.GRAPHQL_URL;
 
 const httpLink = createHttpLink({ uri });
 

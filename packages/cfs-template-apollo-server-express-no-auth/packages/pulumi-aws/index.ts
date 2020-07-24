@@ -1,9 +1,12 @@
 import * as pulumi from "@pulumi/pulumi";
 // @remove-mobile-begin
-import fs from "fs";
+import spawn from "cross-spawn";
 // @remove-mobile-end
 import path from "path";
 
+// @remove-mobile-begin
+import mobileConfig from "../mobile/app.json";
+// @remove-mobile-end
 import Certificate from "./src/components/certificate";
 import Fargate from "./src/components/fargate";
 import Rds from "./src/components/rds";
@@ -69,5 +72,16 @@ new StaticWebsite(path.basename(webPath), {
 // @remove-web-end
 
 // @remove-mobile-begin
-fs.writeFileSync(`${mobilePath}/.env`, `GRAPHQL_URL=${graphqlUrl}\n`);
+// Publish mobile app on Expo
+// https://docs.expo.io/workflow/publishing/
+spawn.sync("expo", ["publish", "--release-channel", pulumi.getStack()], {
+  cwd: mobilePath,
+  env: {
+    ...process.env,
+    GRAPHQL_URL: graphqlUrl,
+  },
+});
+export const expoProjectPage = `https://expo.io/@${expoUsername}/${
+  mobileConfig.slug
+}?release-channel=${pulumi.getStack()}`;
 // @remove-mobile-end

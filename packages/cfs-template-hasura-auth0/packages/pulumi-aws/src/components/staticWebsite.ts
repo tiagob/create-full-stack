@@ -1,7 +1,6 @@
 // @remove-file-web
 import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
-import fs from "fs";
 
 import { InvalidateCloudfront } from "../providers/invalidateCloudfront";
 import { SyncWeb } from "../providers/syncWeb";
@@ -17,6 +16,7 @@ export interface StaticWebsiteArgs {
   certificate: Certificate;
   domain: string;
   graphqlUrl: string;
+  auth0Audience: pulumi.Output<string | undefined>;
   auth0Domain: string;
   webClientId: pulumi.Output<string>;
   webPath: string;
@@ -32,16 +32,12 @@ export default class StaticWebsite extends pulumi.ComponentResource {
       certificate,
       domain,
       graphqlUrl,
+      auth0Audience,
       auth0Domain,
       webClientId,
       webPath,
     } = args;
     super("aws:StaticWebsite", name, args, opts);
-
-    fs.writeFileSync(
-      `${webPath}/.env.production`,
-      `REACT_APP_GRAPHQL_URL=${graphqlUrl}\n`
-    );
 
     const contentBucket = new aws.s3.Bucket(
       `${name}-content-bucket`,
@@ -65,6 +61,7 @@ export default class StaticWebsite extends pulumi.ComponentResource {
     new SyncWeb(
       `${name}-sync-web`,
       {
+        auth0Audience,
         auth0Domain,
         webPath,
         graphqlUrl,

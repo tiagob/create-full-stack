@@ -20,9 +20,11 @@ export const navigationRef = React.createRef<NavigationContainerRef>();
 export default function App(): ReactElement {
   return (
     <Auth0Provider
-      clientId={Constants.manifest.extra.auth0ClientId}
-      audience={Constants.manifest.extra.auth0Audience}
-      authorizationEndpoint={`https://${Constants.manifest.extra.auth0Domain}/authorize`}
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      clientId={process.env.AUTH0_CLIENT_ID!}
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      audience={process.env.AUTH0_AUDIENCE!}
+      authorizationEndpoint={`https://${process.env.AUTH0_DOMAIN}/authorize`}
       onRedirectCallback={() => {
         navigationRef.current?.navigate("Todos");
       }}

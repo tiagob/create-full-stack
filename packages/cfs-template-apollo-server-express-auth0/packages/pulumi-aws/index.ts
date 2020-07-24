@@ -1,9 +1,12 @@
 import * as pulumi from "@pulumi/pulumi";
 // @remove-mobile-begin
-import fs from "fs";
+import spawn from "cross-spawn";
 // @remove-mobile-end
 import path from "path";
 
+// @remove-mobile-begin
+import mobileConfig from "../mobile/app.json";
+// @remove-mobile-end
 import Auth0 from "./src/components/auth0";
 import Certificate from "./src/components/certificate";
 import Fargate from "./src/components/fargate";
@@ -27,7 +30,7 @@ export const graphqlUrl = `https://${serverDomain}/graphql`;
 // @remove-web-begin
 export const webUrl = `https://${domain}`;
 // @remove-web-end
-const auth0Domain = config.require("auth0Domain");
+const auth0Domain = new pulumi.Config("auth0").require("domain");
 
 // Create a wildcard certificate so it can be re-used.
 // https://docs.aws.amazon.com/acm/latest/userguide/acm-certificate.html
@@ -41,6 +44,23 @@ const domainCertificate = new Certificate("domain-certificate", {
   domain,
 });
 // @remove-web-end
+
+// @remove-mobile-begin
+const expoUsername = spawn
+  .sync("expo", ["whoami"], { encoding: "utf8" })
+  .stdout.trim();
+// @remove-mobile-end
+const auth0 = new Auth0("auth0", {
+  resourceServerName: path.basename(serverPath),
+  // @remove-web-begin
+  webClientName: path.basename(webPath),
+  webUrl,
+  // @remove-web-end
+  // @remove-mobile-begin
+  mobileClientName: path.basename(mobilePath),
+  expoUsername,
+  // @remove-mobile-end
+});
 
 const dbName = config.require("dbName");
 const dbUsername = config.require("dbUsername");
@@ -56,26 +76,11 @@ new Fargate(path.basename(serverPath), {
   connectionString,
   cluster,
   imagePath: serverPath,
-  graphqlUrl,
+  auth0Audience: auth0.audience,
   auth0Domain,
   // @remove-web-begin
   webUrl,
   // @remove-web-end
-});
-
-// @remove-mobile-begin
-const auth0MobileCallback = config.require("auth0MobileCallback");
-// @remove-mobile-end
-const auth0 = new Auth0("auth0", {
-  resourceServerName: path.basename(serverPath),
-  // @remove-web-begin
-  webClientName: path.basename(webPath),
-  webUrl,
-  // @remove-web-end
-  // @remove-mobile-begin
-  mobileClientName: path.basename(mobilePath),
-  auth0MobileCallback,
-  // @remove-mobile-end
 });
 
 // @remove-web-begin
@@ -83,6 +88,7 @@ new StaticWebsite(path.basename(webPath), {
   certificate: domainCertificate,
   domain,
   graphqlUrl,
+  auth0Audience: auth0.audience,
   auth0Domain,
   webClientId: auth0.webClientId,
   webPath,
@@ -90,18 +96,23 @@ new StaticWebsite(path.basename(webPath), {
 // @remove-web-end
 
 // @remove-mobile-begin
-auth0.mobileClientId.apply((clientId) => {
-  fs.writeFileSync(
-    `${mobilePath}/.env`,
-    // Broken up for readability.
-    `${[
-      `GRAPHQL_URL=${graphqlUrl}`,
-      `AUTH0_AUDIENCE=${graphqlUrl}`,
-      `AUTH0_DOMAIN=${auth0Domain}`,
-      "# AUTH0_CLIENT_ID can be publicly shared (checked into git)",
-      "# https://community.auth0.com/t/client-id-vs-secret/9558/2",
-      `AUTH0_CLIENT_ID=${clientId}`,
-    ].join("\n")}\n`
-  );
-});
+pulumi
+  .all([auth0.audience, auth0.mobileClientId])
+  .apply(([audience, clientId]) => {
+    // Publish mobile app on Expo
+    // https://docs.expo.io/workflow/publishing/
+    spawn.sync("expo", ["publish", "--release-channel", pulumi.getStack()], {
+      cwd: mobilePath,
+      env: {
+        ...process.env,
+        GRAPHQL_URL: graphqlUrl,
+        AUTH0_AUDIENCE: audience,
+        AUTH0_DOMAIN: auth0Domain,
+        AUTH0_CLIENT_ID: clientId,
+      },
+    });
+  });
+export const expoProjectPage = `https://expo.io/@${expoUsername}/${
+  mobileConfig.slug
+}?release-channel=${pulumi.getStack()}`;
 // @remove-mobile-end

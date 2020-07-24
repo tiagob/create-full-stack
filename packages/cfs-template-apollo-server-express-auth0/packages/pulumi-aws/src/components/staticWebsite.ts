@@ -17,6 +17,7 @@ export interface StaticWebsiteArgs {
   certificate: Certificate;
   domain: string;
   graphqlUrl: string;
+  auth0Audience: pulumi.Output<string | undefined>;
   auth0Domain: string;
   webClientId: pulumi.Output<string>;
   webPath: string;
@@ -32,6 +33,7 @@ export default class StaticWebsite extends pulumi.ComponentResource {
       certificate,
       domain,
       graphqlUrl,
+      auth0Audience,
       auth0Domain,
       webClientId,
       webPath,
@@ -65,6 +67,7 @@ export default class StaticWebsite extends pulumi.ComponentResource {
     new SyncWeb(
       `${name}-sync-web`,
       {
+        auth0Audience,
         auth0Domain,
         webPath,
         graphqlUrl,

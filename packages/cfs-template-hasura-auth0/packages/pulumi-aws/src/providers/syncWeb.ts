@@ -1,6 +1,8 @@
+// @remove-file-web
 import * as pulumi from "@pulumi/pulumi";
 import AWS from "aws-sdk";
 import { PutObjectOutput } from "aws-sdk/clients/s3";
+import { SpawnSyncOptions } from "child_process";
 import spawn from "cross-spawn";
 
 // Build web and upload to S3. This is handled as a dynamic provider because these steps are
@@ -19,6 +21,7 @@ import spawn from "cross-spawn";
 // https://www.pulumi.com/docs/tutorials/aws/serializing-functions/#capturing-modules-in-a-javascript-function
 
 export interface SyncWebResourceInputs {
+  auth0Audience: pulumi.Input<string | undefined>;
   auth0Domain: pulumi.Input<string>;
   webPath: pulumi.Input<string>;
   graphqlUrl: pulumi.Input<string>;
@@ -27,6 +30,7 @@ export interface SyncWebResourceInputs {
 }
 
 interface SyncWebInputs {
+  auth0Audience?: string;
   auth0Domain: string;
   webPath: string;
   graphqlUrl: string;
@@ -43,13 +47,16 @@ interface SyncWebOutputs {
   objectOutputs: ObjectOutput[];
 }
 
-function runYarn(cwd: string, args: string[] = []) {
+function runYarn(
+  cwd: string,
+  args: string[] = [],
+  options: SpawnSyncOptions = {}
+) {
   const command = "yarnpkg";
   const argsWithCwd = ["--cwd", cwd, ...args];
-  const proc = spawn.sync(command, argsWithCwd, { stdio: "inherit" });
+  const proc = spawn.sync(command, argsWithCwd, options);
   if (proc.status !== 0) {
     console.error(`\`${command} ${argsWithCwd.join(" ")}\` failed`);
-    process.exit(1);
   }
   return proc.output;
 }
@@ -84,21 +91,24 @@ async function syncWeb(
   const mimeModule = await import("mime");
   const mime = mimeModule.default;
   const s3 = new AWS.S3();
-  const { graphqlUrl, auth0Domain, clientId, webPath, bucketName } = inputs;
+  const {
+    graphqlUrl,
+    auth0Audience,
+    auth0Domain,
+    clientId,
+    webPath,
+    bucketName,
+  } = inputs;
 
-  fs.writeFileSync(
-    `${webPath}/.env`,
-    // Broken up for readability.
-    `${[
-      `EXTEND_ESLINT=true`,
-      `REACT_APP_AUTH0_AUDIENCE=${graphqlUrl}`,
-      `REACT_APP_AUTH0_DOMAIN=${auth0Domain}`,
-      "# REACT_APP_AUTH0_CLIENT_ID can be publicly shared (checked into git)",
-      "# https://community.auth0.com/t/client-id-vs-secret/9558/2",
-      `REACT_APP_AUTH0_CLIENT_ID=${clientId}`,
-    ].join("\n")}\n`
-  );
-  runYarn(webPath, ["build"]);
+  runYarn(webPath, ["build"], {
+    env: {
+      ...process.env,
+      REACT_APP_GRAPHQL_URL: graphqlUrl,
+      REACT_APP_AUTH0_AUDIENCE: auth0Audience,
+      REACT_APP_AUTH0_DOMAIN: auth0Domain,
+      REACT_APP_AUTH0_CLIENT_ID: clientId,
+    },
+  });
   const pathToBuild = `${webPath}/build`;
   const webContentsRootPath = path.join(process.cwd(), pathToBuild);
   console.log("Syncing contents from local disk at", webContentsRootPath);

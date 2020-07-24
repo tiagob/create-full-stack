@@ -1,3 +1,4 @@
+// @remove-file-web
 import * as pulumi from "@pulumi/pulumi";
 import AWS from "aws-sdk";
 

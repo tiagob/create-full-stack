@@ -13,7 +13,7 @@ export interface FargateArgs {
   connectionString: pulumi.Output<string>;
   cluster: Cluster;
   imagePath: string;
-  graphqlUrl: string;
+  auth0Audience: pulumi.Output<string | undefined>;
   auth0Domain: string;
   // @remove-web-begin
   webUrl: string;
@@ -28,7 +28,7 @@ export default class Fargate extends pulumi.ComponentResource {
       connectionString,
       cluster,
       imagePath,
-      graphqlUrl,
+      auth0Audience,
       auth0Domain,
       // @remove-web-begin
       webUrl,
@@ -36,11 +36,6 @@ export default class Fargate extends pulumi.ComponentResource {
     } = args;
     super("aws:Fargate", name, args, opts);
     const domainParts = getDomainAndSubdomain(domain);
-
-    fs.writeFileSync(
-      "../server/.env",
-      `AUTH0_AUDIENCE=${graphqlUrl}\nAUTH0_DOMAIN=${auth0Domain}\n`
-    );
 
     const listener = new awsx.lb.NetworkLoadBalancer(
       // There's a 32 character limit on names so abbreviate to "nlb".
@@ -80,6 +75,8 @@ export default class Fargate extends pulumi.ComponentResource {
             portMappings: [listener],
             environment: [
               { name: "DATABASE_URL", value: connectionString },
+              { name: "AUTH0_AUDIENCE", value: auth0Audience },
+              { name: "AUTH0_DOMAIN", value: auth0Domain },
               // @remove-web-begin
               { name: "CORS_ORIGIN", value: webUrl },
               // @remove-web-end

@@ -5,10 +5,8 @@ config:
     secure: AAABAKzvorDH7cInZD4ZR0ifp9T7G+JPkbT/gR44PkN3GGrcUKwkddf7j+fC8bCVLPw2Zo/ruls+G6kKBsM7ISNUJfeBRprpWgpxF9BCPoqbhMl8E36A7MS60LvyMfBf
   auth0:domain: create-full-stack.auth0.com
   aws:region: us-east-1
-  my-full-stack:auth0Domain: create-full-stack.auth0.com
-  my-full-stack:auth0MobileCallback: https://auth.expo.io/@tiagsters/mobile
-  my-full-stack:dbName: todo
+  my-full-stack:dbName: myfullstack
   my-full-stack:dbPassword:
-    secure: AAABALsdPwEFJn0V3ukVKo3A8Nu5ksajdCCZuBH3wYPagoymVcQqrUq1Nfcv
-  my-full-stack:dbUsername: todo
+    secure: AAABAKBZJBkEfjLEHGxGIsgZhIxsc4zOodhApt8g+SRGvTSAM868X8B8aQ4=
+  my-full-stack:dbUsername: myfullstack
   my-full-stack:domain: demo-full-stack.com
