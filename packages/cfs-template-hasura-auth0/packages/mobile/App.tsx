@@ -3,7 +3,6 @@ import {
   NavigationContainerRef,
 } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import Constants from "expo-constants";
 import React, { ReactElement } from "react";
 
 import About from "./src/containers/About";
