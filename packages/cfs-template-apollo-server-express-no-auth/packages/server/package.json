@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"green.bold,cyan.bold\" \"yarn watch-ts\" \"yarn watch-node\"",
-    "start-production": "node ./build/index.js",
-    "watch-node": "nodemon ./build/index.js",
+    "start-production": "node -r cfs-dotenv/config ./build/index.js",
+    "watch-node": "nodemon -r cfs-dotenv/config ./build/index.js",
     "watch-ts": "tsc -w"
   },
   "dependencies": {
@@ -22,6 +22,7 @@
     "typescript": "3.9.2"
   },
   "devDependencies": {
+    "cfs-dotenv": "0.1.0",
     "concurrently": "^5.2.0",
     "nodemon": "^2.0.4"
   }

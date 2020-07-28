@@ -1,6 +1,6 @@
 {
-  "name": "create-full-stack-scripts",
-  "version": "0.1.2",
+  "name": "cfs-dotenv",
+  "version": "0.1.0",
   "license": "MIT",
   "main": "build/index.js",
   "typings": "build/index.d.ts",

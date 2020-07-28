@@ -1,6 +1,9 @@
 {
   "private": true,
-  "workspaces": ["packages/*"],
+  "workspaces": {
+    "packages": ["packages/*"],
+    "nohoist": ["**/typeorm", "**/typeorm/**"]
+  },
   "scripts": {
     "generate": "graphql-codegen --watch",
     "lint": "eslint packages/**/*.{ts,tsx} --fix",

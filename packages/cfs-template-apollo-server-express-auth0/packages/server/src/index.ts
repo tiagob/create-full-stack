@@ -10,8 +10,6 @@ import { Connection, createConnection, QueryFailedError } from "typeorm";
 import getResolvers, { DecodedJwt } from "./getResolvers";
 import typeDefs from "./graphql/schema";
 
-require("dotenv").config();
-
 interface Request {
   req: { user: DecodedJwt };
 }
