@@ -43,8 +43,7 @@ export default function ({
           if (
             t.isStringLiteral(key) &&
             (!include || include.includes(key.value)) &&
-            (!exclude || !exclude.includes(key.value)) &&
-            key.value !== "NODE_ENV"
+            (!exclude || !exclude.includes(key.value))
           ) {
             path.replaceWith(
               key.value in process.env
