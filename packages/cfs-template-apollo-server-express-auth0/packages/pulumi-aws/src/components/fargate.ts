@@ -2,7 +2,6 @@ import * as aws from "@pulumi/aws";
 import * as awsx from "@pulumi/awsx";
 import { Cluster } from "@pulumi/awsx/ecs";
 import * as pulumi from "@pulumi/pulumi";
-import fs from "fs";
 
 import { getDomainAndSubdomain } from "../utils";
 import Certificate from "./certificate";
@@ -75,7 +74,10 @@ export default class Fargate extends pulumi.ComponentResource {
             portMappings: [listener],
             environment: [
               { name: "DATABASE_URL", value: connectionString },
-              { name: "AUTH0_AUDIENCE", value: auth0Audience },
+              {
+                name: "AUTH0_AUDIENCE",
+                value: auth0Audience.apply((audience) => audience || ""),
+              },
               { name: "AUTH0_DOMAIN", value: auth0Domain },
               // @remove-web-begin
               { name: "CORS_ORIGIN", value: webUrl },

@@ -108,7 +108,7 @@ export default class Auth0 extends pulumi.ComponentResource {
         signingAlg: "RS256",
       },
       { parent: this }
-    );
+    ).identifier;
 
     new auth0.Prompt(`${name}-prompt`, {
       universalLoginExperience: "new",

@@ -77,6 +77,10 @@ export function setDevelopmentEnv(
         mobileClientId,
         // @remove-mobile-end
       ]) => {
+        overrideEnvVars("../server/.env.development", {
+          AUTH0_AUDIENCE: audience,
+          AUTH0_DOMAIN: auth0Domain,
+        });
         // @remove-web-begin
         overrideEnvVars("../web/.env.development", {
           REACT_APP_GRAPHQL_URL: graphqlUrl,

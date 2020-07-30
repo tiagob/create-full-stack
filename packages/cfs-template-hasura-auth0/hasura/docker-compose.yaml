@@ -21,6 +21,6 @@ services:
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
       # TODO: #67 CLI generates HASURA_GRAPHQL_JWT_SECRET for Auth0
-      HASURA_GRAPHQL_JWT_SECRET: '{"jwk_url":"https://create-full-stack.auth0.com/.well-known/jwks.json","audience":"hasura"}'
+      HASURA_GRAPHQL_JWT_SECRET: '{"jwk_url":"https://create-full-stack-development.auth0.com/.well-known/jwks.json","audience":"hasura"}'
 volumes:
   db_data:
