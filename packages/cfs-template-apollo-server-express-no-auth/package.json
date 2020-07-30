@@ -1,6 +1,6 @@
 {
   "name": "cfs-template-apollo-server-express-no-auth",
-  "version": "0.1.23",
+  "version": "0.1.24",
   "description": "The apollo-server-express without auth template for Create Full Stack.",
   "license": "MIT"
 }
