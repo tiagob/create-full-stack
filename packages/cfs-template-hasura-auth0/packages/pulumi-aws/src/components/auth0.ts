@@ -6,10 +6,6 @@ import fs from "fs";
 import mobileConfig from "../../../mobile/app.json";
 // @remove-mobile-end
 
-// @remove-web-begin
-const localDevUrl = "http://localhost:3000";
-// @remove-web-end
-
 export interface Auth0Args {
   resourceServerName: string;
   // @remove-web-begin
@@ -57,8 +53,8 @@ export default class Auth0 extends pulumi.ComponentResource {
         oidcConformant: true,
         ssoDisabled: false,
         crossOriginAuth: false,
-        allowedLogoutUrls: [localDevUrl, webUrl],
-        callbacks: [localDevUrl, webUrl],
+        allowedLogoutUrls: [webUrl],
+        callbacks: [webUrl],
         jwtConfiguration: {
           alg: "RS256",
           lifetimeInSeconds: 36000,
@@ -67,7 +63,7 @@ export default class Auth0 extends pulumi.ComponentResource {
         tokenEndpointAuthMethod: "none",
         appType: "spa",
         grantTypes: ["authorization_code", "implicit", "refresh_token"],
-        webOrigins: [localDevUrl, webUrl],
+        webOrigins: [webUrl],
         customLoginPageOn: true,
       },
       { parent: this }
@@ -119,6 +115,10 @@ export default class Auth0 extends pulumi.ComponentResource {
       name: "hasuraAccessToken",
       enabled: true,
       script: fs.readFileSync("./auth0-rules/hasuraAccessToken.js", "utf8"),
+    });
+
+    new auth0.Prompt(`${name}-prompt`, {
+      universalLoginExperience: "new",
     });
 
     this.registerOutputs({

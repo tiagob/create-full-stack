@@ -47,7 +47,7 @@ interface Auth0ProviderOptions {
   clientId: string;
   audience: string;
   authorizationEndpoint: string;
-  onRedirectCallback(): void;
+  onRedirectCallback: () => void;
 }
 
 const useProxy = Platform.select({ web: false, default: true });

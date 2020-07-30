@@ -13,6 +13,9 @@ import Rds from "./src/components/rds";
 // @remove-web-begin
 import StaticWebsite from "./src/components/staticWebsite";
 // @remove-web-end
+// @remove-mobile-begin
+import { publishExpo } from "./src/utils";
+// @remove-mobile-end
 
 const serverPath = "../server";
 // @remove-web-begin
@@ -25,6 +28,15 @@ const mobilePath = "../mobile";
 const config = new pulumi.Config();
 const domain = config.require("domain");
 const serverDomain = `${path.basename(serverPath)}.${domain}`;
+
+// @remove-mobile-begin
+const expoUsername = spawn
+  .sync("expo", ["whoami"], { encoding: "utf8" })
+  .stdout.trim();
+export const expoProjectPage = `https://expo.io/@${expoUsername}/${
+  mobileConfig.slug
+}?release-channel=${pulumi.getStack()}`;
+// @remove-mobile-end
 export const graphqlUrl = `https://${serverDomain}/graphql`;
 // @remove-web-begin
 export const webUrl = `https://${domain}`;
@@ -72,16 +84,5 @@ new StaticWebsite(path.basename(webPath), {
 // @remove-web-end
 
 // @remove-mobile-begin
-// Publish mobile app on Expo
-// https://docs.expo.io/workflow/publishing/
-spawn.sync("expo", ["publish", "--release-channel", pulumi.getStack()], {
-  cwd: mobilePath,
-  env: {
-    ...process.env,
-    GRAPHQL_URL: graphqlUrl,
-  },
-});
-export const expoProjectPage = `https://expo.io/@${expoUsername}/${
-  mobileConfig.slug
-}?release-channel=${pulumi.getStack()}`;
+publishExpo(graphqlUrl, mobilePath);
 // @remove-mobile-end

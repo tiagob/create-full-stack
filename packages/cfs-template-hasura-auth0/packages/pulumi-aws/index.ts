@@ -14,6 +14,12 @@ import Rds from "./src/components/rds";
 // @remove-web-begin
 import StaticWebsite from "./src/components/staticWebsite";
 // @remove-web-end
+import {
+  // @remove-mobile-begin
+  publishExpo,
+  // @remove-mobile-end
+  setDevelopmentEnv,
+} from "./src/utils";
 
 const serverPath = "../../hasura";
 // @remove-web-begin
@@ -23,33 +29,33 @@ const webPath = "../web";
 const mobilePath = "../mobile";
 // @remove-mobile-end
 
+const stack = pulumi.getStack();
+const isDevelopment = stack === "development";
 const config = new pulumi.Config();
-const domain = config.require("domain");
-const serverDomain = `${path.basename(serverPath)}.${domain}`;
-export const graphqlUrl = `https://${serverDomain}/v1/graphql`;
-// @remove-web-begin
-export const webUrl = `https://${domain}`;
-// @remove-web-end
+const serverDomain = isDevelopment
+  ? "localhost:8080"
+  : `${path.basename(serverPath)}.${config.require("domain")}`;
 const auth0Domain = new pulumi.Config("auth0").require("domain");
-
-// Create a wildcard certificate so it can be re-used.
-// https://docs.aws.amazon.com/acm/latest/userguide/acm-certificate.html
-// There's a hidden limit on the number of certificates an AWS account can create.
-// https://github.com/aws/aws-cdk/issues/5889#issuecomment-599609939
-const subdomainCertificate = new Certificate("subdomain-certificate", {
-  domain: `*.${domain}`,
-});
-// @remove-web-begin
-const domainCertificate = new Certificate("domain-certificate", {
-  domain,
-});
-// @remove-web-end
 
 // @remove-mobile-begin
 const expoUsername = spawn
   .sync("expo", ["whoami"], { encoding: "utf8" })
   .stdout.trim();
+export const expoProjectPage = isDevelopment
+  ? undefined
+  : `https://expo.io/@${expoUsername}/${
+      mobileConfig.slug
+    }?release-channel=${pulumi.getStack()}`;
 // @remove-mobile-end
+export const graphqlUrl = `${
+  isDevelopment ? "http" : "https"
+}://${serverDomain}/v1/graphql`;
+// @remove-web-begin
+export const webUrl = isDevelopment
+  ? "http://localhost:3000"
+  : `https://${config.require("domain")}`;
+// @remove-web-end
+
 const auth0 = new Auth0("auth0", {
   resourceServerName: path.basename(serverPath),
   // @remove-web-begin
@@ -62,59 +68,59 @@ const auth0 = new Auth0("auth0", {
   // @remove-mobile-end
 });
 
-const dbName = config.require("dbName");
-const dbUsername = config.require("dbUsername");
-const dbPassword = config.requireSecret("dbPassword");
-const { connectionString, cluster } = new Rds("server-db", {
-  dbName,
-  dbUsername,
-  dbPassword,
-});
-const hasuraGraphqlAdminSecret = config.requireSecret(
-  "hasuraGraphqlAdminSecret"
-);
-new Fargate(path.basename(serverPath), {
-  certificate: subdomainCertificate,
-  domain: serverDomain,
-  connectionString,
-  cluster,
-  graphqlUrl,
-  auth0Domain,
-  hasuraGraphqlAdminSecret,
-  imagePath: serverPath,
-  auth0Audience: auth0.audience,
-});
-
-// @remove-web-begin
-new StaticWebsite(path.basename(webPath), {
-  certificate: domainCertificate,
-  domain,
-  graphqlUrl,
-  auth0Audience: auth0.audience,
-  auth0Domain,
-  webClientId: auth0.webClientId,
-  webPath,
-});
-// @remove-web-end
-
-// @remove-mobile-begin
-pulumi
-  .all([auth0.audience, auth0.mobileClientId])
-  .apply(([audience, clientId]) => {
-    // Publish mobile app on Expo
-    // https://docs.expo.io/workflow/publishing/
-    spawn.sync("expo", ["publish", "--release-channel", pulumi.getStack()], {
-      cwd: mobilePath,
-      env: {
-        ...process.env,
-        GRAPHQL_URL: graphqlUrl,
-        AUTH0_AUDIENCE: audience,
-        AUTH0_DOMAIN: auth0Domain,
-        AUTH0_CLIENT_ID: clientId,
-      },
-    });
+if (isDevelopment) {
+  setDevelopmentEnv(graphqlUrl, auth0, auth0Domain);
+} else {
+  const domain = config.require("domain");
+  // Create a wildcard certificate so it can be re-used.
+  // https://docs.aws.amazon.com/acm/latest/userguide/acm-certificate.html
+  // There's a hidden limit on the number of certificates an AWS account can create.
+  // https://github.com/aws/aws-cdk/issues/5889#issuecomment-599609939
+  const subdomainCertificate = new Certificate("subdomain-certificate", {
+    domain: `*.${domain}`,
   });
-export const expoProjectPage = `https://expo.io/@${expoUsername}/${
-  mobileConfig.slug
-}?release-channel=${pulumi.getStack()}`;
-// @remove-mobile-end
+  // @remove-web-begin
+  const domainCertificate = new Certificate("domain-certificate", {
+    domain,
+  });
+  // @remove-web-end
+
+  const dbName = config.require("dbName");
+  const dbUsername = config.require("dbUsername");
+  const dbPassword = config.requireSecret("dbPassword");
+  const { connectionString, cluster } = new Rds("server-db", {
+    dbName,
+    dbUsername,
+    dbPassword,
+  });
+  const hasuraGraphqlAdminSecret = config.requireSecret(
+    "hasuraGraphqlAdminSecret"
+  );
+  new Fargate(path.basename(serverPath), {
+    certificate: subdomainCertificate,
+    domain: serverDomain,
+    connectionString,
+    cluster,
+    graphqlUrl,
+    auth0Domain,
+    hasuraGraphqlAdminSecret,
+    imagePath: serverPath,
+    auth0Audience: auth0.audience,
+  });
+
+  // @remove-web-begin
+  new StaticWebsite(path.basename(webPath), {
+    certificate: domainCertificate,
+    domain,
+    graphqlUrl,
+    auth0Audience: auth0.audience,
+    auth0Domain,
+    webClientId: auth0.webClientId,
+    webPath,
+  });
+  // @remove-web-end
+
+  // @remove-mobile-begin
+  publishExpo(graphqlUrl, mobilePath, auth0, auth0Domain);
+  // @remove-mobile-end
+}
