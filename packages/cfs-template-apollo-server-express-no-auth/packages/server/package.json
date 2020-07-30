@@ -22,7 +22,7 @@
     "typescript": "3.9.2"
   },
   "devDependencies": {
-    "cfs-dotenv": "0.1.1",
+    "cfs-dotenv": "0.1.2",
     "concurrently": "^5.2.0",
     "nodemon": "^2.0.4"
   }

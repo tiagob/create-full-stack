@@ -3,7 +3,7 @@ import * as BabelTypes from "@babel/types";
 import { config } from "cfs-dotenv";
 
 interface Env {
-  parsed: { [index: string]: NodeJS.ProcessEnv };
+  parsed?: { [index: string]: NodeJS.ProcessEnv };
 }
 
 // Hack to fix https://github.com/motdotla/dotenv/issues/199
@@ -50,8 +50,12 @@ export default function ({
                 ? t.valueToNode(process.env[key.value])
                 : t.conditionalExpression(
                     t.identifier("__DEV__"),
-                    t.valueToNode(developmentEnv.parsed[key.value]),
-                    t.valueToNode(productionEnv.parsed[key.value])
+                    t.valueToNode(
+                      developmentEnv.parsed && developmentEnv.parsed[key.value]
+                    ),
+                    t.valueToNode(
+                      productionEnv.parsed && productionEnv.parsed[key.value]
+                    )
                   )
             );
           }

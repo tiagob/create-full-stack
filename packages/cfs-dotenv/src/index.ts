@@ -44,10 +44,7 @@ export function config(env = process.env.NODE_ENV || "development") {
         result,
         dotenvExpand(
           // eslint-disable-next-line global-require
-          dotenv.config({
-            path: dotenvFile,
-            debug: true,
-          })
+          dotenv.config({ path: dotenvFile })
         )
       );
     }
