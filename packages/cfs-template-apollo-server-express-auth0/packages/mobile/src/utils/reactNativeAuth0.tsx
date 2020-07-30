@@ -115,7 +115,7 @@ export const Auth0Provider = ({
           setToken(accessToken);
 
           const userInfoResponse = await fetch(
-            "https://create-full-stack.auth0.com/userinfo",
+            `https://${process.env.AUTH0_DOMAIN}/userinfo`,
             { headers: { Authorization: `Bearer ${accessToken}` } }
           );
           const userInfo = await userInfoResponse.json();

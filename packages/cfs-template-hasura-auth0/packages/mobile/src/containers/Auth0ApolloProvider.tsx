@@ -1,5 +1,4 @@
 import { ApolloProvider } from "@apollo/react-hooks";
-import { createStackNavigator } from "@react-navigation/stack";
 import React, { ReactNode } from "react";
 
 import getApolloClient from "../utils/getApolloClient";
