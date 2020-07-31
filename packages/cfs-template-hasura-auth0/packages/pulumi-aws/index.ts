@@ -69,7 +69,17 @@ const auth0 = new Auth0("auth0", {
 });
 
 if (isDevelopment) {
-  setDevelopmentEnv(graphqlUrl, auth0, auth0Domain);
+  setDevelopmentEnv(
+    graphqlUrl,
+    auth0,
+    auth0Domain,
+    // @remove-web-begin
+    webPath,
+    // @remove-web-end
+    // @remove-mobile-begin
+    mobilePath
+    // @remove-mobile-end
+  );
 } else {
   const domain = config.require("domain");
   // Create a wildcard certificate so it can be re-used.

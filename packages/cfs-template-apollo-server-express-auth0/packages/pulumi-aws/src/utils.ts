@@ -55,7 +55,14 @@ function overrideEnvVars(
 export function setDevelopmentEnv(
   graphqlUrl: string,
   auth0: Auth0,
-  auth0Domain: string
+  auth0Domain: string,
+  serverPath: string,
+  // @remove-web-begin
+  webPath: string,
+  // @remove-web-end
+  // @remove-mobile-begin
+  mobilePath: string
+  // @remove-mobile-end
 ) {
   pulumi
     .all([
@@ -77,12 +84,12 @@ export function setDevelopmentEnv(
         mobileClientId,
         // @remove-mobile-end
       ]) => {
-        overrideEnvVars("../server/.env.development", {
+        overrideEnvVars(`${serverPath}/.env.development`, {
           AUTH0_AUDIENCE: audience,
           AUTH0_DOMAIN: auth0Domain,
         });
         // @remove-web-begin
-        overrideEnvVars("../web/.env.development", {
+        overrideEnvVars(`${webPath}/.env.development`, {
           REACT_APP_GRAPHQL_URL: graphqlUrl,
           REACT_APP_AUTH0_CLIENT_ID: webClientId,
           REACT_APP_AUTH0_AUDIENCE: audience,
@@ -90,7 +97,7 @@ export function setDevelopmentEnv(
         });
         // @remove-web-end
         // @remove-mobile-begin
-        overrideEnvVars("../mobile/.env.development", {
+        overrideEnvVars(`${mobilePath}/.env.development`, {
           GRAPHQL_URL: graphqlUrl,
           AUTH0_CLIENT_ID: mobileClientId,
           AUTH0_AUDIENCE: audience,
