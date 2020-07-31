@@ -47,10 +47,39 @@ const program: Program = new commander.Command(packageJson.name)
   .option(
     "-t, --template <template>",
     "specify a template for the created project"
-  )
-  .parse(process.argv);
+  );
+
+program.exitOverride();
+try {
+  program.parse(process.argv);
+} catch (error) {
+  console.log();
+  if (error.code === "commander.missingArgument") {
+    console.error("Please specify the project directory:");
+    console.log(
+      `  ${chalk.cyan(program.name())} ${chalk.green("<project-directory>")}`
+    );
+    console.log();
+    console.log("For example:");
+    console.log(
+      `  ${chalk.cyan(program.name())} ${chalk.green("my-full-stack")}`
+    );
+    console.log();
+    console.log(
+      `Run ${chalk.cyan(`${program.name()} --help`)} to see all options.`
+    );
+  }
+  process.exit(1);
+}
 
 async function run() {
+  const projectPath = path.resolve(projectName);
+  const appName = path.basename(projectPath);
+  checkAppName(appName);
+  if (!isSafeToCreateProjectIn(projectPath, projectName)) {
+    process.exit(1);
+  }
+
   // Which template should be used?
   let { template } = program;
   let backend: Backend = Backend.hasura;
@@ -89,20 +118,14 @@ async function run() {
     type: "list",
     choices: cloudPlatforms,
     name: "cloudPlatform",
-    message: "Which cloud platform?",
+    message:
+      "Which cloud platform? (Requires Pulumi CLI, https://www.pulumi.com/)",
     default: CloudPlatform.none,
   });
   const { cloudPlatform } = cloudPlatformAnswer;
-  let hasGithubActions = false;
   if (cloudPlatform !== CloudPlatform.none) {
     // Error as soon as possible if pulumi and aws aren't installed.
     checkPulumiAndAws();
-    const hasGithubActionsAnswer = await inquirer.prompt({
-      type: "confirm",
-      name: "hasGithubActions",
-      message: "Include GitHub Actions CI/CD?",
-    });
-    hasGithubActions = hasGithubActionsAnswer.hasGithubActions;
   }
   const hasWebAnswer = await inquirer.prompt({
     type: "confirm",
@@ -116,15 +139,18 @@ async function run() {
     message: "Include a React Native iOS and Android app?",
   });
   const { hasMobile } = hasMobileAnswer;
-
-  const projectPath = path.resolve(projectName);
-  const appName = path.basename(projectPath);
-
-  checkAppName(appName);
-  fs.ensureDirSync(projectName);
-  if (!isSafeToCreateProjectIn(projectPath, projectName)) {
-    process.exit(1);
+  let hasGithubActions = false;
+  if (cloudPlatform !== CloudPlatform.none) {
+    const hasGithubActionsAnswer = await inquirer.prompt({
+      type: "confirm",
+      name: "hasGithubActions",
+      message: "Include GitHub Actions CI/CD?",
+    });
+    hasGithubActions = hasGithubActionsAnswer.hasGithubActions;
+    // TODO: Get pulumi config
   }
+
+  fs.ensureDirSync(projectName);
   console.log();
   // Yarn is required for Yarn workspaces (monorepo support)
   if (!shouldUseYarn()) {
@@ -154,7 +180,7 @@ async function run() {
   // Also, uninstalls the template
   runYarn(projectName);
 
-  // TODO: Generate local development initialization script ex. install postgres, sync-db, buildNodeServer etc.
+  // TODO: Start script checks for docker. Starts docker. Builds common.
   if (nodeBackends.has(backend)) {
     console.log("Building the node server...");
     console.log();

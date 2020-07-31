@@ -42,13 +42,13 @@ export const typesToTemplate = Object.freeze(
   )
 );
 export enum CloudPlatform {
-  pulumiAws = "pulumi-aws",
+  aws = "aws",
   none = "none",
 }
 export const cloudPlatforms = [
   {
-    name: `${CloudPlatform.pulumiAws} (Requires Pulumi and AWS CLIs)`,
-    value: CloudPlatform.pulumiAws,
+    name: `${CloudPlatform.aws} (Requires AWS CLI)`,
+    value: CloudPlatform.aws,
   },
   CloudPlatform.none,
 ];

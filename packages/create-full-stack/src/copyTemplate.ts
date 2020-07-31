@@ -262,7 +262,7 @@ export default async function copyTemplate(options: {
   if (!hasWeb) {
     excludeList.push("web");
   }
-  if (cloudPlatform !== CloudPlatform.pulumiAws) {
+  if (cloudPlatform !== CloudPlatform.aws) {
     excludeList.push("pulumi-aws");
   }
   copySync(templatePath, projectPath, false, excludeList);

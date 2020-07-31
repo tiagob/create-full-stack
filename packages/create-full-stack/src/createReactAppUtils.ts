@@ -50,6 +50,9 @@ export function checkAppName(appName: string) {
 // We also special case IJ-based products .idea because it integrates with CRA:
 // https://github.com/facebook/create-react-app/pull/368#issuecomment-243446094
 export function isSafeToCreateProjectIn(root: string, name: string) {
+  if (!fs.existsSync(root)) {
+    return true;
+  }
   const validFiles = new Set([
     ".DS_Store",
     ".git",
