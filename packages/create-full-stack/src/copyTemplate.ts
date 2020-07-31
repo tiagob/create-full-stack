@@ -5,7 +5,7 @@ import os from "os";
 import path from "path";
 import sortPackageJson from "sort-package-json";
 
-import { Auth, Backend } from "./constants";
+import { Auth, Backend, CloudPlatform } from "./constants";
 import { runYarn } from "./utils";
 
 // Don't include any local files. node_modules and yarn.lock will be different
@@ -232,17 +232,17 @@ export default async function copyTemplate(options: {
   backend: Backend;
   auth: Auth;
   template: string;
+  cloudPlatform: CloudPlatform;
   hasMobile: boolean;
   hasWeb: boolean;
-  hasPulumiAws: boolean;
   hasGithubActions: boolean;
 }) {
   const {
     projectPath,
     template,
+    cloudPlatform,
     hasMobile,
     hasWeb,
-    hasPulumiAws,
     hasGithubActions,
   } = options;
 
@@ -262,7 +262,7 @@ export default async function copyTemplate(options: {
   if (!hasWeb) {
     excludeList.push("web");
   }
-  if (!hasPulumiAws) {
+  if (cloudPlatform !== CloudPlatform.pulumiAws) {
     excludeList.push("pulumi-aws");
   }
   copySync(templatePath, projectPath, false, excludeList);

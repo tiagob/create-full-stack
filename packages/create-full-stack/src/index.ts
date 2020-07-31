@@ -12,6 +12,8 @@ import {
   auths,
   Backend,
   backends,
+  CloudPlatform,
+  cloudPlatforms,
   getTemplateTypeKey,
   nodeBackends,
   TemplateToTypes,
@@ -83,15 +85,16 @@ async function run() {
     auth = templateTypes.auth;
   }
   // What packages should be included/ignored in the template?
-  const hasPulumiAwsAnswer = await inquirer.prompt({
-    type: "confirm",
-    name: "hasPulumiAws",
-    message:
-      "Include Pulumi infrastructure as code (IAC) for AWS deployment? This requires the Pulumi and AWS CLIs.",
+  const cloudPlatformAnswer = await inquirer.prompt({
+    type: "list",
+    choices: cloudPlatforms,
+    name: "cloudPlatform",
+    message: "Which cloud platform?",
+    default: CloudPlatform.none,
   });
-  const { hasPulumiAws } = hasPulumiAwsAnswer;
+  const { cloudPlatform } = cloudPlatformAnswer;
   let hasGithubActions = false;
-  if (hasPulumiAws) {
+  if (cloudPlatform !== CloudPlatform.none) {
     // Error as soon as possible if pulumi and aws aren't installed.
     checkPulumiAndAws();
     const hasGithubActionsAnswer = await inquirer.prompt({
@@ -140,9 +143,9 @@ async function run() {
     backend,
     auth,
     template,
+    cloudPlatform,
     hasMobile,
     hasWeb,
-    hasPulumiAws,
     hasGithubActions,
   });
 
