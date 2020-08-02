@@ -85,16 +85,13 @@ async function updateVSCodeLaunch({
 
 interface Command {
   name: string;
-  color: string;
   command: string;
 }
 
 function getStartCommand(commands: Command[]) {
-  return `concurrently -k -p "[{name}]" -n "${commands
+  return `concurrently -k -p "[{name}]" -c "grey.bold" -n "${commands
     .map((c) => c.name)
-    .join(",")}" -c "${commands.map((c) => c.color).join(",")}" "${commands
-    .map((c) => c.command)
-    .join('" "')}"`;
+    .join(",")}" "${commands.map((c) => c.command).join('" "')}"`;
 }
 
 async function updatePackage({
@@ -117,33 +114,32 @@ async function updatePackage({
   appPackage.name = appName;
   const commands: Command[] = [];
   commands.push({
+    name: "Docker",
+    command: "docker-compose up",
+  });
+  commands.push({
     name: "Generate",
-    color: "magenta.bold",
     command: "yarn generate",
   });
   if (backend === Backend.apolloServerExpress) {
     commands.push({
       name: "Server",
-      color: "green.bold",
       command: "yarn --cwd packages/server start",
     });
   }
   commands.push({
     name: "Build Common",
-    color: "yellow.bold",
     command: "yarn --cwd packages/common watch",
   });
   if (hasMobile) {
     commands.push({
       name: "Mobile",
-      color: "white.bold",
       command: "yarn --cwd packages/mobile start",
     });
   }
   if (hasWeb) {
     commands.push({
       name: "Web",
-      color: "cyan.bold",
       command: "yarn --cwd packages/web start",
     });
   }
