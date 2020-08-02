@@ -18,46 +18,26 @@ _Assumes MacOS_
 brew install yarn
 ```
 
-### Clone repo and cd to root of project
+### Install docker
 
-```bash
-git clone https://github.com/tiagob/create-full-stack.git
-cd create-full-stack
-```
-
-**All commands below are run from the root project directory `create-full-stack`.**
-
-### Install dependencies
-
-```bash
-yarn
-```
+https://docs.docker.com/get-docker/
 
 ## Run
 
 ```bash
-cd packages/create-full-stack
+yarn create full-stack ~/my-full-stack
 ```
 
-### Options
+### Help
 
 ```bash
-$ yarn create-full-stack --help
+% yarn create-full-stack --help
 Usage: create-full-stack <project-directory> [options]
 
 Options:
-  -V, --version            output the version number
-  -b, --backend <backend>  backend type [apollo|hasura]
-  -w, --web                include react website
-  -m, --mobile             include react-native mobile app
-  -a, --auth <auth>        auth type [auth0|]
-  -h, --help               display help for command
-```
-
-### Example run command
-
-```bash
-yarn create-full-stack -b apollo -w -m ~/my-full-stack
+  -V, --version              output the version number
+  -t, --template <template>  specify a template for the created project
+  -h, --help                 display help for command
 ```
 
 ## Setup [VSCode](https://code.visualstudio.com/) (recommended IDE/Editor)

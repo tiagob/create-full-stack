@@ -153,6 +153,28 @@ async function updatePackage({
   );
 }
 
+function toTitleCase(name: string) {
+  return name
+    .replace(
+      /\w*/g,
+      (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()
+    )
+    .replace(/[^\dA-Za-z]+/g, " ");
+}
+
+async function setMobileAppName(appName: string, projectPath: string) {
+  const { default: appJson } = await import(
+    `${projectPath}/packages/mobile/app.json`
+  );
+  appJson.slug = appName;
+  appJson.scheme = appName;
+  appJson.name = toTitleCase(appName);
+  fs.writeFileSync(
+    `${projectPath}/packages/mobile/app.json`,
+    JSON.stringify(appJson, undefined, 2)
+  );
+}
+
 function recursiveFileFunc(
   dir: string,
   func: (dir: string, file: string) => void
@@ -224,6 +246,7 @@ function recursiveRemoveEmptyDir(dir: string) {
 }
 
 export default async function copyTemplate(options: {
+  appName: string;
   projectPath: string;
   backend: Backend;
   auth: Auth;
@@ -234,6 +257,7 @@ export default async function copyTemplate(options: {
   hasGithubActions: boolean;
 }) {
   const {
+    appName,
     projectPath,
     template,
     cloudPlatform,
@@ -278,7 +302,9 @@ export default async function copyTemplate(options: {
   await updatePackage(options);
 
   const removeBlockInFileKeys: string[] = [];
-  if (!hasMobile) {
+  if (hasMobile) {
+    setMobileAppName(appName, projectPath);
+  } else {
     removeBlockInFileKeys.push("mobile");
   }
   if (!hasWeb) {

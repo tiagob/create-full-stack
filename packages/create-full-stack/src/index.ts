@@ -164,6 +164,7 @@ async function run() {
   console.log();
 
   await copyTemplate({
+    appName,
     projectPath,
     backend,
     auth,
