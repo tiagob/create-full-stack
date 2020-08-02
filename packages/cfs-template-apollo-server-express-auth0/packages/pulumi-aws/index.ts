@@ -38,7 +38,7 @@ const serverDomain = isDevelopment
 const auth0Domain = new pulumi.Config("auth0").require("domain");
 
 // @remove-mobile-begin
-const expoUsername = spawn
+export const expoUsername = spawn
   .sync("expo", ["whoami"], { encoding: "utf8" })
   .stdout.trim();
 export const expoProjectPage = isDevelopment
@@ -70,11 +70,11 @@ const auth0 = new Auth0("auth0", {
 
 if (isDevelopment) {
   setDevelopmentEnv(
-    graphqlUrl,
     auth0,
     auth0Domain,
     serverPath,
     // @remove-web-begin
+    graphqlUrl,
     webPath,
     // @remove-web-end
     // @remove-mobile-begin

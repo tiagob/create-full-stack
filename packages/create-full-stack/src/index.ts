@@ -147,7 +147,6 @@ async function run() {
       message: "Include GitHub Actions CI/CD?",
     });
     hasGithubActions = hasGithubActionsAnswer.hasGithubActions;
-    // TODO: Get pulumi config
   }
 
   fs.ensureDirSync(projectName);

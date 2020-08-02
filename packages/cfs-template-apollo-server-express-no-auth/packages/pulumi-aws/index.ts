@@ -30,7 +30,7 @@ const domain = config.require("domain");
 const serverDomain = `${path.basename(serverPath)}.${domain}`;
 
 // @remove-mobile-begin
-const expoUsername = spawn
+export const expoUsername = spawn
   .sync("expo", ["whoami"], { encoding: "utf8" })
   .stdout.trim();
 export const expoProjectPage = `https://expo.io/@${expoUsername}/${

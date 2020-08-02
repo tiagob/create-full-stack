@@ -53,10 +53,11 @@ function overrideEnvVars(
 
 // TODO: #100 Cleanup when there's neither web nor mobile
 export function setDevelopmentEnv(
-  graphqlUrl: string,
   auth0: Auth0,
   auth0Domain: string,
+  serverPath: string,
   // @remove-web-begin
+  graphqlUrl: string,
   webPath: string,
   // @remove-web-end
   // @remove-mobile-begin
@@ -83,6 +84,9 @@ export function setDevelopmentEnv(
         mobileClientId,
         // @remove-mobile-end
       ]) => {
+        overrideEnvVars(`${serverPath}/.env.development`, {
+          HASURA_GRAPHQL_JWT_SECRET: `{"jwk_url":"https://${auth0Domain}/.well-known/jwks.json","audience":"${audience}"}`,
+        });
         // @remove-web-begin
         overrideEnvVars(`${webPath}/.env.development`, {
           REACT_APP_GRAPHQL_URL: graphqlUrl,
@@ -93,7 +97,6 @@ export function setDevelopmentEnv(
         // @remove-web-end
         // @remove-mobile-begin
         overrideEnvVars(`${mobilePath}/.env.development`, {
-          GRAPHQL_URL: graphqlUrl,
           AUTH0_CLIENT_ID: mobileClientId,
           AUTH0_AUDIENCE: audience,
           AUTH0_DOMAIN: auth0Domain,

@@ -53,11 +53,11 @@ function overrideEnvVars(
 
 // TODO: #100 Cleanup when there's neither web nor mobile
 export function setDevelopmentEnv(
-  graphqlUrl: string,
   auth0: Auth0,
   auth0Domain: string,
   serverPath: string,
   // @remove-web-begin
+  graphqlUrl: string,
   webPath: string,
   // @remove-web-end
   // @remove-mobile-begin
@@ -98,7 +98,6 @@ export function setDevelopmentEnv(
         // @remove-web-end
         // @remove-mobile-begin
         overrideEnvVars(`${mobilePath}/.env.development`, {
-          GRAPHQL_URL: graphqlUrl,
           AUTH0_CLIENT_ID: mobileClientId,
           AUTH0_AUDIENCE: audience,
           AUTH0_DOMAIN: auth0Domain,
