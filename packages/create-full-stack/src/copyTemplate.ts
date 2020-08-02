@@ -1,6 +1,7 @@
 import { JSONSchemaForNPMPackageJsonFiles } from "@schemastore/package";
 import chalk from "chalk";
 import fs from "fs-extra";
+import yaml from "js-yaml";
 import os from "os";
 import path from "path";
 import sortPackageJson from "sort-package-json";
@@ -162,17 +163,27 @@ function toTitleCase(name: string) {
     .replace(/[^\dA-Za-z]+/g, " ");
 }
 
-async function setMobileAppName(appName: string, projectPath: string) {
-  const { default: appJson } = await import(
-    `${projectPath}/packages/mobile/app.json`
-  );
+async function updateAppJson(appName: string, projectPath: string) {
+  const filePath = `${projectPath}/packages/mobile/app.json`;
+  const { default: appJson } = await import(filePath);
   appJson.slug = appName;
   appJson.scheme = appName;
   appJson.name = toTitleCase(appName);
-  fs.writeFileSync(
-    `${projectPath}/packages/mobile/app.json`,
-    JSON.stringify(appJson, undefined, 2)
-  );
+  fs.writeFileSync(filePath, JSON.stringify(appJson, undefined, 2));
+}
+
+interface PulumiProjectFile {
+  name: string;
+}
+
+function updatePulumiProjectFile(appName: string, projectPath: string) {
+  const filePath = `${projectPath}/packages/pulumi-aws/Pulumi.yaml`;
+  const pulumiProjectFile = yaml.safeLoad(fs.readFileSync(filePath, "utf8"));
+  if (typeof pulumiProjectFile !== "object") {
+    return;
+  }
+  (pulumiProjectFile as PulumiProjectFile).name = appName;
+  fs.writeFileSync(filePath, yaml.safeDump(pulumiProjectFile));
 }
 
 function recursiveFileFunc(
@@ -298,13 +309,17 @@ export default async function copyTemplate(options: {
     path.join(projectPath, "package.json")
   );
 
+  if (hasMobile) {
+    updateAppJson(appName, projectPath);
+  }
+  if (cloudPlatform === CloudPlatform.aws) {
+    updatePulumiProjectFile(appName, projectPath);
+  }
   await updateVSCodeLaunch(options);
   await updatePackage(options);
 
   const removeBlockInFileKeys: string[] = [];
-  if (hasMobile) {
-    setMobileAppName(appName, projectPath);
-  } else {
+  if (!hasMobile) {
     removeBlockInFileKeys.push("mobile");
   }
   if (!hasWeb) {

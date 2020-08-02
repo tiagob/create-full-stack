@@ -180,7 +180,6 @@ async function run() {
   // Also, uninstalls the template
   runYarn(projectName);
 
-  // TODO: Start script checks for docker. Starts docker. Builds common.
   if (nodeBackends.has(backend)) {
     console.log("Building the node server...");
     console.log();

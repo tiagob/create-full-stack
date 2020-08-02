@@ -1,6 +1,6 @@
 config:
   auth0:clientId:
-    secure: AAABAImNgEOgQC+SSx5PwwoRJFcf+w+jP7U6xRO8oBqvoGkbR/DtXCV0PSFZH/T3VUAt1RxruE2DCsv6lsH47w==
+    secure:
   auth0:clientSecret:
-    secure: AAABABseV+E+/4Sr60ydFQR5KwniCF4x2C0ZB/FhbTzfUMLwsPukH5I4jj3Tmd91NdAyJlYQBIFYAlrdUIu7WL4NK1zjMKTsjUlsgjWBtE8v4WJK2sO0bUbliFBXTJKS
-  auth0:domain: create-full-stack-development.us.auth0.com
+    secure:
+  auth0:domain:

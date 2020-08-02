@@ -1,12 +1,7 @@
 config:
   auth0:clientId:
-    secure: AAABACxHkE+gltSVj+bnrskWHWn8Ejkh8ceUJtwMXJv7qIoIu/A4PJfDzfBcwnSMm3YiwxWSu3DbcH/3xhkc2w==
+    secure:
   auth0:clientSecret:
-    secure: AAABAKzvorDH7cInZD4ZR0ifp9T7G+JPkbT/gR44PkN3GGrcUKwkddf7j+fC8bCVLPw2Zo/ruls+G6kKBsM7ISNUJfeBRprpWgpxF9BCPoqbhMl8E36A7MS60LvyMfBf
-  auth0:domain: create-full-stack.auth0.com
+    secure:
+  auth0:domain:
   aws:region: us-east-1
-  my-full-stack:dbName: myfullstack
-  my-full-stack:dbPassword:
-    secure: AAABAKBZJBkEfjLEHGxGIsgZhIxsc4zOodhApt8g+SRGvTSAM868X8B8aQ4=
-  my-full-stack:dbUsername: myfullstack
-  my-full-stack:domain: demo-full-stack.com
