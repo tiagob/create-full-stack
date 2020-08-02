@@ -1,6 +1,6 @@
 {
   "name": "create-full-stack",
-  "version": "0.1.31",
+  "version": "0.1.32",
   "description": "Configuration and scripts for Create Full Stack.",
   "license": "MIT",
   "bin": {
