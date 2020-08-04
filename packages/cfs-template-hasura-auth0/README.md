@@ -208,7 +208,7 @@ From the Auth0 console https://manage.auth0.com/dashboard/
 In `hasura/.env.development` fill in the field
 
 ```
-HASURA_GRAPHQL_JWT_SECRET={"jwk_url":"https://[YOUR AUTH0 DOMAIN].well-known/jwks.json","audience":"[YOUR AUTH0 API AUDIENCE]"}
+HASURA_GRAPHQL_JWT_SECRET={"jwk_url":"https://[YOUR AUTH0 DOMAIN]/.well-known/jwks.json","audience":"[YOUR AUTH0 API AUDIENCE]"}
 ```
 
 <!-- @remove-web-begin -->
