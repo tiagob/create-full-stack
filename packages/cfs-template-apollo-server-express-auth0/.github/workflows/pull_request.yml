@@ -1,4 +1,3 @@
-# @remove-file-github-actions
 name: Pulumi
 on:
   - pull_request

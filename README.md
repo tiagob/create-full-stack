@@ -9,7 +9,7 @@ _Assumes MacOS_
 ### Install [Homebrew](https://brew.sh/)
 
 ```bash
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 ```
 
 ### Install [Yarn](https://yarnpkg.com/)
@@ -17,10 +17,6 @@ _Assumes MacOS_
 ```bash
 brew install yarn
 ```
-
-### Install docker
-
-https://docs.docker.com/get-docker/
 
 ## Run
 
@@ -54,9 +50,7 @@ The config files (`.vscode/`) are included which formats on save.
 
 ## Generated project notes
 
-Check specific package READMEs for additional information.
-
-**TODO: Generate in root README as applicable**
+Check specific package READMEs for setup configuration and commands.
 
 ### Code generation
 
@@ -91,5 +85,5 @@ Using [expo-yarn-workspaces](https://www.npmjs.com/package/expo-yarn-workspaces)
 - [Apollo Client](https://www.apollographql.com/docs/react/)
 - [Apollo Server](https://www.apollographql.com/docs/apollo-server/)
 - [GraphQL Codegen](https://graphql-code-generator.com/docs/getting-started/)
-- [Sequelize](http://docs.sequelizejs.com/)
+- [TypeORM](https://typeorm.io/#/)
 - [Yarn Workspaces](https://yarnpkg.com/lang/en/docs/workspaces/)

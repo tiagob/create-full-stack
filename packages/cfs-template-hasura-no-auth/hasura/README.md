@@ -2,16 +2,10 @@
 
 [Hasura](https://hasura.io/) is an open source engine that connects to your databases & microservices and auto-generates a production-ready GraphQL backend.
 
-## Setup
-
-- Install [Docker](https://docs.docker.com/install/)
-- Install [Docker Compose](https://docs.docker.com/compose/install/)
-- Install the [Hasura CLI](https://hasura.io/docs/1.0/graphql/manual/hasura-cli/install-hasura-cli.html)
-
 ## Run
 
 ```bash
-docker-compose up -d
+docker-compose up
 ```
 
 ## Console

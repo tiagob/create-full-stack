@@ -219,10 +219,14 @@ async function run() {
   console.log();
   console.log(`Success! Created ${appName} at ${projectName}`);
   console.log();
-  console.log("We suggest that you begin by typing:");
-  console.log();
-  console.log(chalk.cyan("  cd"), cdpath);
-  console.log(`  ${chalk.cyan("yarn start")}`);
+  console.log(
+    `Follow steps on ${cdpath}/README.md#setup to complete the configuration`
+  );
+  // TODO: Automate manual setup steps
+  // console.log("We suggest that you begin by typing:");
+  // console.log();
+  // console.log(chalk.cyan("  cd"), cdpath);
+  // console.log(`  ${chalk.cyan("yarn start")}`);
   console.log();
   console.log("Happy hacking!");
 }

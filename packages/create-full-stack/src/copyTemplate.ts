@@ -204,6 +204,7 @@ function recursiveFileFunc(
 const fileExtToComment = {
   "\\.(ts|tsx)$": "//",
   "\\.(yml|yaml)$": "#",
+  "\\.md$": "<!--",
 };
 
 // Adapted from CRA's on-eject
@@ -229,7 +230,7 @@ function removeInFile(file: string, keys: string[]) {
       new RegExp(
         `${comment} @remove-(${keys.join(
           "|"
-        )})-begin([\\S\\s]*?)${comment} @remove-\\1-end\\n`,
+        )})-begin[\\S\\s]*?${comment} @remove-\\1-end.*?\\n`,
         "gm"
       ),
       ""
@@ -296,6 +297,9 @@ export default async function copyTemplate(options: {
   if (cloudPlatform !== CloudPlatform.aws) {
     excludeList.push("pulumi-aws");
   }
+  if (!hasGithubActions) {
+    excludeList.push(".github");
+  }
   copySync(templatePath, projectPath, false, excludeList);
   // ".gitignore" isn't included in "npm publish" so copy it over as gitignore
   // and rename (CRA does this)
@@ -325,8 +329,10 @@ export default async function copyTemplate(options: {
   if (!hasWeb) {
     removeBlockInFileKeys.push("web");
   }
-  if (!hasGithubActions) {
-    removeBlockInFileKeys.push("github-actions");
+  if (cloudPlatform !== CloudPlatform.aws) {
+    removeBlockInFileKeys.push("pulumi-aws");
+  } else {
+    removeBlockInFileKeys.push("manual-config");
   }
   recursiveFileFunc(projectPath, (dir, file) =>
     removeInFile(path.join(dir, file), removeBlockInFileKeys)
