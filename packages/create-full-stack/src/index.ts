@@ -220,7 +220,7 @@ async function run() {
   console.log(`Success! Created ${appName} at ${projectName}`);
   console.log();
   console.log(
-    `Follow steps on ${cdpath}/README.md#setup to complete the configuration`
+    `Follow steps in the Setup heading on ${cdpath}/README.md to complete the configuration`
   );
   // TODO: Automate manual setup steps
   // console.log("We suggest that you begin by typing:");

@@ -8,7 +8,7 @@ yarn start
 
 Spins up postgres in Docker, the Hasura server and all clients.
 
-<!-- remove-pulumi-aws-begin -->
+<!-- @remove-pulumi-aws-begin -->
 
 ## Deploy
 
@@ -30,7 +30,7 @@ pulumi stack select production
 pulumi up
 ```
 
-<!-- remove-pulumi-aws-end -->
+<!-- @remove-pulumi-aws-end -->
 
 ## Setup
 
@@ -53,7 +53,7 @@ References
 - https://stackoverflow.com/a/43365425/709040
 - https://docs.docker.com/get-docker/
 
-<!-- remove-mobile-begin -->
+<!-- @remove-mobile-begin -->
 
 ### Install and configure Expo CLI
 
@@ -77,8 +77,8 @@ References
 
 - https://docs.expo.io/workflow/expo-cli/
 
-<!-- remove-mobile-end -->
-<!-- remove-pulumi-aws-begin -->
+<!-- @remove-mobile-end -->
+<!-- @remove-pulumi-aws-begin -->
 
 ### Install and configure Pulumi CLI
 
@@ -114,6 +114,28 @@ References
 
 - https://www.pulumi.com/docs/intro/cloud-providers/aws/setup/#using-the-cli
 
+### Register domain on AWS Route53
+
+<!-- @remove-web-begin -->
+
+Pulumi web configuration requires a custom domain for CloudFront and that it's registered on Route53.
+
+<!-- @remove-web-end -->
+
+The backend uses the custom domain with a subdomain.
+
+If you don't have a domain, register one.
+
+```bash
+aws register-domain --domain-name [YOUR DOMAIN NAME]
+```
+
+If you already have a domain on a different registrar, transfer to Route53 on the console https://console.aws.amazon.com/route53/home#DomainTransfer:
+
+References
+
+- https://awscli.amazonaws.com/v2/documentation/api/latest/reference/route53domains/register-domain.html
+
 ### Configure Auth0
 
 It's recommended you use separate [Auth0 tenants](https://auth0.com/docs/getting-started/the-basics#account-and-tenants) for development and production. However if you prefer to use the same tenant, set the `auth0:domain`, `auth0:clientId` and `auth0:clientSecret` to the same value for the development and production stacks.
@@ -132,9 +154,9 @@ Use the created Machine to Machine Application to set the pulumi configuration
 ```bash
 cd packages/pulumi-aws
 pulumi stack select development
-pulumi config set auth0:domain XXXXXXXXXXXXXX
-pulumi config set auth0:clientId YYYYYYYYYYYYYY --secret
-pulumi config set auth0:clientSecret ZZZZZZZZZZZZZZ --secret
+pulumi config set auth0:domain [YOUR AUTH0 TENANT DOMAIN]
+pulumi config set auth0:clientId [YOUR AUTH0 MACHINE TO MACHINE CLIENT ID] --secret
+pulumi config set auth0:clientSecret [YOUR AUTH0 MACHINE TO MACHINE CLIENT SECRET] --secret
 ```
 
 References
@@ -155,9 +177,9 @@ Use the created Machine to Machine Application to set the pulumi configuration
 ```bash
 cd packages/pulumi-aws
 pulumi stack select production
-pulumi config set auth0:domain XXXXXXXXXXXXXX
-pulumi config set auth0:clientId YYYYYYYYYYYYYY --secret
-pulumi config set auth0:clientSecret ZZZZZZZZZZZZZZ --secret
+pulumi config set auth0:domain [YOUR AUTH0 TENANT DOMAIN]
+pulumi config set auth0:clientId [YOUR AUTH0 MACHINE TO MACHINE CLIENT ID] --secret
+pulumi config set auth0:clientSecret [YOUR AUTH0 MACHINE TO MACHINE CLIENT SECRET] --secret
 ```
 
 References
@@ -174,8 +196,8 @@ pulumi up
 
 This sets up Auth0 which is required for authentication locally.
 
-<!-- remove-pulumi-aws-end -->
-<!-- remove-manual-config-begin -->
+<!-- @remove-pulumi-aws-end -->
+<!-- @remove-manual-config-begin -->
 
 ### Configure Auth0
 
@@ -183,19 +205,38 @@ This sets up Auth0 which is required for authentication locally.
 
 From the Auth0 console https://manage.auth0.com/dashboard/
 
-- Create an Auth0 API for the Apollo Server
+- Create an Auth0 API for the Hasura server
   - APIs > CREATE API
   - Record the identifier/audience (ex. "server").
 
 In `hasura/.env.development` fill in the field
 
 ```
-HASURA_GRAPHQL_JWT_SECRET={"jwk_url":"https://[YOUR AUTH0 DOMAIN].well-known/jwks.json","audience":"[YOUR AUTH0 API IDENTIFIER]"}
+HASURA_GRAPHQL_JWT_SECRET={"jwk_url":"https://[YOUR AUTH0 DOMAIN].well-known/jwks.json","audience":"[YOUR AUTH0 API AUDIENCE]"}
 ```
 
-<!-- remove-web-begin -->
+<!-- @remove-web-begin -->
 
 #### Web
+
+From the Auth0 console https://manage.auth0.com/dashboard/
+
+- Create a Single Page Application for the React website
+  - Applications > CREATE APPLICATION > Single Page Web Applications
+  - Set "Allowed Callback URLs", "Allowed Logout URLs", and "Allowed Web Origins" to "http://localhost:3000"
+
+In `packages/web/.env.development` fill in the fields
+
+```
+REACT_APP_AUTH0_CLIENT_ID=[YOUR AUTH0 SINGLE PAGE APPLICATION CLIENT ID]
+REACT_APP_AUTH0_AUDIENCE=[YOUR AUTH0 API AUDIENCE]
+REACT_APP_AUTH0_DOMAIN=[YOUR AUTH0 DOMAIN]
+```
+
+<!-- @remove-web-end -->
+<!-- @remove-mobile-begin -->
+
+#### Mobile
 
 From the Auth0 console https://manage.auth0.com/dashboard/
 
@@ -205,32 +246,13 @@ From the Auth0 console https://manage.auth0.com/dashboard/
   - Get YOUR EXPO USERNAME by running `expo whoami`
   - Get YOUR EXPO SLUG from `packages/mobile/app.json` `"slug"`
 
-In `packages/web/.env.development` fill in the fields
-
-```
-REACT_APP_AUTH0_CLIENT_ID=
-REACT_APP_AUTH0_AUDIENCE=
-REACT_APP_AUTH0_DOMAIN=
-```
-
-<!-- remove-web-end -->
-<!-- remove-mobile-begin -->
-
-#### Mobile
-
-From the Auth0 console https://manage.auth0.com/dashboard/
-
-- Create a Single Page Application for the React website
-  - Applications > CREATE APPLICATION > Single Page Web Applications
-  - Set "Allowed Callback URLs", "Allowed Logout URLs", and "Allowed Web Origins" to "http://localhost:3000"
-
 In `packages/mobile/.env.development` fill in the fields
 
 ```
-AUTH0_CLIENT_ID=
-AUTH0_AUDIENCE=
-AUTH0_DOMAIN=
+AUTH0_CLIENT_ID=[YOUR AUTH0 NATIVE APPLICATION CLIENT ID]
+AUTH0_AUDIENCE=[YOUR AUTH0 API AUDIENCE]
+AUTH0_DOMAIN=[YOUR AUTH0 DOMAIN]
 ```
 
-<!-- remove-mobile-end -->
-<!-- remove-manual-config-end -->
+<!-- @remove-mobile-end -->
+<!-- @remove-manual-config-end -->

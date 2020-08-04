@@ -8,7 +8,7 @@ yarn start
 
 Spins up postgres in Docker, the Apollo Express server and all clients.
 
-<!-- remove-pulumi-aws-begin -->
+<!-- @remove-pulumi-aws-begin -->
 
 ## Deploy
 
@@ -30,7 +30,7 @@ pulumi stack select production
 pulumi up
 ```
 
-<!-- remove-pulumi-aws-end -->
+<!-- @remove-pulumi-aws-end -->
 
 ## Setup
 
@@ -53,7 +53,7 @@ References
 - https://stackoverflow.com/a/43365425/709040
 - https://docs.docker.com/get-docker/
 
-<!-- remove-mobile-begin -->
+<!-- @remove-mobile-begin -->
 
 ### Install and configure Expo CLI
 
@@ -77,8 +77,8 @@ References
 
 - https://docs.expo.io/workflow/expo-cli/
 
-<!-- remove-mobile-end -->
-<!-- remove-pulumi-aws-begin -->
+<!-- @remove-mobile-end -->
+<!-- @remove-pulumi-aws-begin -->
 
 ### Install and configure Pulumi CLI
 
@@ -114,4 +114,26 @@ References
 
 - https://www.pulumi.com/docs/intro/cloud-providers/aws/setup/#using-the-cli
 
-<!-- remove-pulumi-aws-end -->
+### Register domain on AWS Route53
+
+<!-- @remove-web-begin -->
+
+Pulumi web configuration requires a custom domain for CloudFront and that it's registered on Route53.
+
+<!-- @remove-web-end -->
+
+The backend uses the custom domain with a subdomain.
+
+If you don't have a domain, register one.
+
+```bash
+aws register-domain --domain-name [YOUR DOMAIN NAME]
+```
+
+If you already have a domain on a different registrar, transfer to Route53 on the console https://console.aws.amazon.com/route53/home#DomainTransfer:
+
+References
+
+- https://awscli.amazonaws.com/v2/documentation/api/latest/reference/route53domains/register-domain.html
+
+<!-- @remove-pulumi-aws-end -->
