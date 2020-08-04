@@ -124,13 +124,9 @@ Pulumi web configuration requires a custom domain for CloudFront and that it's r
 
 The backend uses the custom domain with a subdomain.
 
-If you don't have a domain, register one.
+If you don't have a domain, register one on https://console.aws.amazon.com/route53/home#DomainRegistration:
 
-```bash
-aws register-domain --domain-name [YOUR DOMAIN NAME]
-```
-
-If you already have a domain on a different registrar, transfer to Route53 on the console https://console.aws.amazon.com/route53/home#DomainTransfer:
+If you already have a domain on a different registrar, transfer to Route53 on https://console.aws.amazon.com/route53/home#DomainTransfer:
 
 References
 
