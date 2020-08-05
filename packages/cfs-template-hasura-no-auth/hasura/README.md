@@ -13,29 +13,37 @@ docker-compose up
 Run a web server to serve the Hasura console for the GraphQL engine to manage the database and build queries.
 
 ```bash
-hasura console
+yarn hasura console
 ```
 
 Accessing the console via http://localhost:9695/ automatically adds database migration and metadata files on changes ([docs](https://hasura.io/docs/1.0/graphql/manual/migrations/index.html#how-is-hasura-state-managed)).
+
+## Rebuilding
+
+Changes to environment variables, `.env.development`, requires rebuilding the docker image.
+
+```bash
+docker-compose up --build
+```
 
 ## Migrations
 
 ### Apply all
 
 ```bash
-hasura migrate apply --admin-secret myadminsecretkey
+yarn hasura migrate apply
 ```
 
 ### Down
 
 ```bash
-hasura migrate apply --admin-secret myadminsecretkey --down N
+yarn hasura migrate apply --down N
 ```
 
 ### Apply metadata
 
 ```bash
-hasura metadata apply --admin-secret myadminsecretkey
+yarn hasura metadata apply
 ```
 
 ### Recreate DB

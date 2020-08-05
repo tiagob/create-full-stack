@@ -3,6 +3,7 @@
   "workspaces": ["packages/*"],
   "scripts": {
     "generate": "graphql-codegen --watch",
+    "hasura": "hasura --project hasura",
     "lint": "eslint packages/**/*.{ts,tsx} --fix",
     "prettier": "prettier --write ."
   },
@@ -25,6 +26,7 @@
     "eslint-config-create-full-stack": "^0.1.10",
     "graphql": "^15.3.0",
     "graphql-tag": "^2.11.0",
+    "hasura-cli": "^1.3.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.2"
   }

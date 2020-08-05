@@ -15,12 +15,10 @@ export default () =>
       const query = cache.readQuery<TodosQuery, TodosQueryVariables>({
         query: TodosDocument,
       });
-      if (query) {
-        const { todos } = query;
-        cache.writeQuery<TodosQuery, TodosQueryVariables>({
-          query: TodosDocument,
-          data: { todos: todos.concat(createTodo) },
-        });
-      }
+      const todos = query?.todos || [];
+      cache.writeQuery<TodosQuery, TodosQueryVariables>({
+        query: TodosDocument,
+        data: { todos: todos.concat(createTodo) },
+      });
     },
   });
