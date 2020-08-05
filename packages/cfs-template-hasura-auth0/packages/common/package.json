@@ -11,8 +11,9 @@
   "dependencies": {
     "@apollo/client": "^3.1.2",
     "graphql": "^15.3.0",
-    "react": "~16.9.0",
-    "react-dom": "~16.9.0",
+    "react": "~16.11.0",
+    "react-dom": "~16.11.0",
+    "subscriptions-transport-ws": "^0.9.17",
     "typescript": "~3.7.2"
   },
   "devDependencies": {
