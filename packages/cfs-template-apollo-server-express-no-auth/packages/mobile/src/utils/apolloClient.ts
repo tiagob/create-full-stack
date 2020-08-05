@@ -1,4 +1,4 @@
-import ApolloClient from "apollo-boost";
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 import Constants from "expo-constants";
 
 const { manifest } = Constants;
@@ -9,4 +9,5 @@ const uri =
 
 export default new ApolloClient({
   uri,
+  cache: new InMemoryCache(),
 });

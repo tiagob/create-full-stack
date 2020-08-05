@@ -7,7 +7,11 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Todos as TodoType, useDeleteTodo, useUpdateTodo } from "common";
+import {
+  Todos as TodoType,
+  useDeleteTodo,
+  useUpdateTodoMutation,
+} from "common";
 import React from "react";
 
 const useStyles = makeStyles({
@@ -22,8 +26,8 @@ interface Props {
 
 export default function Todo({ todo }: Props) {
   const classes = useStyles();
-  const [updateTodo] = useUpdateTodo();
-  const [destroyTodo] = useDeleteTodo();
+  const [updateTodo] = useUpdateTodoMutation();
+  const [deleteTodo] = useDeleteTodo();
 
   return (
     <ListItem
@@ -43,7 +47,7 @@ export default function Todo({ todo }: Props) {
       <ListItemSecondaryAction>
         <IconButton
           aria-label="Delete"
-          onClick={() => destroyTodo({ variables: { id: todo.id } })}
+          onClick={() => deleteTodo({ variables: { id: todo.id } })}
         >
           <DeleteIcon />
         </IconButton>

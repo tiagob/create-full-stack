@@ -1,4 +1,7 @@
-schema: "http://localhost:8080/v1/graphql"
+schema:
+  - "http://localhost:8080/v1/graphql":
+      headers:
+        x-hasura-admin-secret: myadminsecretkey
 hooks:
   afterOneFileWrite:
     - prettier --write
@@ -11,9 +14,8 @@ generates:
       - typescript-operations
       - typescript-react-apollo
     config:
-      withHOC: false
-      withComponent: false
-      withHooks: true
       namingConvention:
         typeNames: pascal-case#pascalCase
         transformUnderscore: true
+      # Use undefined instead of null. Never use null in TS
+      maybeValue: T | undefined

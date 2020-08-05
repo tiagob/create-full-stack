@@ -2,6 +2,19 @@
 
 Create full stack TypeScript apps with no configuration.
 
+## Philosophy
+
+- Single language (TypeScript)
+  - Minimize context switching
+- Static typing everywhere (DB to UI across APIs)
+  - Compile time bugs instead of runtime bugs
+- Scales
+  - In terms of requests, features, and complexity (engineers on the project)
+- Most popular tools in class
+  - Better support and fewer edge cases
+- Simplicity over infinite flexibility
+  - Prefer simpler solutions to the 90% use case over supporting the 1% use case
+
 ## Setup
 
 _Assumes MacOS_

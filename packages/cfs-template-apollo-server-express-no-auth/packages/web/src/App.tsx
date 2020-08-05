@@ -1,7 +1,6 @@
-import { ApolloProvider } from "@apollo/react-hooks";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { makeStyles } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
-import ApolloClient from "apollo-boost";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
@@ -11,6 +10,7 @@ import Todos from "./containers/Todos";
 
 export const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPHQL_URL,
+  cache: new InMemoryCache(),
 });
 
 const useStyles = makeStyles({

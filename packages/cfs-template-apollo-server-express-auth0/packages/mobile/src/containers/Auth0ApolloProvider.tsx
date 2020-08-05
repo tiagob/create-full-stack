@@ -1,4 +1,4 @@
-import { ApolloProvider } from "@apollo/react-hooks";
+import { ApolloProvider } from "@apollo/client";
 import React, { ReactNode } from "react";
 
 import getApolloClient from "../utils/getApolloClient";

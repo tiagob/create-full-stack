@@ -1,3 +1,31 @@
 - table:
     schema: public
     name: todos
+  insert_permissions:
+  - role: anonymous
+    permission:
+      check: {}
+      columns:
+      - complete
+      - name
+      backend_only: false
+  select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+      - complete
+      - id
+      - name
+      filter: {}
+  update_permissions:
+  - role: anonymous
+    permission:
+      columns:
+      - complete
+      - name
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: anonymous
+    permission:
+      filter: {}

@@ -7,7 +7,11 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Todos as TodoType, useDeleteTodo, useUpdateTodo } from "common";
+import {
+  Todos as TodoType,
+  useDeleteTodo,
+  useUpdateTodoMutation,
+} from "common";
 import React from "react";
 
 const useStyles = makeStyles({
@@ -22,7 +26,7 @@ interface Props {
 
 export default function Todo({ todo }: Props) {
   const classes = useStyles();
-  const [updateTodo] = useUpdateTodo();
+  const [updateTodo] = useUpdateTodoMutation();
   const [deleteTodo] = useDeleteTodo();
 
   return (

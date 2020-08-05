@@ -63,11 +63,15 @@ const { connectionString, cluster } = new Rds("server-db", {
   dbUsername,
   dbPassword,
 });
+const hasuraGraphqlAdminSecret = config.requireSecret(
+  "hasuraGraphqlAdminSecret"
+);
 new Fargate(path.basename(serverPath), {
   certificate: subdomainCertificate,
   domain: serverDomain,
   connectionString,
   cluster,
+  hasuraGraphqlAdminSecret,
   imagePath: serverPath,
 });
 

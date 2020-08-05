@@ -1,8 +1,9 @@
-import gql from "graphql-tag";
-import * as ApolloReactCommon from "@apollo/react-common";
-import * as ApolloReactHooks from "@apollo/react-hooks";
-export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
+import * as Apollo from "@apollo/client";
+export type Maybe<T> = T | undefined;
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+const gql = Apollo.gql;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -36,6 +37,25 @@ export type IntComparisonExp = {
   _lte?: Maybe<Scalars["Int"]>;
   _neq?: Maybe<Scalars["Int"]>;
   _nin?: Maybe<Array<Scalars["Int"]>>;
+};
+
+/** expression to compare columns of type String. All fields are combined with logical 'AND'. */
+export type StringComparisonExp = {
+  _eq?: Maybe<Scalars["String"]>;
+  _gt?: Maybe<Scalars["String"]>;
+  _gte?: Maybe<Scalars["String"]>;
+  _ilike?: Maybe<Scalars["String"]>;
+  _in?: Maybe<Array<Scalars["String"]>>;
+  _is_null?: Maybe<Scalars["Boolean"]>;
+  _like?: Maybe<Scalars["String"]>;
+  _lt?: Maybe<Scalars["String"]>;
+  _lte?: Maybe<Scalars["String"]>;
+  _neq?: Maybe<Scalars["String"]>;
+  _nilike?: Maybe<Scalars["String"]>;
+  _nin?: Maybe<Array<Scalars["String"]>>;
+  _nlike?: Maybe<Scalars["String"]>;
+  _nsimilar?: Maybe<Scalars["String"]>;
+  _similar?: Maybe<Scalars["String"]>;
 };
 
 /** mutation root */
@@ -141,25 +161,6 @@ export type QueryRootTodosByPkArgs = {
   id: Scalars["Int"];
 };
 
-/** expression to compare columns of type String. All fields are combined with logical 'AND'. */
-export type StringComparisonExp = {
-  _eq?: Maybe<Scalars["String"]>;
-  _gt?: Maybe<Scalars["String"]>;
-  _gte?: Maybe<Scalars["String"]>;
-  _ilike?: Maybe<Scalars["String"]>;
-  _in?: Maybe<Array<Scalars["String"]>>;
-  _is_null?: Maybe<Scalars["Boolean"]>;
-  _like?: Maybe<Scalars["String"]>;
-  _lt?: Maybe<Scalars["String"]>;
-  _lte?: Maybe<Scalars["String"]>;
-  _neq?: Maybe<Scalars["String"]>;
-  _nilike?: Maybe<Scalars["String"]>;
-  _nin?: Maybe<Array<Scalars["String"]>>;
-  _nlike?: Maybe<Scalars["String"]>;
-  _nsimilar?: Maybe<Scalars["String"]>;
-  _similar?: Maybe<Scalars["String"]>;
-};
-
 /** subscription root */
 export type SubscriptionRoot = {
   __typename?: "subscription_root";
@@ -200,7 +201,6 @@ export type Todos = {
   complete: Scalars["Boolean"];
   id: Scalars["Int"];
   name: Scalars["String"];
-  uid?: Maybe<Scalars["String"]>;
 };
 
 /** aggregated selection of "todos" */
@@ -272,7 +272,6 @@ export type TodosBoolExp = {
   complete?: Maybe<BooleanComparisonExp>;
   id?: Maybe<IntComparisonExp>;
   name?: Maybe<StringComparisonExp>;
-  uid?: Maybe<StringComparisonExp>;
 };
 
 /** unique or primary key constraints on table "todos" */
@@ -291,7 +290,6 @@ export type TodosInsertInput = {
   complete?: Maybe<Scalars["Boolean"]>;
   id?: Maybe<Scalars["Int"]>;
   name?: Maybe<Scalars["String"]>;
-  uid?: Maybe<Scalars["String"]>;
 };
 
 /** aggregate max on columns */
@@ -299,14 +297,12 @@ export type TodosMaxFields = {
   __typename?: "todos_max_fields";
   id?: Maybe<Scalars["Int"]>;
   name?: Maybe<Scalars["String"]>;
-  uid?: Maybe<Scalars["String"]>;
 };
 
 /** order by max() on columns of table "todos" */
 export type TodosMaxOrderBy = {
   id?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
-  uid?: Maybe<OrderBy>;
 };
 
 /** aggregate min on columns */
@@ -314,14 +310,12 @@ export type TodosMinFields = {
   __typename?: "todos_min_fields";
   id?: Maybe<Scalars["Int"]>;
   name?: Maybe<Scalars["String"]>;
-  uid?: Maybe<Scalars["String"]>;
 };
 
 /** order by min() on columns of table "todos" */
 export type TodosMinOrderBy = {
   id?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
-  uid?: Maybe<OrderBy>;
 };
 
 /** response of any mutation on the table "todos" */
@@ -351,7 +345,6 @@ export type TodosOrderBy = {
   complete?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
-  uid?: Maybe<OrderBy>;
 };
 
 /** primary key columns input for table: "todos" */
@@ -367,8 +360,6 @@ export enum TodosSelectColumn {
   Id = "id",
   /** column name */
   Name = "name",
-  /** column name */
-  Uid = "uid",
 }
 
 /** input type for updating data in table "todos" */
@@ -376,7 +367,6 @@ export type TodosSetInput = {
   complete?: Maybe<Scalars["Boolean"]>;
   id?: Maybe<Scalars["Int"]>;
   name?: Maybe<Scalars["String"]>;
-  uid?: Maybe<Scalars["String"]>;
 };
 
 /** aggregate stddev on columns */
@@ -431,8 +421,6 @@ export enum TodosUpdateColumn {
   Id = "id",
   /** column name */
   Name = "name",
-  /** column name */
-  Uid = "uid",
 }
 
 /** aggregate var_pop on columns */
@@ -484,7 +472,7 @@ export type CreateTodoMutation = { __typename?: "mutation_root" } & {
   insert_todos?: Maybe<
     { __typename?: "todos_mutation_response" } & {
       returning: Array<
-        { __typename?: "todos" } & Pick<Todos, "name" | "id" | "complete">
+        { __typename?: "todos" } & Pick<Todos, "id" | "name" | "complete">
       >;
     }
   >;
@@ -499,7 +487,7 @@ export type UpdateTodoMutation = { __typename?: "mutation_root" } & {
   update_todos?: Maybe<
     { __typename?: "todos_mutation_response" } & {
       returning: Array<
-        { __typename?: "todos" } & Pick<Todos, "complete" | "id" | "name">
+        { __typename?: "todos" } & Pick<Todos, "id" | "name" | "complete">
       >;
     }
   >;
@@ -543,30 +531,24 @@ export const TodosDocument = gql`
  * });
  */
 export function useTodosQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    TodosQuery,
-    TodosQueryVariables
-  >
+  baseOptions?: Apollo.QueryHookOptions<TodosQuery, TodosQueryVariables>
 ) {
-  return ApolloReactHooks.useQuery<TodosQuery, TodosQueryVariables>(
+  return Apollo.useQuery<TodosQuery, TodosQueryVariables>(
     TodosDocument,
     baseOptions
   );
 }
 export function useTodosLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    TodosQuery,
-    TodosQueryVariables
-  >
+  baseOptions?: Apollo.LazyQueryHookOptions<TodosQuery, TodosQueryVariables>
 ) {
-  return ApolloReactHooks.useLazyQuery<TodosQuery, TodosQueryVariables>(
+  return Apollo.useLazyQuery<TodosQuery, TodosQueryVariables>(
     TodosDocument,
     baseOptions
   );
 }
 export type TodosQueryHookResult = ReturnType<typeof useTodosQuery>;
 export type TodosLazyQueryHookResult = ReturnType<typeof useTodosLazyQuery>;
-export type TodosQueryResult = ApolloReactCommon.QueryResult<
+export type TodosQueryResult = Apollo.QueryResult<
   TodosQuery,
   TodosQueryVariables
 >;
@@ -574,14 +556,14 @@ export const CreateTodoDocument = gql`
   mutation CreateTodo($name: String!) {
     insert_todos(objects: { name: $name }) {
       returning {
-        name
         id
+        name
         complete
       }
     }
   }
 `;
-export type CreateTodoMutationFn = ApolloReactCommon.MutationFunction<
+export type CreateTodoMutationFn = Apollo.MutationFunction<
   CreateTodoMutation,
   CreateTodoMutationVariables
 >;
@@ -604,23 +586,23 @@ export type CreateTodoMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useCreateTodoMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     CreateTodoMutation,
     CreateTodoMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
-    CreateTodoMutation,
-    CreateTodoMutationVariables
-  >(CreateTodoDocument, baseOptions);
+  return Apollo.useMutation<CreateTodoMutation, CreateTodoMutationVariables>(
+    CreateTodoDocument,
+    baseOptions
+  );
 }
 export type CreateTodoMutationHookResult = ReturnType<
   typeof useCreateTodoMutation
 >;
-export type CreateTodoMutationResult = ApolloReactCommon.MutationResult<
+export type CreateTodoMutationResult = Apollo.MutationResult<
   CreateTodoMutation
 >;
-export type CreateTodoMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type CreateTodoMutationOptions = Apollo.BaseMutationOptions<
   CreateTodoMutation,
   CreateTodoMutationVariables
 >;
@@ -628,14 +610,14 @@ export const UpdateTodoDocument = gql`
   mutation UpdateTodo($id: Int!, $complete: Boolean!) {
     update_todos(where: { id: { _eq: $id } }, _set: { complete: $complete }) {
       returning {
-        complete
         id
         name
+        complete
       }
     }
   }
 `;
-export type UpdateTodoMutationFn = ApolloReactCommon.MutationFunction<
+export type UpdateTodoMutationFn = Apollo.MutationFunction<
   UpdateTodoMutation,
   UpdateTodoMutationVariables
 >;
@@ -659,23 +641,23 @@ export type UpdateTodoMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useUpdateTodoMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     UpdateTodoMutation,
     UpdateTodoMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
-    UpdateTodoMutation,
-    UpdateTodoMutationVariables
-  >(UpdateTodoDocument, baseOptions);
+  return Apollo.useMutation<UpdateTodoMutation, UpdateTodoMutationVariables>(
+    UpdateTodoDocument,
+    baseOptions
+  );
 }
 export type UpdateTodoMutationHookResult = ReturnType<
   typeof useUpdateTodoMutation
 >;
-export type UpdateTodoMutationResult = ApolloReactCommon.MutationResult<
+export type UpdateTodoMutationResult = Apollo.MutationResult<
   UpdateTodoMutation
 >;
-export type UpdateTodoMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type UpdateTodoMutationOptions = Apollo.BaseMutationOptions<
   UpdateTodoMutation,
   UpdateTodoMutationVariables
 >;
@@ -688,7 +670,7 @@ export const DeleteTodoDocument = gql`
     }
   }
 `;
-export type DeleteTodoMutationFn = ApolloReactCommon.MutationFunction<
+export type DeleteTodoMutationFn = Apollo.MutationFunction<
   DeleteTodoMutation,
   DeleteTodoMutationVariables
 >;
@@ -711,23 +693,23 @@ export type DeleteTodoMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useDeleteTodoMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     DeleteTodoMutation,
     DeleteTodoMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
-    DeleteTodoMutation,
-    DeleteTodoMutationVariables
-  >(DeleteTodoDocument, baseOptions);
+  return Apollo.useMutation<DeleteTodoMutation, DeleteTodoMutationVariables>(
+    DeleteTodoDocument,
+    baseOptions
+  );
 }
 export type DeleteTodoMutationHookResult = ReturnType<
   typeof useDeleteTodoMutation
 >;
-export type DeleteTodoMutationResult = ApolloReactCommon.MutationResult<
+export type DeleteTodoMutationResult = Apollo.MutationResult<
   DeleteTodoMutation
 >;
-export type DeleteTodoMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type DeleteTodoMutationOptions = Apollo.BaseMutationOptions<
   DeleteTodoMutation,
   DeleteTodoMutationVariables
 >;

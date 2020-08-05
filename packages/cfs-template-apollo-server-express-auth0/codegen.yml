@@ -22,9 +22,6 @@ generates:
       - typescript-operations
       - typescript-react-apollo
     config:
-      withHOC: false
-      withComponent: false
-      withHooks: true
       namingConvention:
         typeNames: pascal-case#pascalCase
         transformUnderscore: true

@@ -14,7 +14,7 @@
     "apollo-server-express": "^2.13.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "graphql": "^14.2.1",
+    "graphql": "^15.3.0",
     "pg": "^8.3.0",
     "pg-hstore": "^2.3.3",
     "reflect-metadata": "^0.1.13",

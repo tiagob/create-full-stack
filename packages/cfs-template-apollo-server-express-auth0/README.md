@@ -149,7 +149,7 @@ Use the created Machine to Machine Application to set the pulumi configuration
 
 ```bash
 cd packages/pulumi-aws
-pulumi stack select development
+pulumi stack init development
 pulumi config set auth0:domain [YOUR AUTH0 TENANT DOMAIN]
 pulumi config set auth0:clientId [YOUR AUTH0 MACHINE TO MACHINE CLIENT ID] --secret
 pulumi config set auth0:clientSecret [YOUR AUTH0 MACHINE TO MACHINE CLIENT SECRET] --secret
@@ -172,7 +172,7 @@ Use the created Machine to Machine Application to set the pulumi configuration
 
 ```bash
 cd packages/pulumi-aws
-pulumi stack select production
+pulumi stack init production
 pulumi config set auth0:domain [YOUR AUTH0 TENANT DOMAIN]
 pulumi config set auth0:clientId [YOUR AUTH0 MACHINE TO MACHINE CLIENT ID] --secret
 pulumi config set auth0:clientSecret [YOUR AUTH0 MACHINE TO MACHINE CLIENT SECRET] --secret
@@ -190,7 +190,20 @@ pulumi stack select development
 pulumi up
 ```
 
-This sets up Auth0 which is required for authentication locally.
+Local development is now configured. Launch by typing `yarn start`.
+
+### Configure Pulumi production stack
+
+The domain must be registered in your AWS Route53. Other values can be arbitrarily chosen with some [AWS restrictions](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Limits.html#RDS_Limits.Constraints).
+
+```bash
+cd packages/pulumi-aws
+pulumi stack select production
+pulumi config set domain [YOUR ROUTE53 DOMAIN]
+pulumi config set dbName [YOUR POSTGRES DB NAME]
+pulumi config set dbUsername [YOUR POSTGRES DB USERNAME]
+pulumi config set dbPassword [YOUR POSTGRES DB PASSWORD] --secret
+```
 
 <!-- @remove-pulumi-aws-end -->
 <!-- @remove-manual-config-begin -->

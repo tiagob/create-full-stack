@@ -1,10 +1,4 @@
-import {
-  Todo,
-  TodosDocument,
-  TodosQuery,
-  TodosQueryVariables,
-  useDeleteTodoMutation,
-} from "./__generated__";
+import { useDeleteTodoMutation } from "./__generated__";
 
 export default () =>
   useDeleteTodoMutation({
@@ -13,15 +7,6 @@ export default () =>
         return;
       }
       const { deleteTodo } = data;
-      const query = cache.readQuery<TodosQuery, TodosQueryVariables>({
-        query: TodosDocument,
-      });
-      const todos = query?.todos || [];
-      cache.writeQuery<TodosQuery, TodosQueryVariables>({
-        query: TodosDocument,
-        data: {
-          todos: todos.filter((todo: Todo) => todo.id !== deleteTodo.id),
-        },
-      });
+      cache.evict({ id: cache.identify(deleteTodo) });
     },
   });

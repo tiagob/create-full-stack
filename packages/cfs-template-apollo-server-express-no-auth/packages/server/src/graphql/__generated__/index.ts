@@ -1,6 +1,8 @@
 import { GraphQLResolveInfo } from "graphql";
 export type Maybe<T> = T | undefined;
-export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
 export type RequireFields<T, K extends keyof T> = {
   [X in Exclude<keyof T, K>]?: T[X];
 } &
@@ -12,6 +14,18 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+};
+
+export type Todo = {
+  __typename?: "Todo";
+  id: Scalars["Int"];
+  name: Scalars["String"];
+  complete: Scalars["Boolean"];
+};
+
+export type Query = {
+  __typename?: "Query";
+  todos: Array<Todo>;
 };
 
 export type Mutation = {
@@ -33,18 +47,6 @@ export type MutationUpdateTodoArgs = {
 
 export type MutationDeleteTodoArgs = {
   id: Scalars["Int"];
-};
-
-export type Query = {
-  __typename?: "Query";
-  todos: Array<Todo>;
-};
-
-export type Todo = {
-  __typename?: "Todo";
-  id: Scalars["Int"];
-  name: Scalars["String"];
-  complete: Scalars["Boolean"];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -165,22 +167,39 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
-  Query: ResolverTypeWrapper<{}>;
   Todo: ResolverTypeWrapper<Todo>;
   Int: ResolverTypeWrapper<Scalars["Int"]>;
   String: ResolverTypeWrapper<Scalars["String"]>;
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
+  Query: ResolverTypeWrapper<{}>;
   Mutation: ResolverTypeWrapper<{}>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
-  Query: {};
   Todo: Todo;
   Int: Scalars["Int"];
   String: Scalars["String"];
   Boolean: Scalars["Boolean"];
+  Query: {};
   Mutation: {};
+}>;
+
+export type TodoResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Todo"] = ResolversParentTypes["Todo"]
+> = ResolversObject<{
+  id?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  complete?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+}>;
+
+export type QueryResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"]
+> = ResolversObject<{
+  todos?: Resolver<Array<ResolversTypes["Todo"]>, ParentType, ContextType>;
 }>;
 
 export type MutationResolvers<
@@ -207,27 +226,10 @@ export type MutationResolvers<
   >;
 }>;
 
-export type QueryResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"]
-> = ResolversObject<{
-  todos?: Resolver<Array<ResolversTypes["Todo"]>, ParentType, ContextType>;
-}>;
-
-export type TodoResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes["Todo"] = ResolversParentTypes["Todo"]
-> = ResolversObject<{
-  id?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  complete?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
-}>;
-
 export type Resolvers<ContextType = any> = ResolversObject<{
-  Mutation?: MutationResolvers<ContextType>;
-  Query?: QueryResolvers<ContextType>;
   Todo?: TodoResolvers<ContextType>;
+  Query?: QueryResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
 }>;
 
 /**

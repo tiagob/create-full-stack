@@ -16,7 +16,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-jwt": "^5.3.3",
-    "graphql": "^14.2.1",
+    "graphql": "^15.3.0",
     "jwks-rsa": "^1.8.0",
     "pg": "^8.3.0",
     "pg-hstore": "^2.3.3",

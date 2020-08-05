@@ -1,4 +1,4 @@
-import { ApolloProvider } from "@apollo/react-hooks";
+import { ApolloProvider } from "@apollo/client";
 import { makeStyles } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
 import React from "react";

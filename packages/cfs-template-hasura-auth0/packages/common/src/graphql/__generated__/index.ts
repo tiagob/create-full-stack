@@ -1,8 +1,9 @@
-import gql from "graphql-tag";
-import * as ApolloReactCommon from "@apollo/react-common";
-import * as ApolloReactHooks from "@apollo/react-hooks";
-export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
+import * as Apollo from "@apollo/client";
+export type Maybe<T> = T | undefined;
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+const gql = Apollo.gql;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -36,6 +37,25 @@ export type IntComparisonExp = {
   _lte?: Maybe<Scalars["Int"]>;
   _neq?: Maybe<Scalars["Int"]>;
   _nin?: Maybe<Array<Scalars["Int"]>>;
+};
+
+/** expression to compare columns of type String. All fields are combined with logical 'AND'. */
+export type StringComparisonExp = {
+  _eq?: Maybe<Scalars["String"]>;
+  _gt?: Maybe<Scalars["String"]>;
+  _gte?: Maybe<Scalars["String"]>;
+  _ilike?: Maybe<Scalars["String"]>;
+  _in?: Maybe<Array<Scalars["String"]>>;
+  _is_null?: Maybe<Scalars["Boolean"]>;
+  _like?: Maybe<Scalars["String"]>;
+  _lt?: Maybe<Scalars["String"]>;
+  _lte?: Maybe<Scalars["String"]>;
+  _neq?: Maybe<Scalars["String"]>;
+  _nilike?: Maybe<Scalars["String"]>;
+  _nin?: Maybe<Array<Scalars["String"]>>;
+  _nlike?: Maybe<Scalars["String"]>;
+  _nsimilar?: Maybe<Scalars["String"]>;
+  _similar?: Maybe<Scalars["String"]>;
 };
 
 /** mutation root */
@@ -139,25 +159,6 @@ export type QueryRootTodosAggregateArgs = {
 /** query root */
 export type QueryRootTodosByPkArgs = {
   id: Scalars["Int"];
-};
-
-/** expression to compare columns of type String. All fields are combined with logical 'AND'. */
-export type StringComparisonExp = {
-  _eq?: Maybe<Scalars["String"]>;
-  _gt?: Maybe<Scalars["String"]>;
-  _gte?: Maybe<Scalars["String"]>;
-  _ilike?: Maybe<Scalars["String"]>;
-  _in?: Maybe<Array<Scalars["String"]>>;
-  _is_null?: Maybe<Scalars["Boolean"]>;
-  _like?: Maybe<Scalars["String"]>;
-  _lt?: Maybe<Scalars["String"]>;
-  _lte?: Maybe<Scalars["String"]>;
-  _neq?: Maybe<Scalars["String"]>;
-  _nilike?: Maybe<Scalars["String"]>;
-  _nin?: Maybe<Array<Scalars["String"]>>;
-  _nlike?: Maybe<Scalars["String"]>;
-  _nsimilar?: Maybe<Scalars["String"]>;
-  _similar?: Maybe<Scalars["String"]>;
 };
 
 /** subscription root */
@@ -543,30 +544,24 @@ export const TodosDocument = gql`
  * });
  */
 export function useTodosQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    TodosQuery,
-    TodosQueryVariables
-  >
+  baseOptions?: Apollo.QueryHookOptions<TodosQuery, TodosQueryVariables>
 ) {
-  return ApolloReactHooks.useQuery<TodosQuery, TodosQueryVariables>(
+  return Apollo.useQuery<TodosQuery, TodosQueryVariables>(
     TodosDocument,
     baseOptions
   );
 }
 export function useTodosLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    TodosQuery,
-    TodosQueryVariables
-  >
+  baseOptions?: Apollo.LazyQueryHookOptions<TodosQuery, TodosQueryVariables>
 ) {
-  return ApolloReactHooks.useLazyQuery<TodosQuery, TodosQueryVariables>(
+  return Apollo.useLazyQuery<TodosQuery, TodosQueryVariables>(
     TodosDocument,
     baseOptions
   );
 }
 export type TodosQueryHookResult = ReturnType<typeof useTodosQuery>;
 export type TodosLazyQueryHookResult = ReturnType<typeof useTodosLazyQuery>;
-export type TodosQueryResult = ApolloReactCommon.QueryResult<
+export type TodosQueryResult = Apollo.QueryResult<
   TodosQuery,
   TodosQueryVariables
 >;
@@ -581,7 +576,7 @@ export const CreateTodoDocument = gql`
     }
   }
 `;
-export type CreateTodoMutationFn = ApolloReactCommon.MutationFunction<
+export type CreateTodoMutationFn = Apollo.MutationFunction<
   CreateTodoMutation,
   CreateTodoMutationVariables
 >;
@@ -604,23 +599,23 @@ export type CreateTodoMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useCreateTodoMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     CreateTodoMutation,
     CreateTodoMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
-    CreateTodoMutation,
-    CreateTodoMutationVariables
-  >(CreateTodoDocument, baseOptions);
+  return Apollo.useMutation<CreateTodoMutation, CreateTodoMutationVariables>(
+    CreateTodoDocument,
+    baseOptions
+  );
 }
 export type CreateTodoMutationHookResult = ReturnType<
   typeof useCreateTodoMutation
 >;
-export type CreateTodoMutationResult = ApolloReactCommon.MutationResult<
+export type CreateTodoMutationResult = Apollo.MutationResult<
   CreateTodoMutation
 >;
-export type CreateTodoMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type CreateTodoMutationOptions = Apollo.BaseMutationOptions<
   CreateTodoMutation,
   CreateTodoMutationVariables
 >;
@@ -635,7 +630,7 @@ export const UpdateTodoDocument = gql`
     }
   }
 `;
-export type UpdateTodoMutationFn = ApolloReactCommon.MutationFunction<
+export type UpdateTodoMutationFn = Apollo.MutationFunction<
   UpdateTodoMutation,
   UpdateTodoMutationVariables
 >;
@@ -659,23 +654,23 @@ export type UpdateTodoMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useUpdateTodoMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     UpdateTodoMutation,
     UpdateTodoMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
-    UpdateTodoMutation,
-    UpdateTodoMutationVariables
-  >(UpdateTodoDocument, baseOptions);
+  return Apollo.useMutation<UpdateTodoMutation, UpdateTodoMutationVariables>(
+    UpdateTodoDocument,
+    baseOptions
+  );
 }
 export type UpdateTodoMutationHookResult = ReturnType<
   typeof useUpdateTodoMutation
 >;
-export type UpdateTodoMutationResult = ApolloReactCommon.MutationResult<
+export type UpdateTodoMutationResult = Apollo.MutationResult<
   UpdateTodoMutation
 >;
-export type UpdateTodoMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type UpdateTodoMutationOptions = Apollo.BaseMutationOptions<
   UpdateTodoMutation,
   UpdateTodoMutationVariables
 >;
@@ -688,7 +683,7 @@ export const DeleteTodoDocument = gql`
     }
   }
 `;
-export type DeleteTodoMutationFn = ApolloReactCommon.MutationFunction<
+export type DeleteTodoMutationFn = Apollo.MutationFunction<
   DeleteTodoMutation,
   DeleteTodoMutationVariables
 >;
@@ -711,23 +706,23 @@ export type DeleteTodoMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useDeleteTodoMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     DeleteTodoMutation,
     DeleteTodoMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
-    DeleteTodoMutation,
-    DeleteTodoMutationVariables
-  >(DeleteTodoDocument, baseOptions);
+  return Apollo.useMutation<DeleteTodoMutation, DeleteTodoMutationVariables>(
+    DeleteTodoDocument,
+    baseOptions
+  );
 }
 export type DeleteTodoMutationHookResult = ReturnType<
   typeof useDeleteTodoMutation
 >;
-export type DeleteTodoMutationResult = ApolloReactCommon.MutationResult<
+export type DeleteTodoMutationResult = Apollo.MutationResult<
   DeleteTodoMutation
 >;
-export type DeleteTodoMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type DeleteTodoMutationOptions = Apollo.BaseMutationOptions<
   DeleteTodoMutation,
   DeleteTodoMutationVariables
 >;

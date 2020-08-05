@@ -132,4 +132,18 @@ References
 
 - https://awscli.amazonaws.com/v2/documentation/api/latest/reference/route53domains/register-domain.html
 
+### Configure Pulumi production stack
+
+The domain must be registered in your AWS Route53. Other values can be arbitrarily chosen with some [AWS restrictions](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Limits.html#RDS_Limits.Constraints).
+
+```bash
+cd packages/pulumi-aws
+pulumi stack select production
+pulumi config set domain [YOUR ROUTE53 DOMAIN]
+pulumi config set dbName [YOUR POSTGRES DB NAME]
+pulumi config set dbUsername [YOUR POSTGRES DB USERNAME]
+pulumi config set dbPassword [YOUR POSTGRES DB PASSWORD] --secret
+pulumi config set hasuraGraphqlAdminSecret [YOUR HASURA GRAPHQL ADMIN SECRET] --secret
+```
+
 <!-- @remove-pulumi-aws-end -->
