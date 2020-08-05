@@ -1,16 +1,15 @@
 import { ApolloProvider } from "@apollo/client";
+import { useAuth0 } from "@auth0/auth0-react";
 import { makeStyles } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
-import React from "react";
-import { Route, Router, Switch } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Header from "./components/Header";
 import PrivateRoute from "./components/PrivateRoute";
 import About from "./containers/About";
 import Todos from "./containers/Todos";
 import getApolloClient from "./utils/getApolloClient";
-import history from "./utils/history";
-import { useAuth0 } from "./utils/reactAuth0Spa";
 
 const useStyles = makeStyles({
   root: {
@@ -24,13 +23,20 @@ const useStyles = makeStyles({
 
 export default function App() {
   const classes = useStyles();
-  const { token } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
+  const [token, setToken] = useState<string | undefined>();
+
+  useEffect(() => {
+    (async () => {
+      setToken(await getAccessTokenSilently());
+    })();
+  }, [getAccessTokenSilently]);
 
   const apolloClient = getApolloClient(token);
 
   return (
     <ApolloProvider client={apolloClient}>
-      <Router history={history}>
+      <Router>
         <div className={classes.root}>
           <Header />
           <Switch>

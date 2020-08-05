@@ -1,25 +1,11 @@
 import "./index.css";
 
-import { RedirectLoginResult } from "@auth0/auth0-spa-js";
+import { Auth0Provider } from "@auth0/auth0-react";
 import React from "react";
 import ReactDOM from "react-dom";
 
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import history from "./utils/history";
-import { Auth0Provider } from "./utils/reactAuth0Spa";
-
-interface AppState extends RedirectLoginResult {
-  targetUrl?: string;
-}
-
-// A function that routes the user to the right place
-// after login
-const onRedirectCallback = (appState: AppState) => {
-  history.push(
-    appState?.targetUrl ? appState.targetUrl : window.location.pathname
-  );
-};
 
 ReactDOM.render(
   <React.StrictMode>
@@ -27,9 +13,8 @@ ReactDOM.render(
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       domain={process.env.REACT_APP_AUTH0_DOMAIN!}
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      client_id={process.env.REACT_APP_AUTH0_CLIENT_ID!}
-      redirect_uri={window.location.origin}
-      onRedirectCallback={onRedirectCallback}
+      clientId={process.env.REACT_APP_AUTH0_CLIENT_ID!}
+      redirectUri={window.location.origin}
       audience={process.env.REACT_APP_AUTH0_AUDIENCE}
     >
       <App />

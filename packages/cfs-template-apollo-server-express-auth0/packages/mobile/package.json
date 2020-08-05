@@ -16,6 +16,7 @@
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.7.3",
     "@react-navigation/stack": "^5.9.0",
+    "@unimodules/core": "~5.1.2",
     "common": "0.1.0",
     "expo": "~38.0.8",
     "expo-auth-session": "^1.4.1",

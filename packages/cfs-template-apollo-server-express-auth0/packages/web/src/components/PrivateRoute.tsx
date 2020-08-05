@@ -1,20 +1,13 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import React, { Component, useEffect } from "react";
 import { Route, RouteComponentProps, RouteProps } from "react-router-dom";
 
-import { useAuth0 } from "../utils/reactAuth0Spa";
-
 const PrivateRoute = ({ component, path, ...rest }: RouteProps) => {
-  const {
-    token,
-    loading,
-    isAuthenticated,
-    loginWithRedirect,
-    getTokenSilently,
-  } = useAuth0();
+  const { isLoading, isAuthenticated, loginWithRedirect } = useAuth0();
 
   useEffect(() => {
     const fn = async () => {
-      if (loading || isAuthenticated) {
+      if (isLoading || isAuthenticated) {
         return;
       }
 
@@ -24,10 +17,10 @@ const PrivateRoute = ({ component, path, ...rest }: RouteProps) => {
       });
     };
     fn();
-  }, [loading, isAuthenticated, loginWithRedirect, path, getTokenSilently]);
+  }, [isLoading, isAuthenticated, loginWithRedirect, path]);
 
   // Wait for the token to render
-  if (!token) {
+  if (isLoading || !isAuthenticated) {
     // eslint-disable-next-line unicorn/no-null
     return null;
   }
