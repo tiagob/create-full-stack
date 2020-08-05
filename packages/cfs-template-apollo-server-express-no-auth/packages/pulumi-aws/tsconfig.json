@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
-    "outDir": "build",
     "typeRoots": ["./node_modules/@types", "./typings"]
   },
   "extends": "../../tsconfig"

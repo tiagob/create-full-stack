@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    // Include declarations so mobile and web can read the types properly
-    "declaration": true,
+    // File paths are relative to the containing tsconfig.jon file location
+    // https://github.com/Microsoft/TypeScript/issues/24851
     "outDir": "build"
   },
   "extends": "../../tsconfig"

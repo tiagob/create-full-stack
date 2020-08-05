@@ -30,5 +30,9 @@
     "graphql-tag": "^2.0.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.2"
+  },
+  "engines": {
+    "node": ">=12.10",
+    "yarn": ">=1.22.4"
   }
 }

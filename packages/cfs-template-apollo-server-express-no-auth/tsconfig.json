@@ -12,8 +12,8 @@
     // https://reactnative.dev/docs/typescript#adding-typescript-to-an-existing-project
     "jsx": "react",
     // Libs required by React Native and Node
-    "lib": ["DOM", "ESNext"],
-    "module": "ESNext",
+    "lib": ["DOM", "ES2020"],
+    "module": "CommonJS",
     // Required by React Native. Node uses "CommonJS" which is overridden in child config
     "moduleResolution": "Node",
     "noImplicitAny": true,
@@ -27,8 +27,9 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    // Latest Node supported target
-    // https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping#node-12
+    "declaration": true,
+    // Node ^12.9.0 tsconfig settings
+    // https://stackoverflow.com/a/59787575/709040
     "target": "ES2019"
   },
   "exclude": ["**/build/"]
