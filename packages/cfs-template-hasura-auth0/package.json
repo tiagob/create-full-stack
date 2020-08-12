@@ -1,6 +1,6 @@
 {
   "name": "cfs-template-hasura-auth0",
-  "version": "0.1.24",
+  "version": "0.1.25",
   "description": "The Hasura Auth0 template for Create Full Stack.",
   "license": "MIT"
 }
