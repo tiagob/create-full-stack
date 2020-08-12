@@ -1,4 +1,4 @@
-c{
+{
   "name": "server",
   "version": "0.1.0",
   "private": true,
@@ -23,6 +23,7 @@ c{
   "dependencies": {
     "apollo-server-express": "^2.16.1",
     "apollo-server-testing": "^2.16.1",
+    "cfs-dotenv": "0.1.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "graphql": "^14.7.0",
@@ -34,7 +35,6 @@ c{
   },
   "devDependencies": {
     "@types/jest": "^26.0.9",
-    "cfs-dotenv": "0.1.2",
     "common": "0.1.0",
     "concurrently": "^5.2.0",
     "jest": "^26.3.0",
