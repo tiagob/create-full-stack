@@ -1,4 +1,4 @@
-{
+c{
   "name": "server",
   "version": "0.1.0",
   "private": true,
@@ -7,14 +7,25 @@
     "build": "tsc",
     "start": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"green.bold,cyan.bold\" \"yarn watch-ts\" \"yarn watch-node\"",
     "start-production": "node -r cfs-dotenv/config ./build/index.js",
+    "test": "jest --watch",
+    "test:coverage": "jest --watchAll --coverage",
+    "typeorm": "typeorm",
     "watch-node": "nodemon -r cfs-dotenv/config ./build/index.js",
     "watch-ts": "tsc -w"
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  },
   "dependencies": {
-    "apollo-server-express": "^2.13.1",
+    "apollo-server-express": "^2.16.1",
+    "apollo-server-testing": "^2.16.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "graphql": "^15.3.0",
+    "graphql": "^14.7.0",
     "pg": "^8.3.0",
     "pg-hstore": "^2.3.3",
     "reflect-metadata": "^0.1.13",
@@ -22,8 +33,13 @@
     "typescript": "3.9.2"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.9",
     "cfs-dotenv": "0.1.2",
+    "common": "0.1.0",
     "concurrently": "^5.2.0",
-    "nodemon": "^2.0.4"
+    "jest": "^26.3.0",
+    "nodemon": "^2.0.4",
+    "sqlite3": "^5.0.0",
+    "ts-jest": "^26.1.4"
   }
 }

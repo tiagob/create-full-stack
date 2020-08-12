@@ -1,6 +1,9 @@
 {
   "private": true,
-  "workspaces": ["packages/*"],
+  "workspaces": {
+    "packages": ["packages/*"],
+    "nohoist": ["**/jest", "**/jest/**"]
+  },
   "scripts": {
     "generate": "graphql-codegen --watch",
     "hasura": "hasura --project hasura",

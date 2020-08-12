@@ -21,7 +21,7 @@ interface Context {
   user: DecodedJwt;
 }
 
-export default function getResolover(connection: Connection): Resolvers {
+export default function getResolvers(connection: Connection): Resolvers {
   const todoRepository = connection.getRepository(Todo);
   return {
     Query: {
@@ -41,15 +41,18 @@ export default function getResolover(connection: Connection): Resolvers {
         context: Context
       ) => {
         await todoRepository.update({ id, uid: context.user.sub }, args);
-        return todoRepository.findOne(id);
+        return todoRepository.findOne({ id, uid: context.user.sub });
       },
       deleteTodo: async (
         _,
         { id }: MutationDeleteTodoArgs,
         context: Context
       ) => {
-        const todo = todoRepository.findOne({ id, uid: context.user.sub });
-        await todoRepository.delete(id);
+        const todo = await todoRepository.findOne({
+          id,
+          uid: context.user.sub,
+        });
+        await todoRepository.delete({ id, uid: context.user.sub });
         return todo;
       },
     },

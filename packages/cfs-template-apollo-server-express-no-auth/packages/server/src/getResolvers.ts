@@ -8,7 +8,7 @@ import {
   Resolvers,
 } from "./graphql/__generated__";
 
-export default function getResolover(connection: Connection): Resolvers {
+export default function getResolvers(connection: Connection): Resolvers {
   const todoRepository = connection.getRepository(Todo);
   return {
     Query: {
@@ -22,7 +22,7 @@ export default function getResolover(connection: Connection): Resolvers {
         return todoRepository.findOne(id);
       },
       deleteTodo: async (_, { id }: MutationDeleteTodoArgs) => {
-        const todo = todoRepository.findOne(id);
+        const todo = await todoRepository.findOne(id);
         await todoRepository.delete(id);
         return todo;
       },

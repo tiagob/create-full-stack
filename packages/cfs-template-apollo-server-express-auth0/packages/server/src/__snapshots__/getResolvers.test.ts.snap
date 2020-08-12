@@ -1,0 +1,137 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`creates a todo 1`] = `
+Object {
+  "data": Object {
+    "createTodo": Object {
+      "complete": false,
+      "id": 1,
+      "name": "This test",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`deletes a todo 1`] = `
+Object {
+  "data": Object {
+    "deleteTodo": Object {
+      "id": 1,
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`doesn't delete a different user's todo 1`] = `
+Object {
+  "data": Object {
+    "deleteTodo": null,
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`doesn't update a different user's todo 1`] = `
+Object {
+  "data": Object {
+    "updateTodo": null,
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`fetches empty todos 1`] = `
+Object {
+  "data": Object {
+    "todos": Array [],
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`fetches my todos 1`] = `
+Object {
+  "data": Object {
+    "todos": Array [],
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`fetches todos 1`] = `
+Object {
+  "data": Object {
+    "todos": Array [
+      Object {
+        "complete": false,
+        "id": 1,
+        "name": "This test",
+      },
+    ],
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`updates a todo 1`] = `
+Object {
+  "data": Object {
+    "updateTodo": Object {
+      "complete": true,
+      "id": 1,
+      "name": "This test",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;

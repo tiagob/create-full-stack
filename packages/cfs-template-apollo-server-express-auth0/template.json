@@ -2,7 +2,7 @@
   "private": true,
   "workspaces": {
     "packages": ["packages/*"],
-    "nohoist": ["**/typeorm", "**/typeorm/**"]
+    "nohoist": ["**/typeorm", "**/typeorm/**", "**/jest", "**/jest/**"]
   },
   "scripts": {
     "generate": "graphql-codegen --watch",

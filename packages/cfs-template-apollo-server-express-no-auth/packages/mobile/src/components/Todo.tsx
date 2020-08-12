@@ -32,6 +32,7 @@ export default function Todo({ todo }: Props) {
           icon={
             <Icon
               name="delete"
+              accessibilityLabel="delete"
               onPress={() => deleteTodo({ variables: { id: todo.id } })}
             />
           }

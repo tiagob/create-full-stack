@@ -3,8 +3,14 @@ import React from "react";
 
 import App from "./App";
 
-test("renders learn react link", () => {
+jest.mock("@auth0/auth0-react", () => ({
+  useAuth0: () => ({ getAccessTokenSilently: jest.fn() }),
+  isLoading: false,
+  isAuthenticated: true,
+}));
+
+it("renders header", () => {
   const { getByText } = render(<App />);
-  const linkElement = getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  const header = getByText(/todos/i);
+  expect(header).toBeInTheDocument();
 });

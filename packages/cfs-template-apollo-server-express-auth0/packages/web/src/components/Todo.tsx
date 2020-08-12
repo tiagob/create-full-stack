@@ -28,7 +28,6 @@ export default function Todo({ todo }: Props) {
   return (
     <ListItem
       key={todo.id}
-      role={undefined}
       dense
       button
       onClick={() =>

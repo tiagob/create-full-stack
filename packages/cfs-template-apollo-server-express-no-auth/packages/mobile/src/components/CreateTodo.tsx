@@ -16,8 +16,8 @@ export default function CreateTodo() {
   const [name, setName] = useState("");
   const [createTodo] = useCreateTodo();
 
-  async function onSubmit() {
-    await createTodo({ variables: { name } });
+  function onSubmit() {
+    createTodo({ variables: { name } });
     setName("");
   }
 
@@ -28,7 +28,9 @@ export default function CreateTodo() {
         value={name}
         onChangeText={(text: string) => setName(text)}
         onSubmitEditing={onSubmit}
-        rightIcon={<Icon name="send" onPress={onSubmit} />}
+        rightIcon={
+          <Icon name="send" accessibilityLabel="submit" onPress={onSubmit} />
+        }
       />
     </View>
   );

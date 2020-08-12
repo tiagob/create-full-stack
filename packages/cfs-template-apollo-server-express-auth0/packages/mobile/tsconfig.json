@@ -1,3 +1,7 @@
 {
+  "compilerOptions": {
+    // Explicitly include custom third-party type declarations in ./typings
+    "typeRoots": ["./node_modules/@types", "./typings"]
+  },
   "extends": "../../tsconfig"
 }
