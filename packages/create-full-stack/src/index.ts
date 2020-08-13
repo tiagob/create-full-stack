@@ -180,15 +180,13 @@ async function run() {
   // Also, uninstalls the template
   runYarn(projectName);
 
+  console.log("Building common...");
+  console.log();
+  runYarn(path.join(projectName, "packages/common"), ["build"]);
   if (nodeBackends.has(backend)) {
     console.log("Building the node server...");
     console.log();
     runYarn(path.join(projectName, "packages/server"), ["build"]);
-  }
-  if (hasMobile || hasWeb) {
-    console.log("Building common...");
-    console.log();
-    runYarn(path.join(projectName, "packages/common"), ["build"]);
   }
 
   console.log("Formatting files...");
