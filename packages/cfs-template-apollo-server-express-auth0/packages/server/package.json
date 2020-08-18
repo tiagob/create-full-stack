@@ -4,7 +4,7 @@
   "private": true,
   "main": "./src/index.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "start": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"green.bold,cyan.bold\" \"yarn watch-ts\" \"yarn watch-node\"",
     "start-production": "node -r cfs-dotenv/config ./build/index.js",
     "test": "jest --watch",

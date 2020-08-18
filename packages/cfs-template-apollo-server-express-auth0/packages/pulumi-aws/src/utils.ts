@@ -1,7 +1,4 @@
 import * as pulumi from "@pulumi/pulumi";
-// @remove-mobile-begin
-import spawn from "cross-spawn";
-// @remove-mobile-end
 import fs from "fs";
 
 import Auth0 from "./components/auth0";
@@ -106,28 +103,3 @@ export function setDevelopmentEnv(
       }
     );
 }
-
-// @remove-mobile-begin
-export function publishExpo(
-  graphqlUrl: string,
-  mobilePath: string,
-  auth0: Auth0,
-  auth0Domain: string
-) {
-  pulumi
-    .all([auth0.audience, auth0.mobileClientId])
-    .apply(([audience, clientId]) => {
-      // https://docs.expo.io/workflow/publishing/
-      spawn.sync("expo", ["publish", "--release-channel", pulumi.getStack()], {
-        cwd: mobilePath,
-        env: {
-          ...process.env,
-          GRAPHQL_URL: graphqlUrl,
-          AUTH0_AUDIENCE: audience,
-          AUTH0_DOMAIN: auth0Domain,
-          AUTH0_CLIENT_ID: clientId,
-        },
-      });
-    });
-}
-// @remove-mobile-end

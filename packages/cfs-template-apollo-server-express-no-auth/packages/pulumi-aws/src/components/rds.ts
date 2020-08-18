@@ -40,7 +40,7 @@ export default class Rds extends pulumi.ComponentResource {
       skipFinalSnapshot: true,
     });
 
-    this.connectionString = pulumi.interpolate`postgres://${dbUsername}:${dbPassword}@${db.endpoint}/${dbName}?sslmode=disable`;
+    this.connectionString = pulumi.interpolate`postgres://${dbUsername}:${dbPassword}@${db.endpoint}/${dbName}`;
 
     this.registerOutputs({
       connectionString: this.connectionString,

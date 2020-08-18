@@ -2,10 +2,17 @@
   "private": true,
   "workspaces": {
     "packages": ["packages/*"],
-    "nohoist": ["**/jest", "**/jest/**"]
+    "nohoist": [
+      "**/typeorm",
+      "**/typeorm/**",
+      "**/jest",
+      "**/jest/**",
+      "**/webpack",
+      "**/webpack/**"
+    ]
   },
   "scripts": {
-    "generate": "graphql-codegen --watch",
+    "generate": "graphql-codegen",
     "hasura": "hasura --project hasura",
     "lint": "eslint packages/**/*.{ts,tsx} --fix",
     "prettier": "prettier --write ."

@@ -203,6 +203,10 @@ pulumi config set domain [YOUR ROUTE53 DOMAIN]
 pulumi config set dbName [YOUR POSTGRES DB NAME]
 pulumi config set dbUsername [YOUR POSTGRES DB USERNAME]
 pulumi config set dbPassword [YOUR POSTGRES DB PASSWORD] --secret
+<!-- @remove-mobile-begin -->
+pulumi config set expo:username [YOUR EXPO USERNAME]
+pulumi config set expo:password [YOUR EXPO PASSWORD] --secret
+<!-- @remove-mobile-end -->
 ```
 
 <!-- @remove-pulumi-aws-end -->
@@ -266,3 +270,21 @@ AUTH0_DOMAIN=[YOUR AUTH0 DOMAIN]
 
 <!-- @remove-mobile-end -->
 <!-- @remove-manual-config-end -->
+<!-- @remove-github-actions-begin -->
+
+### CI/CD
+
+After your code is pushed to a GitHub repo, add the following secrets for the Actions under Settings > Secrets.
+
+- `PULUMI_ACCESS_TOKEN`
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+
+Get `PULUMI_ACCESS_TOKEN` by creating a new token on the Pulumi [Access Tokens Page](https://app.pulumi.com/account/tokens). Get `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` by creating a new token on https://console.aws.amazon.com/iam/home#/security_credentials under Access Keys > Create New Access Key.
+
+References
+
+- https://www.pulumi.com/docs/guides/continuous-delivery/github-actions/#configuring-your-secrets
+- https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets
+
+<!-- @remove-github-actions-end -->

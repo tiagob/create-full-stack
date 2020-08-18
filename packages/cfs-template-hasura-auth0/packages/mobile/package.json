@@ -38,9 +38,9 @@
     "react-dom": "~16.11.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
     "react-native-elements": "^2.1.0",
-    "react-native-gesture-handler": "^1.7.0",
+    "react-native-gesture-handler": "~1.6.0",
     "react-native-safe-area-context": "~3.0.7",
-    "react-native-screens": "~2.10.1",
+    "react-native-screens": "~2.9.0",
     "react-native-vector-icons": "^7.0.0",
     "react-native-web": "~0.11.7",
     "react-test-renderer": "~16.11.0"

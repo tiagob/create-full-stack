@@ -1,8 +1,3 @@
-// @remove-mobile-begin
-import * as pulumi from "@pulumi/pulumi";
-import spawn from "cross-spawn";
-// @remove-mobile-end
-
 // Split a domain name into its subdomain and parent domain names.
 // e.g. "www.example.com" => "www", "example.com".
 export function getDomainAndSubdomain(domain: string) {
@@ -23,16 +18,3 @@ export function getDomainAndSubdomain(domain: string) {
     parentDomain: `${parts.join(".")}.`,
   };
 }
-
-// @remove-mobile-begin
-export function publishExpo(graphqlUrl: string, mobilePath: string) {
-  // https://docs.expo.io/workflow/publishing/
-  spawn.sync("expo", ["publish", "--release-channel", pulumi.getStack()], {
-    cwd: mobilePath,
-    env: {
-      ...process.env,
-      GRAPHQL_URL: graphqlUrl,
-    },
-  });
-}
-// @remove-mobile-end

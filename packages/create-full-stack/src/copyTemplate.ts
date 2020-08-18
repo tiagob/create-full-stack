@@ -89,8 +89,10 @@ interface Command {
   command: string;
 }
 
-function getStartCommand(commands: Command[]) {
-  return `concurrently -k -p "[{name}]" -c "grey.bold" -n "${commands
+function getConcurrentlyScript(commands: Command[], args: string[] = []) {
+  return `concurrently ${
+    args.length > 0 ? `${args.join(" ")} ` : ""
+  }-p "[{name}]" -c "grey.bold" -n "${commands
     .map((c) => c.name)
     .join(",")}" "${commands.map((c) => c.command).join('" "')}"`;
 }
@@ -113,40 +115,62 @@ async function updatePackage({
     path.join(projectPath, "package.json")
   );
   appPackage.name = appName;
-  const commands: Command[] = [];
-  commands.push({
-    name: "Docker",
-    command: "docker-compose up",
-  });
-  commands.push({
-    name: "Generate",
-    command: "yarn generate",
-  });
+  const buildCommands = ["graphql-codegen", "yarn --cwd packages/common build"];
+  const startCommands: Command[] = [
+    {
+      name: "Docker",
+      command: "docker-compose up",
+    },
+    {
+      name: "Generate",
+      command: "yarn generate --watch",
+    },
+    {
+      name: "Build Common",
+      command: "yarn --cwd packages/common watch",
+    },
+  ];
+  const testCommands: Command[] = [];
   if (backend === Backend.apolloServerExpress) {
-    commands.push({
+    buildCommands.push("yarn --cwd packages/server build");
+    startCommands.push({
       name: "Server",
       command: "yarn --cwd packages/server start",
     });
+    testCommands.push({
+      name: "Server",
+      command: "yarn --cwd packages/server test --ci --watchAll=false",
+    });
   }
-  commands.push({
-    name: "Build Common",
-    command: "yarn --cwd packages/common watch",
-  });
   if (hasMobile) {
-    commands.push({
+    startCommands.push({
       name: "Mobile",
       command: "yarn --cwd packages/mobile start",
     });
+    testCommands.push({
+      name: "Mobile",
+      command: "yarn --cwd packages/mobile test --ci --watchAll=false",
+    });
   }
   if (hasWeb) {
-    commands.push({
+    buildCommands.push("yarn --cwd packages/web build");
+    startCommands.push({
       name: "Web",
       command: "yarn --cwd packages/web start",
+    });
+    testCommands.push({
+      name: "Web",
+      command: "yarn --cwd packages/web test --ci --watchAll=false",
     });
   }
   appPackage.scripts = {
     ...appPackage.scripts,
-    start: getStartCommand(commands),
+    build: buildCommands.join(" && "),
+    start: getConcurrentlyScript(startCommands, ["-k"]),
+    test:
+      testCommands.length > 0
+        ? getConcurrentlyScript(testCommands)
+        : "echo No tests.",
   };
   fs.writeFileSync(
     path.join(projectPath, "package.json"),
@@ -298,7 +322,7 @@ export default async function copyTemplate(options: {
     excludeList.push("pulumi-aws");
   }
   if (!hasGithubActions) {
-    excludeList.push(".github");
+    excludeList.push(".github", ".pulumi");
   }
   copySync(templatePath, projectPath, false, excludeList);
   // ".gitignore" isn't included in "npm publish" so copy it over as gitignore
@@ -333,6 +357,9 @@ export default async function copyTemplate(options: {
     removeBlockInFileKeys.push("pulumi-aws");
   } else {
     removeBlockInFileKeys.push("manual-config");
+  }
+  if (!hasGithubActions) {
+    removeBlockInFileKeys.push("github-actions");
   }
   recursiveFileFunc(projectPath, (dir, file) =>
     removeInFile(path.join(dir, file), removeBlockInFileKeys)

@@ -1,12 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
-// @remove-mobile-begin
-import spawn from "cross-spawn";
-// @remove-mobile-end
 import path from "path";
 
-// @remove-mobile-begin
-import mobileConfig from "../mobile/app.json";
-// @remove-mobile-end
 import Auth0 from "./src/components/auth0";
 import Certificate from "./src/components/certificate";
 import Fargate from "./src/components/fargate";
@@ -14,12 +8,10 @@ import Rds from "./src/components/rds";
 // @remove-web-begin
 import StaticWebsite from "./src/components/staticWebsite";
 // @remove-web-end
-import {
-  // @remove-mobile-begin
-  publishExpo,
-  // @remove-mobile-end
-  setDevelopmentEnv,
-} from "./src/utils";
+// @remove-mobile-begin
+import { PublishExpo } from "./src/providers/publishExpo";
+// @remove-mobile-end
+import { setDevelopmentEnv } from "./src/utils";
 
 const serverPath = "../../hasura";
 // @remove-web-begin
@@ -36,17 +28,10 @@ const serverDomain = isDevelopment
   ? "localhost:8080"
   : `${path.basename(serverPath)}.${config.require("domain")}`;
 const auth0Domain = new pulumi.Config("auth0").require("domain");
-
 // @remove-mobile-begin
-export const expoUsername = spawn
-  .sync("expo", ["whoami"], { encoding: "utf8" })
-  .stdout.trim();
-export const expoProjectPage = isDevelopment
-  ? undefined
-  : `https://expo.io/@${expoUsername}/${
-      mobileConfig.slug
-    }?release-channel=${pulumi.getStack()}`;
+const expoConfig = new pulumi.Config("expo");
 // @remove-mobile-end
+
 export const graphqlUrl = `${
   isDevelopment ? "http" : "https"
 }://${serverDomain}/v1/graphql`;
@@ -64,7 +49,7 @@ const auth0 = new Auth0("auth0", {
   // @remove-web-end
   // @remove-mobile-begin
   mobileClientName: path.basename(mobilePath),
-  expoUsername,
+  expoUsername: expoConfig.require("username"),
   // @remove-mobile-end
 });
 
@@ -130,8 +115,21 @@ if (isDevelopment) {
     webPath,
   });
   // @remove-web-end
-
-  // @remove-mobile-begin
-  publishExpo(graphqlUrl, mobilePath, auth0, auth0Domain);
-  // @remove-mobile-end
 }
+
+// @remove-mobile-begin
+export const expoProjectUrl = isDevelopment
+  ? undefined
+  : new PublishExpo("publish-expo", {
+      username: expoConfig.require("username"),
+      password: expoConfig.requireSecret("password"),
+      releaseChannel: pulumi.getStack(),
+      projectDir: mobilePath,
+      env: {
+        GRAPHQL_URL: graphqlUrl,
+        AUTH0_AUDIENCE: auth0.audience,
+        AUTH0_DOMAIN: auth0Domain,
+        AUTH0_CLIENT_ID: auth0.mobileClientId,
+      },
+    }).url;
+// @remove-mobile-end

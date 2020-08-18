@@ -18,6 +18,7 @@ import spawn from "cross-spawn";
 // PromiseRejectionHandledWarning: Promise rejection was handled asynchronously
 // Function code:
 // function () { [native code] }
+// https://github.com/pulumi/pulumi-aws/issues/249#issuecomment-401563361
 // https://www.pulumi.com/docs/tutorials/aws/serializing-functions/#capturing-modules-in-a-javascript-function
 
 export interface SyncWebResourceInputs {
