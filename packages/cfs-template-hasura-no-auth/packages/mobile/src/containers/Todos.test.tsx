@@ -43,7 +43,7 @@ it("renders a todo", async () => {
       },
       result: {
         data: {
-          todos: [{ __typename: "Todo", id: 1, name, complete: false }],
+          todos: [{ __typename: "todos", id: 1, name, complete: false }],
         },
       },
     },
@@ -78,7 +78,9 @@ it("creates a todo", async () => {
       },
       result: {
         data: {
-          createTodo: { __typename: "Todo", id: 1, name, complete: false },
+          insert_todos: {
+            returning: { __typename: "todos", id: 1, name, complete: false },
+          },
         },
       },
     },
@@ -119,7 +121,7 @@ it("updates a todo", async () => {
       },
       result: {
         data: {
-          todos: [{ __typename: "Todo", id: 1, name, complete: false }],
+          todos: [{ __typename: "todos", id: 1, name, complete: false }],
         },
       },
     },
@@ -130,7 +132,9 @@ it("updates a todo", async () => {
       },
       result: {
         data: {
-          updateTodo: { __typename: "Todo", id: 1, name, complete: true },
+          update_todos: {
+            returning: [{ __typename: "todos", id: 1, name, complete: true }],
+          },
         },
       },
     },
@@ -159,7 +163,7 @@ it("deletes a todo", async () => {
       },
       result: {
         data: {
-          todos: [{ __typename: "Todo", id: 1, name, complete: false }],
+          todos: [{ __typename: "todos", id: 1, name, complete: false }],
         },
       },
     },
@@ -168,7 +172,9 @@ it("deletes a todo", async () => {
         query: DeleteTodoDocument,
         variables: { id: 1 },
       },
-      result: { data: { deleteTodo: { __typename: "Todo", id: 1 } } },
+      result: {
+        data: { delete_todos: { returning: [{ __typename: "todos", id: 1 }] } },
+      },
     },
   ];
   const { findByA11yLabel, queryByText } = render(
