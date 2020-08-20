@@ -16,7 +16,9 @@ export interface PublishExpoResourceInputs {
   password: pulumi.Input<string>;
   releaseChannel: pulumi.Input<string>;
   projectDir: pulumi.Input<string>;
-  env: pulumi.Input<{ [key: string]: string }>;
+  env: pulumi.Input<{
+    [key: string]: string | pulumi.Input<string | undefined>;
+  }>;
 }
 
 interface PublishExpoInputs {
@@ -24,7 +26,9 @@ interface PublishExpoInputs {
   password: string;
   releaseChannel: string;
   projectDir: string;
-  env: { [key: string]: string };
+  env: {
+    [key: string]: string | undefined;
+  };
 }
 
 interface PublishExpoOutputs {
