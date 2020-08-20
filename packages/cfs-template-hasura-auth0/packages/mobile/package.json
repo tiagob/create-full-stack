@@ -56,7 +56,7 @@
     "@types/react": "~16.9.41",
     "@types/react-native": "~0.62.13",
     "@types/react-test-renderer": "^16.9.3",
-    "babel-plugin-cfs-dotenv": "0.1.2",
+    "babel-plugin-expo-dotenv": "0.1.0",
     "babel-preset-expo": "~8.2.3",
     "expo-yarn-workspaces": "^1.2.1",
     "jest": "^26.3.0",
