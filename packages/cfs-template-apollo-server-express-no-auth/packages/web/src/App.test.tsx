@@ -4,7 +4,7 @@ import React from "react";
 import App from "./App";
 
 it("renders header", () => {
-  const { getByText } = render(<App />);
-  const header = getByText(/todos/i);
+  const { getByLabelText } = render(<App />);
+  const header = getByLabelText(/menu/i);
   expect(header).toBeInTheDocument();
 });
