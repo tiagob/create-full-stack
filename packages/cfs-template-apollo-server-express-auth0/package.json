@@ -1,6 +1,6 @@
 {
   "name": "cfs-template-apollo-server-express-auth0",
-  "version": "0.1.25",
+  "version": "0.1.26",
   "description": "The apollo-server-express Auth0 template for Create Full Stack.",
   "license": "MIT"
 }
