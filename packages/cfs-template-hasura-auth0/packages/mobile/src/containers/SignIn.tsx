@@ -1,8 +1,8 @@
+import * as Linking from "expo-linking";
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Button } from "react-native-elements";
+import { StatusBar, StyleSheet, View } from "react-native";
+import { Button, Text } from "react-native-elements";
 
-import Header from "../components/Header";
 import { useAuth0 } from "../utils/reactNativeAuth0";
 
 const styles = StyleSheet.create({
@@ -17,19 +17,14 @@ const styles = StyleSheet.create({
 });
 
 export default function SignIn() {
-  const { request, loginWithRedirect } = useAuth0();
+  const { request, login } = useAuth0();
 
   return (
     <View style={styles.root}>
-      <Header
-        centerComponent={{ text: "SIGN IN", style: { color: "white" } }}
-      />
+      <StatusBar barStyle="dark-content" />
       <View style={styles.container}>
-        <Button
-          title="SIGN IN"
-          onPress={loginWithRedirect}
-          disabled={!request}
-        />
+        <Text>{Linking.makeUrl("/")}</Text>
+        <Button title="SIGN IN" onPress={login} disabled={!request} />
       </View>
     </View>
   );

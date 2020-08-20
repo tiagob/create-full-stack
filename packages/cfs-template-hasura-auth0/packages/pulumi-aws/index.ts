@@ -50,6 +50,7 @@ const auth0 = new Auth0("auth0", {
   // @remove-mobile-begin
   mobileClientName: path.basename(mobilePath),
   expoUsername: expoConfig.require("username"),
+  expoLogoutUrl: expoConfig.require("logoutUrl"),
   // @remove-mobile-end
 });
 

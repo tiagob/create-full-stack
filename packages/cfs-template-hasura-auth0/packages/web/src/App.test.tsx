@@ -10,7 +10,7 @@ jest.mock("@auth0/auth0-react", () => ({
 }));
 
 it("renders header", () => {
-  const { getByText } = render(<App />);
-  const header = getByText(/todos/i);
+  const { getByLabelText } = render(<App />);
+  const header = getByLabelText(/avatar/i);
   expect(header).toBeInTheDocument();
 });
