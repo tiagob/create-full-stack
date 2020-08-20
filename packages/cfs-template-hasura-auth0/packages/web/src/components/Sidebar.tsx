@@ -35,7 +35,7 @@ export default function Sidebar({ isDrawerOpen, closeDrawer }: Props) {
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
-          <ListItemText aria-label="home" primary="Home" />
+          <ListItemText aria-label="todos" primary="Todos" />
         </ListItem>
         <ListItem button component={RouterLink} to="/about">
           <ListItemIcon>
