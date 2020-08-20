@@ -1,18 +1,28 @@
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React from "react";
 import { Platform } from "react-native";
-import { Header as ElementsHeader, HeaderProps } from "react-native-elements";
+import { Header as ElementsHeader, Icon } from "react-native-elements";
 
-export default function Header(props: HeaderProps) {
+import { RootStackParamList } from "../utils/types";
+
+interface Props {
+  navigation: DrawerNavigationProp<RootStackParamList, "Todos" | "About">;
+}
+
+export default function Header({ navigation }: Props) {
   return (
     <ElementsHeader
-      // Fix height on Android
-      // https://github.com/react-native-elements/react-native-elements/issues/1793#issuecomment-482352764
-      statusBarProps={{ translucent: true }}
       containerStyle={Platform.select({
         android: Platform.Version <= 20 ? { paddingTop: 0, height: 56 } : {},
       })}
       barStyle="light-content"
-      {...props}
+      leftComponent={
+        <Icon
+          name="menu"
+          onPress={() => navigation.openDrawer()}
+          color="white"
+        />
+      }
     />
   );
 }

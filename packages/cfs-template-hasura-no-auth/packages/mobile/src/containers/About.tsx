@@ -1,7 +1,7 @@
-import { StackNavigationProp } from "@react-navigation/stack";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React from "react";
 import { Linking, StyleSheet, View } from "react-native";
-import { Button, Icon } from "react-native-elements";
+import { Button } from "react-native-elements";
 
 import Header from "../components/Header";
 import { RootStackParamList } from "../utils/types";
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
 });
 
-type ScreenNavigationProp = StackNavigationProp<RootStackParamList, "About">;
+type ScreenNavigationProp = DrawerNavigationProp<RootStackParamList, "About">;
 
 interface Props {
   navigation: ScreenNavigationProp;
@@ -26,16 +26,7 @@ interface Props {
 export default function About({ navigation }: Props) {
   return (
     <View style={styles.root}>
-      <Header
-        centerComponent={{ text: "ABOUT", style: { color: "white" } }}
-        leftComponent={
-          <Icon
-            name="arrow-back"
-            onPress={() => navigation.push("Todos")}
-            color="white"
-          />
-        }
-      />
+      <Header navigation={navigation} />
       <View style={styles.container}>
         <Button
           title="GO TO GITHUB"

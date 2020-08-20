@@ -11,8 +11,8 @@ export const navigation = {
   setOptions: jest.fn(),
   addListener: jest.fn(),
   removeListener: jest.fn(),
-  replace: jest.fn(),
-  push: jest.fn(),
-  pop: jest.fn(),
-  popToTop: jest.fn(),
+  jumpTo: jest.fn(),
+  openDrawer: jest.fn(),
+  closeDrawer: jest.fn(),
+  toggleDrawer: jest.fn(),
 };

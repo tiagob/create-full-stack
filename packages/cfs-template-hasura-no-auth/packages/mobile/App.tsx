@@ -1,23 +1,48 @@
 import { ApolloProvider } from "@apollo/client";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import React, { ReactElement } from "react";
+import { Icon } from "react-native-elements";
 
 import About from "./src/containers/About";
 import Todos from "./src/containers/Todos";
 import apolloClient from "./src/utils/apolloClient";
 import { RootStackParamList } from "./src/utils/types";
 
-const Stack = createStackNavigator<RootStackParamList>();
+const Drawer = createDrawerNavigator<RootStackParamList>();
 
 export default function App(): ReactElement {
   return (
     <ApolloProvider client={apolloClient}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Todos" headerMode="none">
-          <Stack.Screen name="Todos" component={Todos} />
-          <Stack.Screen name="About" component={About} />
-        </Stack.Navigator>
+        <Drawer.Navigator initialRouteName="Todos">
+          <Drawer.Screen
+            name="Todos"
+            component={Todos}
+            options={{
+              drawerIcon: ({
+                color,
+                size,
+              }: {
+                color: string;
+                size: number;
+              }) => <Icon color={color} size={size} name="home" />,
+            }}
+          />
+          <Drawer.Screen
+            name="About"
+            component={About}
+            options={{
+              drawerIcon: ({
+                color,
+                size,
+              }: {
+                color: string;
+                size: number;
+              }) => <Icon color={color} size={size} name="info" />,
+            }}
+          />
+        </Drawer.Navigator>
       </NavigationContainer>
     </ApolloProvider>
   );

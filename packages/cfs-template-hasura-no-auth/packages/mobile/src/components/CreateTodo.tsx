@@ -29,7 +29,7 @@ export default function CreateTodo() {
         onChangeText={(text: string) => setName(text)}
         onSubmitEditing={onSubmit}
         rightIcon={
-          <Icon name="send" accessibilityLabel="submit" onPress={onSubmit} />
+          <Icon name="add" accessibilityLabel="submit" onPress={onSubmit} />
         }
       />
     </View>

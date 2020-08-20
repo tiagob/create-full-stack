@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "slug": "",
+  "name": "Hasura No Auth",
+  "slug": "hasura-no-auth",
   "platforms": ["ios", "android"],
   "version": "1.0.0",
   "orientation": "portrait",
@@ -17,5 +17,5 @@
   "ios": {
     "supportsTablet": true
   },
-  "scheme": ""
+  "scheme": "hasura-no-auth"
 }
