@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Header from "./components/Header";
 import PrivateRoute from "./components/PrivateRoute";
+import Sidebar from "./components/Sidebar";
 import About from "./containers/About";
 import Todos from "./containers/Todos";
 import getApolloClient from "./utils/getApolloClient";
@@ -23,22 +24,26 @@ const useStyles = makeStyles({
 
 export default function App() {
   const classes = useStyles();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   const { getAccessTokenSilently } = useAuth0();
   const [token, setToken] = useState<string | undefined>();
-
   useEffect(() => {
     (async () => {
       setToken(await getAccessTokenSilently());
     })();
   }, [getAccessTokenSilently]);
-
   const apolloClient = getApolloClient(token);
 
   return (
     <ApolloProvider client={apolloClient}>
       <Router>
         <div className={classes.root}>
-          <Header />
+          <Header openDrawer={() => setIsDrawerOpen(true)} />
+          <Sidebar
+            isDrawerOpen={isDrawerOpen}
+            closeDrawer={() => setIsDrawerOpen(false)}
+          />
           <Switch>
             <PrivateRoute exact path="/" component={Todos} />
             <Route path="/about" component={About} />

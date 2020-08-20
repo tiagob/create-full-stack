@@ -23,7 +23,6 @@ export default function SignIn() {
     <View style={styles.root}>
       <StatusBar barStyle="dark-content" />
       <View style={styles.container}>
-        <Text>{Linking.makeUrl("/")}</Text>
         <Button title="SIGN IN" onPress={login} disabled={!request} />
       </View>
     </View>

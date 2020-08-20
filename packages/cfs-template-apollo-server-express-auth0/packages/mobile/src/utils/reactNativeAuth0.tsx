@@ -1,9 +1,15 @@
 // Adapted from
 // https://github.com/expo/examples/tree/master/with-auth0
 import * as AuthSession from "expo-auth-session";
+import * as Linking from "expo-linking";
 import * as Random from "expo-random";
+import * as WebBrowser from "expo-web-browser";
 import React, { useContext, useEffect, useState } from "react";
 import { Alert, Platform } from "react-native";
+
+// TODO: Fix Android
+// https://github.com/expo/expo/issues/9845
+// https://github.com/expo/examples/issues/210
 
 interface User {
   // Database & Google user
@@ -38,7 +44,8 @@ type Result = {
 interface Auth0Context {
   request?: AuthSession.AuthRequest | null;
   result?: Result;
-  loginWithRedirect?(): void;
+  login?(): void;
+  logout?(): void;
   user?: User;
   token?: string;
 }
@@ -47,7 +54,8 @@ interface Auth0ProviderOptions {
   clientId: string;
   audience: string;
   authorizationEndpoint: string;
-  onRedirectCallback: () => void;
+  onLogin: () => void;
+  onLogout: () => void;
 }
 
 const useProxy = Platform.select({ web: false, default: true });
@@ -56,7 +64,8 @@ const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 export const Auth0Context = React.createContext<Auth0Context>({
   request: undefined,
   result: undefined,
-  loginWithRedirect: undefined,
+  login: undefined,
+  logout: undefined,
   user: undefined,
   token: undefined,
 });
@@ -66,7 +75,8 @@ export const Auth0Provider = ({
   clientId,
   audience,
   authorizationEndpoint,
-  onRedirectCallback,
+  onLogin,
+  onLogout,
 }: Auth0ProviderOptions) => {
   const [token, setToken] = useState<string | undefined>();
   const [user, setUser] = useState<User | undefined>();
@@ -88,6 +98,8 @@ export const Auth0Provider = ({
       responseType: AuthSession.ResponseType.Token,
       // retrieve the user's profile
       scopes: ["openid", "profile"],
+      // Server should prompt the user to re-authenticate.
+      prompt: AuthSession.Prompt.Login,
       extraParams: {
         nonce,
         audience,
@@ -120,19 +132,37 @@ export const Auth0Provider = ({
           );
           const userInfo = await userInfoResponse.json();
           setUser(userInfo);
-          onRedirectCallback();
+          onLogin();
         }
       }
     };
     getTokenAndUser();
-  }, [onRedirectCallback, result]);
+  }, [onLogin, result]);
+
+  function handleRedirect() {
+    WebBrowser.dismissBrowser();
+    onLogout();
+  }
 
   return (
     <Auth0Context.Provider
       value={{
         request,
         result,
-        loginWithRedirect: () => promptAsync?.({ useProxy }),
+        login: () => promptAsync?.({ useProxy }),
+        logout: async () => {
+          // Adapted from this example for Linking
+          // https://github.com/expo/examples/blob/master/with-webbrowser-redirect/app/App.js
+          // TODO: Test Android. May run into https://github.com/expo/expo/issues/5555
+          Linking.addEventListener("url", handleRedirect);
+          const redirectUrl = Linking.makeUrl("/");
+          // Adapted from this example for logging out
+          // https://github.com/expo/auth0-example/issues/25#issuecomment-468533295
+          await WebBrowser.openBrowserAsync(
+            `https://${process.env.AUTH0_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=${redirectUrl}`
+          );
+          Linking.removeEventListener("url", handleRedirect);
+        },
         user,
         // TODO: Token refresh
         token,

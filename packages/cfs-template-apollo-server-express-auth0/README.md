@@ -134,7 +134,7 @@ References
 
 ### Configure Auth0
 
-It's recommended you use separate [Auth0 tenants](https://auth0.com/docs/getting-started/the-basics#account-and-tenants) for development and production. However if you prefer to use the same tenant, set the `auth0:domain`, `auth0:clientId` and `auth0:clientSecret` to the same value for the development and production stacks.
+It's recommended you use separate [Auth0 tenants](https://auth0.com/docs/getting-started/the-basics#account-and-tenants) for development and production.
 
 #### Development
 
@@ -161,7 +161,7 @@ References
 
 #### Production
 
-In your development Auth0 tenant create a Machine to Machine Application
+In your production Auth0 tenant create a Machine to Machine Application
 
 - Applications > CREATE APPLICATION > Machine to Machine Applications
 - Give it a name (ex. "pulumi")
@@ -182,15 +182,16 @@ References
 
 - https://www.pulumi.com/docs/intro/cloud-providers/auth0/setup/#configuring-credentials
 
-### Deploy development on Pulumi
+### Configure and deploy development stack
 
 ```bash
 cd packages/pulumi-aws
 pulumi stack select development
+pulumi config set expo:username [YOUR EXPO USERNAME]
 pulumi up
 ```
 
-Local development is now configured. Launch by typing `yarn start`.
+Local development is now configured. Launch by running `yarn start` in your terminal.
 
 ### Configure Pulumi production stack
 
@@ -208,6 +209,8 @@ pulumi config set expo:username [YOUR EXPO USERNAME]
 pulumi config set expo:password [YOUR EXPO PASSWORD] --secret
 <!-- @remove-mobile-end -->
 ```
+
+The `expo:logoutUrl` in the pulumi configurations have been set to development values. You'll need to update this when you deploy your app. See [Linking to your app](https://docs.expo.io/workflow/linking/#linking-to-your-app)
 
 <!-- @remove-pulumi-aws-end -->
 <!-- @remove-manual-config-begin -->
@@ -257,6 +260,7 @@ From the Auth0 console https://manage.auth0.com/dashboard/
 - Create a Native Application for the React Native mobile app
   - Applications > CREATE APPLICATION > Native
   - Set "Allowed Callback URLs" to "https://auth.expo.io/@[YOUR EXPO USERNAME]/[YOUR EXPO APP SLUG]"
+  - Set "Allowed Logout URLs" to "exp://192.168.0.21:19000/--/" (the [Expo link url](https://docs.expo.io/workflow/linking/#linking-to-your-app))
   - Get YOUR EXPO USERNAME by running `expo whoami`
   - Get YOUR EXPO SLUG from `packages/mobile/app.json` `"slug"`
 

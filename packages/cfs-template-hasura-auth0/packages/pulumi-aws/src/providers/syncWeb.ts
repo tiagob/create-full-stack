@@ -188,6 +188,7 @@ export class SyncWeb extends pulumi.dynamic.Resource {
     props: SyncWebResourceInputs,
     opts?: pulumi.CustomResourceOptions
   ) {
+    // bucketName is in SyncWebResourceInputs (props) so doesn't need to be included again
     super(syncWebProvider, name, { objectOutputs: undefined, ...props }, opts);
   }
 }
