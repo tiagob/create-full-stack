@@ -1,5 +1,5 @@
 {
-  "name": "babel-plugin-expo-dotenv",
+  "name": "babel-plugin-expo-cfs-dotenv",
   "version": "0.1.0",
   "license": "MIT",
   "main": "build/index.js",
