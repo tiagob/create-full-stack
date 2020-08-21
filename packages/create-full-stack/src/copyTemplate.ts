@@ -145,7 +145,9 @@ async function updatePackage({
   if (hasMobile) {
     startCommands.push({
       name: "Mobile",
-      command: "yarn --cwd packages/mobile start",
+      // --non-interactive included to print out the DevTools url
+      // "Expo DevTools is running at http://localhost:19002"
+      command: "yarn --cwd packages/mobile start --non-interactive",
     });
     testCommands.push({
       name: "Mobile",
@@ -166,7 +168,7 @@ async function updatePackage({
   appPackage.scripts = {
     ...appPackage.scripts,
     build: buildCommands.join(" && "),
-    start: getConcurrentlyScript(startCommands, ["-k"]),
+    start: getConcurrentlyScript(startCommands),
     test:
       testCommands.length > 0
         ? getConcurrentlyScript(testCommands)
@@ -252,7 +254,7 @@ function removeInFile(file: string, keys: string[]) {
     }
     content = content.replace(
       new RegExp(
-        `${comment} @remove-(${keys.join(
+        ` *${comment} @remove-(${keys.join(
           "|"
         )})-begin[\\S\\s]*?${comment} @remove-\\1-end.*?\\n`,
         "gm"
@@ -261,7 +263,7 @@ function removeInFile(file: string, keys: string[]) {
     );
   }
   content = `${content
-    .replace(new RegExp(`${comment} @remove-.*?\\n`, "gm"), "")
+    .replace(new RegExp(` *${comment} @remove-.*?\\n`, "gm"), "")
     .trim()}\n`;
   fs.writeFileSync(file, content);
 }
