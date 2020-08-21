@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import spawn from "cross-spawn";
 
 export function runYarn(cwd: string, args: string[] = []) {
@@ -13,16 +14,20 @@ export function runYarn(cwd: string, args: string[] = []) {
 export function checkPulumiAndAws() {
   const pulumiProc = spawn.sync("pulumi", ["version"], { stdio: "inherit" });
   if (pulumiProc.status !== 0) {
-    console.error(
-      "Pulumi CLI is required. See https://www.pulumi.com/docs/get-started/aws/begin/#install-pulumi"
+    console.warn(
+      chalk.yellow(
+        "Pulumi CLI is required. See https://www.pulumi.com/docs/get-started/aws/begin/#install-pulumi"
+      )
     );
-    process.exit(1);
+    console.log();
   }
   const awsProc = spawn.sync("aws", ["--version"], { stdio: "inherit" });
   if (awsProc.status !== 0) {
-    console.error(
-      "AWS CLI is required. See https://www.pulumi.com/docs/get-started/aws/begin/#configure-aws"
+    console.warn(
+      chalk.yellow(
+        "AWS CLI is required. See https://www.pulumi.com/docs/get-started/aws/begin/#configure-aws"
+      )
     );
-    process.exit(1);
+    console.log();
   }
 }

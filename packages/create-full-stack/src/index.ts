@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 
 import chalk from "chalk";
+import { execSync } from "child_process";
 import commander from "commander";
 import fs from "fs-extra";
 import inquirer from "inquirer";
+import isOnline from "is-online";
 import path from "path";
+import semver from "semver";
 
 import packageJson from "../package.json";
 import {
@@ -77,6 +80,21 @@ async function run() {
   const appName = path.basename(projectPath);
   checkAppName(appName);
   if (!isSafeToCreateProjectIn(projectPath, projectName)) {
+    process.exit(1);
+  }
+
+  const latest = execSync("yarn info create-full-stack")
+    .toString()
+    .match(/latest: '(.*?)'/)?.[1];
+  if (latest && semver.lt(packageJson.version, latest)) {
+    console.log();
+    console.error(
+      chalk.red(
+        `You are running \`create-full-stack\` ${packageJson.version}, which is behind the latest release (${latest}).\n\n` +
+          `Run \`yarn create full-stack <project-directory>\` to ensure you're using the latest version`
+      )
+    );
+    console.log();
     process.exit(1);
   }
 
@@ -162,6 +180,12 @@ async function run() {
   }
   console.log(`Creating a new full-stack app in ${chalk.green(projectPath)}.`);
   console.log();
+
+  if (!(await isOnline())) {
+    console.log(chalk.yellow("You appear to be offline."));
+    console.log(chalk.yellow("Falling back to the local Yarn cache."));
+    console.log();
+  }
 
   await copyTemplate({
     appName,
