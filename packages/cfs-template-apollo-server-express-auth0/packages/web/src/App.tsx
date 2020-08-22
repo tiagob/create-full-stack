@@ -2,7 +2,7 @@ import { ApolloProvider } from "@apollo/client";
 import { useAuth0 } from "@auth0/auth0-react";
 import { makeStyles } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Header from "./components/Header";
@@ -25,15 +25,8 @@ const useStyles = makeStyles({
 export default function App() {
   const classes = useStyles();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
   const { getAccessTokenSilently } = useAuth0();
-  const [token, setToken] = useState<string | undefined>();
-  useEffect(() => {
-    (async () => {
-      setToken(await getAccessTokenSilently());
-    })();
-  }, [getAccessTokenSilently]);
-  const apolloClient = getApolloClient(token);
+  const apolloClient = getApolloClient(getAccessTokenSilently);
 
   return (
     <ApolloProvider client={apolloClient}>

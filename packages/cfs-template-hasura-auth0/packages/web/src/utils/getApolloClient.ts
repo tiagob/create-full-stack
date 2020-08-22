@@ -1,18 +1,23 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { GetTokenSilentlyOptions } from "@auth0/auth0-spa-js";
 
 const httpLink = createHttpLink({ uri: process.env.REACT_APP_GRAPHQL_URL });
 
-export default function getApolloClient(token: string | undefined) {
+export default function getApolloClient(
+  getAccessTokenSilently: (
+    options?: GetTokenSilentlyOptions | undefined
+  ) => Promise<string>
+) {
   const authLink = setContext(async (_, { headers }) => {
+    const token = await getAccessTokenSilently();
     if (!token) {
       return { headers };
     }
-    // return the headers to the context so httpLink can read them
     return {
       headers: {
         ...headers,
-        authorization: token ? `Bearer ${token}` : "",
+        authorization: `Bearer ${token}`,
       },
     };
   });
