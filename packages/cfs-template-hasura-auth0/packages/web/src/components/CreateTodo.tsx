@@ -1,10 +1,11 @@
-import { TextField } from "@material-ui/core";
+import { IconButton, InputAdornment, TextField } from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
 import { useCreateTodo } from "common";
 import React, { useState } from "react";
 
 export default function CreateTodo() {
   const [name, setName] = useState("");
-  const [createTodo] = useCreateTodo();
+  const [createTodo, { loading }] = useCreateTodo();
 
   return (
     <TextField
@@ -17,9 +18,26 @@ export default function CreateTodo() {
       onChange={(event) => setName(event.target.value)}
       onKeyPress={async (event) => {
         if (event.key === "Enter") {
-          await createTodo({ variables: { name } });
+          createTodo({ variables: { name } });
           setName("");
         }
+      }}
+      disabled={loading}
+      InputProps={{
+        endAdornment: (
+          <InputAdornment position="end">
+            <IconButton
+              aria-label="add"
+              onClick={() => {
+                createTodo({ variables: { name } });
+                setName("");
+              }}
+              disabled={loading}
+            >
+              <AddIcon />
+            </IconButton>
+          </InputAdornment>
+        ),
       }}
     />
   );
