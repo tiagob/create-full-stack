@@ -7,6 +7,8 @@ const tenMinutes = 60 * 10;
 
 export interface CertificateArgs {
   domain: string;
+  protect: boolean;
+  subjectAlternativeNames: string[];
 }
 
 export default class Certificate extends pulumi.ComponentResource {
@@ -17,7 +19,7 @@ export default class Certificate extends pulumi.ComponentResource {
     args: CertificateArgs,
     opts?: pulumi.ResourceOptions
   ) {
-    const { domain } = args;
+    const { domain, protect, subjectAlternativeNames } = args;
     super("aws:Certificate", name, args, opts);
     /**
      * Provision a certificate (and related resources) if a certificateArn is _not_ provided via configuration.
@@ -45,6 +47,7 @@ export default class Certificate extends pulumi.ComponentResource {
       {
         domainName: domain,
         validationMethod: "DNS",
+        subjectAlternativeNames,
       },
       {
         parent: this,
@@ -53,7 +56,7 @@ export default class Certificate extends pulumi.ComponentResource {
         // Protect this resource so it doesn't get deleted on destroy. Otherwise, if you create
         // this 20 times you'll have to contact AWS to increase your limit.
         // https://github.com/aws/aws-cdk/issues/5889#issuecomment-599609939
-        protect: true,
+        protect,
       }
     );
 
