@@ -14,7 +14,7 @@
     "react": "~16.11.0",
     "react-dom": "~16.11.0",
     "subscriptions-transport-ws": "^0.9.17",
-    "typescript": "~3.7.2"
+    "typescript": "^4.0.2"
   },
   "devDependencies": {
     "@types/react": "^16.9.0"
