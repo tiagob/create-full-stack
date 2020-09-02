@@ -6,7 +6,7 @@
   "typings": "build/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": "build"
+    "prepublishOnly": "yarn build"
   },
   "dependencies": {
     "@pulumi/auth0": "^1.0.2",

@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "create-full-stack": "tsc && node ./build/src/index.js",
-    "prepublishOnly": "build"
+    "prepublishOnly": "yarn build"
   },
   "dependencies": {
     "@schemastore/package": "^0.0.5",
