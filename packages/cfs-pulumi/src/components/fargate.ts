@@ -5,9 +5,10 @@ import * as pulumi from "@pulumi/pulumi";
 
 import { Env } from "../common";
 import { getDomainAndSubdomain } from "../utils";
+import Certificate from "./certificate";
 
 export interface FargateArgs {
-  certificateArn: pulumi.Output<string> | string;
+  certificate: Certificate;
   domain: string;
   cluster: Cluster;
   image: awsx.ecs.Image;
@@ -16,7 +17,7 @@ export interface FargateArgs {
 
 export default class Fargate extends pulumi.ComponentResource {
   constructor(name: string, args: FargateArgs, opts?: pulumi.ResourceOptions) {
-    const { certificateArn, domain, cluster, image, env } = args;
+    const { certificate, domain, cluster, image, env } = args;
     super("aws:Fargate", name, args, opts);
     const domainParts = getDomainAndSubdomain(domain);
 
@@ -36,7 +37,7 @@ export default class Fargate extends pulumi.ComponentResource {
         {
           port: 443,
           protocol: "TLS",
-          certificateArn,
+          certificateArn: certificate.arn,
         },
         { parent: this }
       );

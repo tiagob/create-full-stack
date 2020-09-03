@@ -1,37 +1,22 @@
 import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
-import fs from "fs";
-import mime from "mime";
-import path from "path";
 
+import { Env } from "../common";
 import { InvalidateCloudfront } from "../providers/invalidateCloudfront";
+import { SyncWeb } from "../providers/syncWeb";
 import { getDomainAndSubdomain } from "../utils";
+import Certificate from "./certificate";
 
 // Adapted from
 // https://github.com/pulumi/examples/blob/master/aws-ts-static-website/index.ts
 
-// Recursively crawl the provided directory, applying the provided function
-// to every file it contains. Doesn't handle cycles from symlinks.
-async function crawlDirectory(dir: string, f: (_: string) => void) {
-  const files = fs.readdirSync(dir);
-  for (const file of files) {
-    const filePath = `${dir}/${file}`;
-    const stat = fs.statSync(filePath);
-    if (stat.isDirectory()) {
-      crawlDirectory(filePath, f);
-    }
-    if (stat.isFile()) {
-      f(filePath);
-    }
-  }
-}
-
 const tenMinutes = 60 * 10;
 
 export interface StaticWebsiteArgs {
-  certificateArn: pulumi.Output<string> | string;
+  certificate: Certificate;
   domain: string;
   webPath: string;
+  env: Env;
 }
 
 export default class StaticWebsite extends pulumi.ComponentResource {
@@ -40,7 +25,7 @@ export default class StaticWebsite extends pulumi.ComponentResource {
     args: StaticWebsiteArgs,
     opts?: pulumi.ResourceOptions
   ) {
-    const { certificateArn, domain, webPath } = args;
+    const { certificate, domain, webPath, env } = args;
     super("aws:StaticWebsite", name, args, opts);
 
     const contentBucket = new aws.s3.Bucket(
@@ -60,25 +45,17 @@ export default class StaticWebsite extends pulumi.ComponentResource {
       { parent: this }
     );
 
-    const webContentsRootPath = path.join(process.cwd(), `${webPath}/build`);
     // Sync the contents of the source directory with the S3 bucket, which will in-turn show up
     // on the CDN.
-    crawlDirectory(webContentsRootPath, (filePath: string) => {
-      const relativeFilePath = filePath.replace(`${webContentsRootPath}/`, "");
-      new aws.s3.BucketObject(
-        relativeFilePath,
-        {
-          key: relativeFilePath,
-          acl: "public-read",
-          bucket: contentBucket,
-          contentType: mime.getType(filePath) || undefined,
-          source: new pulumi.asset.FileAsset(filePath),
-        },
-        {
-          parent: contentBucket,
-        }
-      );
-    });
+    new SyncWeb(
+      `${name}-sync-web`,
+      {
+        webPath,
+        bucketName: contentBucket.bucket,
+        env,
+      },
+      { parent: this }
+    );
 
     // Contains the CDN's request logs.
     const logsBucket = new aws.s3.Bucket(
@@ -154,7 +131,7 @@ export default class StaticWebsite extends pulumi.ComponentResource {
       },
 
       viewerCertificate: {
-        acmCertificateArn: certificateArn, // Per AWS, ACM certificate must be in the us-east-1 region.
+        acmCertificateArn: certificate.arn, // Per AWS, ACM certificate must be in the us-east-1 region.
         sslSupportMethod: "sni-only",
       },
 
