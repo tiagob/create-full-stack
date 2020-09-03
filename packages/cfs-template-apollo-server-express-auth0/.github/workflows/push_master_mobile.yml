@@ -1,0 +1,25 @@
+# @remove-file-mobile
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - packages/common/**
+      - packages/mobile/**
+jobs:
+  publish:
+    name: Expo Publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - uses: expo/expo-github-action@v5
+        with:
+          expo-version: 3.x
+          expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
+          expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
+      - run: yarn
+      - run: yarn --cwd packages/common build
+      - run: cd packages/mobile && expo publish

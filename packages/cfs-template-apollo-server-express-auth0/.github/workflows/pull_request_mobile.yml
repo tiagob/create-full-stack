@@ -1,5 +1,9 @@
+# @remove-file-mobile
 on:
-  - push
+  pull_request:
+    paths:
+      - packages/common/**
+      - packages/mobile/**
 jobs:
   test:
     name: Node.js CI
@@ -10,7 +14,7 @@ jobs:
         with:
           node-version: 12.x
       - run: yarn
-      - run: yarn build
-      - run: yarn test
+      - run: yarn --cwd packages/common build
+      - run: yarn --cwd packages/mobile test
         env:
           CI: true

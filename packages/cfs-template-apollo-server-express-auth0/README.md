@@ -15,19 +15,40 @@ Spins up postgres in Docker, the Apollo Express server and all clients.
 ### Development
 
 ```bash
-cd packages/pulumi-aws
-pulumi stack select development
-pulumi up
+pulumi --cwd packages/pulumi-auth0 stack select development
+pulumi --cwd packages/pulumi-auth0 up
 ```
 
 This sets up Auth0 which is required for authentication locally.
 
 ### Production
 
+Each platform has its own Pulumi project. Each platform can be individually deployed.
+
+#### Auth0
+
 ```bash
-cd packages/pulumi-aws
-pulumi stack select production
-pulumi up
+pulumi --cwd packages/pulumi-auth0 stack select production
+pulumi --cwd packages/pulumi-auth0 up
+```
+
+#### Server
+
+```bash
+pulumi --cwd packages/pulumi-server stack select production
+pulumi --cwd packages/pulumi-server up
+```
+
+#### Web
+
+Build is separated into a different pulumi project because pulumi must know the static files prior to syncing files to s3. Build is done as a pulumi project so pulumi stack outputs can be used from auth0 and server.
+
+```bash
+pulumi --cwd packages/pulumi-web-build stack select production
+pulumi --cwd packages/pulumi-web-build up
+
+pulumi --cwd packages/pulumi-web stack select production
+pulumi --cwd packages/pulumi-web up
 ```
 
 <!-- @remove-pulumi-aws-end -->

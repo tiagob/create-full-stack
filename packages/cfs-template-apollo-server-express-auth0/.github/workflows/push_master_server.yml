@@ -2,6 +2,9 @@ on:
   push:
     branches:
       - master
+    paths:
+      - packages/server/**
+      - packages/pulumi-server/**
 jobs:
   up:
     name: Pulumi Update CD
@@ -12,7 +15,6 @@ jobs:
         with:
           node-version: 12.x
       - run: yarn
-      - run: yarn build
       - uses: docker://pulumi/actions
         with:
           args: up --yes
@@ -21,6 +23,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
           PULUMI_CI: up
-          PULUMI_ROOT: packages/pulumi-aws
+          PULUMI_ROOT: packages/pulumi-server
           # Yarn is required for workspaces
           USE_YARN: true

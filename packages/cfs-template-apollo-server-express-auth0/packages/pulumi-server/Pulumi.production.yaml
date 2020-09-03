@@ -1,0 +1,8 @@
+config:
+  aws:region: us-east-1
+  cfs-server:dbName: postgres
+  cfs-server:dbPassword:
+    secure: AAABAOGVFF3BiQaQH59XRmfw3VuvUxdQUhtgU/AqFi2uawgNMGqe/jLxOSE/mQoA
+  cfs-server:dbUsername: postgres
+  cfs-server:domain: demo-full-stack.com
+  cfs-server:organization: Bandeira

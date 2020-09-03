@@ -1,0 +1,9 @@
+config:
+  auth0:clientId:
+    secure: AAABALVkGbwBEVY3U8gtR6M+YNdvJtW+wBZgBGBuUxsy95ML8QsDaOVk25Isw6YyYdkKqq877Oefv7eu1s/eeQ==
+  auth0:clientSecret:
+    secure: AAABAC6HgZf4d5ST01T2ocjFf4HIYgTtCA+RNkMoaqRk20DxiF9Z/t6+R9EKJPDTdx3L7MDLsODN7irxIC3+kYT9zaIFJSYCcNV172wpACNg8mE/M3fXZSJjBC34DzB5
+  auth0:domain: create-full-stack.auth0.com
+  cfs-auth0:domain: demo-full-stack.com
+  expo:logoutUrl: exp://192.168.0.21:19000/--/
+  expo:username: tiagsters

@@ -130,16 +130,11 @@ async function updatePackage({
       command: "yarn --cwd packages/common watch",
     },
   ];
-  const testCommands: Command[] = [];
   if (backend === Backend.apolloServerExpress) {
     buildCommands.push("yarn --cwd packages/server build");
     startCommands.push({
       name: "Server",
       command: "yarn --cwd packages/server start",
-    });
-    testCommands.push({
-      name: "Server",
-      command: "yarn --cwd packages/server test --ci --watchAll=false",
     });
   }
   if (hasMobile) {
@@ -149,10 +144,6 @@ async function updatePackage({
       // "Expo DevTools is running at http://localhost:19002"
       command: "yarn --cwd packages/mobile start --non-interactive",
     });
-    testCommands.push({
-      name: "Mobile",
-      command: "yarn --cwd packages/mobile test --ci --watchAll=false",
-    });
   }
   if (hasWeb) {
     buildCommands.push("yarn --cwd packages/web build");
@@ -160,19 +151,11 @@ async function updatePackage({
       name: "Web",
       command: "yarn --cwd packages/web start",
     });
-    testCommands.push({
-      name: "Web",
-      command: "yarn --cwd packages/web test --ci --watchAll=false",
-    });
   }
   appPackage.scripts = {
     ...appPackage.scripts,
     build: buildCommands.join(" && "),
     start: getConcurrentlyScript(startCommands),
-    test:
-      testCommands.length > 0
-        ? getConcurrentlyScript(testCommands)
-        : "echo No tests.",
   };
   fs.writeFileSync(
     path.join(projectPath, "package.json"),
@@ -297,6 +280,7 @@ export default async function copyTemplate(options: {
   const {
     appName,
     projectPath,
+    auth,
     template,
     cloudPlatform,
     hasMobile,
@@ -321,7 +305,13 @@ export default async function copyTemplate(options: {
     excludeList.push("web");
   }
   if (cloudPlatform !== CloudPlatform.aws) {
-    excludeList.push("pulumi-aws");
+    excludeList.push("pulumi-server");
+  }
+  if (cloudPlatform !== CloudPlatform.aws || auth !== Auth.auth0) {
+    excludeList.push("pulumi-auth0");
+  }
+  if (cloudPlatform !== CloudPlatform.aws || !hasWeb) {
+    excludeList.push("pulumi-web", "pulumi-web-build");
   }
   if (!hasGithubActions) {
     excludeList.push(".github", ".pulumi");

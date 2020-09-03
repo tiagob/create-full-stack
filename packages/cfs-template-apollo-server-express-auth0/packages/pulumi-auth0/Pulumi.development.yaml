@@ -1,0 +1,9 @@
+config:
+  auth0:clientId:
+    secure: AAABAMAjYz/yhNQTIZkTOjsGe1fzmjSTwBDV4CfnSyFbizyB3OPXdKb888eFu6SSvozygCmiDCicxpP4xA6Afg==
+  auth0:clientSecret:
+    secure: AAABALL32KRM2FuGX7ojKqwQTDcAmt0XwIniPAqzsWBwGLkuRF1n5sQDLJ1yogUtG9gJx7ZRxiDBng6g5xGtjkAvXfBuFp5XeTt2Y+7V8lvA42Ox2Y+Tsw8YvgP0qJI1
+  auth0:domain: create-full-stack-development.us.auth0.com
+  cfs-auth0:domain: localhost:3000
+  expo:logoutUrl: exp://192.168.0.21:19000/--/
+  expo:username: tiagsters

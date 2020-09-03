@@ -1,5 +1,9 @@
 on:
-  - pull_request
+  pull_request:
+    paths:
+      - packages/common/**
+      - packages/server/**
+      - packages/pulumi-server/**
 jobs:
   preview:
     name: Pulumi Preview CI
@@ -10,7 +14,6 @@ jobs:
         with:
           node-version: 12.x
       - run: yarn
-      - run: yarn build
       - uses: docker://pulumi/actions
         with:
           args: preview
@@ -19,6 +22,19 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
           PULUMI_CI: pr
-          PULUMI_ROOT: packages/pulumi-aws
+          PULUMI_ROOT: packages/pulumi-server
           # Yarn is required for workspaces
           USE_YARN: true
+  test:
+    name: Node.js CI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: yarn
+      - run: yarn --cwd packages/common build
+      - run: yarn --cwd packages/server test
+        env:
+          CI: true

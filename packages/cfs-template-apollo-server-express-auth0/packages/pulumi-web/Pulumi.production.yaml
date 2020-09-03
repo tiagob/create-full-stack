@@ -1,0 +1,4 @@
+config:
+  aws:region: us-east-1
+  cfs-web:domain: demo-full-stack.com
+  cfs-web:organization: Bandeira
