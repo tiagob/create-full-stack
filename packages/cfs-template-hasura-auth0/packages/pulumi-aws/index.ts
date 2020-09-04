@@ -1,17 +1,25 @@
+import * as auth0 from "@pulumi/auth0";
+import * as awsx from "@pulumi/awsx";
 import * as pulumi from "@pulumi/pulumi";
+import {
+  Auth0,
+  Certificate,
+  Fargate,
+  overrideEnvVars,
+  // @remove-mobile-begin
+  PublishExpo,
+  // @remove-mobile-end
+  Rds,
+  // @remove-web-begin
+  StaticWebsite,
+  // @remove-web-end
+} from "cfs-pulumi";
+import fs from "fs";
 import path from "path";
 
-import Auth0 from "./src/components/auth0";
-import Certificate from "./src/components/certificate";
-import Fargate from "./src/components/fargate";
-import Rds from "./src/components/rds";
-// @remove-web-begin
-import StaticWebsite from "./src/components/staticWebsite";
-// @remove-web-end
 // @remove-mobile-begin
-import { PublishExpo } from "./src/providers/publishExpo";
+import mobileConfig from "../mobile/app.json";
 // @remove-mobile-end
-import { setDevelopmentEnv } from "./src/utils";
 
 const serverPath = "../../hasura";
 // @remove-web-begin
@@ -24,9 +32,10 @@ const mobilePath = "../mobile";
 const stack = pulumi.getStack();
 const isDevelopment = stack === "development";
 const config = new pulumi.Config();
+const domain = config.require("domain");
 const serverDomain = isDevelopment
   ? "localhost:8080"
-  : `${path.basename(serverPath)}.${config.require("domain")}`;
+  : `${path.basename(serverPath)}.${domain}`;
 const auth0Domain = new pulumi.Config("auth0").require("domain");
 // @remove-mobile-begin
 const expoConfig = new pulumi.Config("expo");
@@ -38,49 +47,65 @@ export const graphqlUrl = `${
 // @remove-web-begin
 export const webUrl = isDevelopment
   ? "http://localhost:3000"
-  : `https://${config.require("domain")}`;
+  : `https://${domain}`;
 // @remove-web-end
 
-const auth0 = new Auth0("auth0", {
+const {
+  audience: auth0Audience,
+  webClientId: auth0WebClientId,
+  mobileClientId: auth0MobileClientId,
+} = new Auth0("auth0", {
   resourceServerName: path.basename(serverPath),
   // @remove-web-begin
-  webClientName: path.basename(webPath),
-  webUrl,
+  web: {
+    clientName: path.basename(webPath),
+    url: webUrl,
+  },
   // @remove-web-end
   // @remove-mobile-begin
-  mobileClientName: path.basename(mobilePath),
-  expoUsername: expoConfig.require("username"),
-  expoLogoutUrl: expoConfig.require("logoutUrl"),
+  mobile: {
+    clientName: path.basename(mobilePath),
+    expoUsername: expoConfig.require("username"),
+    expoLogoutUrl: expoConfig.require("logoutUrl"),
+    slug: mobileConfig.slug,
+  },
   // @remove-mobile-end
 });
 
+new auth0.Rule("rule", {
+  name: "hasuraAccessToken",
+  enabled: true,
+  script: fs.readFileSync("./auth0-rules/hasuraAccessToken.js", "utf8"),
+});
+
 if (isDevelopment) {
-  setDevelopmentEnv(
-    auth0,
-    auth0Domain,
-    serverPath,
-    // @remove-web-begin
-    graphqlUrl,
-    webPath,
-    // @remove-web-end
-    // @remove-mobile-begin
-    mobilePath
-    // @remove-mobile-end
-  );
-} else {
-  const domain = config.require("domain");
-  // Create a wildcard certificate so it can be re-used.
-  // https://docs.aws.amazon.com/acm/latest/userguide/acm-certificate.html
-  // There's a hidden limit on the number of certificates an AWS account can create.
-  // https://github.com/aws/aws-cdk/issues/5889#issuecomment-599609939
-  const subdomainCertificate = new Certificate("subdomain-certificate", {
-    domain: `*.${domain}`,
+  overrideEnvVars(`${serverPath}/.env.development`, {
+    HASURA_GRAPHQL_JWT_SECRET: pulumi.interpolate`{"jwk_url":"https://${auth0Domain}/.well-known/jwks.json","audience":"${auth0Audience}"}`,
   });
   // @remove-web-begin
-  const domainCertificate = new Certificate("domain-certificate", {
-    domain,
+  overrideEnvVars(`${webPath}/.env.development`, {
+    REACT_APP_GRAPHQL_URL: graphqlUrl,
+    REACT_APP_AUTH0_CLIENT_ID: auth0WebClientId,
+    REACT_APP_AUTH0_AUDIENCE: auth0Audience,
+    REACT_APP_AUTH0_DOMAIN: auth0Domain,
   });
   // @remove-web-end
+  // @remove-mobile-begin
+  overrideEnvVars(`${mobilePath}/.env.development`, {
+    AUTH0_CLIENT_ID: auth0MobileClientId,
+    AUTH0_AUDIENCE: auth0Audience,
+    AUTH0_DOMAIN: auth0Domain,
+  });
+  // @remove-mobile-end
+} else {
+  const certificate = new Certificate("certificate", {
+    domain,
+    subjectAlternativeNames: [`*.${domain}`],
+    // There's a hidden limit on the number of certificates an AWS account can create
+    // and destroy, 20.
+    // https://github.com/aws/aws-cdk/issues/5889#issuecomment-599609939
+    protect: true,
+  });
 
   const dbName = config.require("dbName");
   const dbUsername = config.require("dbUsername");
@@ -90,30 +115,34 @@ if (isDevelopment) {
     dbUsername,
     dbPassword,
   });
-  const hasuraGraphqlAdminSecret = config.requireSecret(
-    "hasuraGraphqlAdminSecret"
-  );
   new Fargate(path.basename(serverPath), {
-    certificate: subdomainCertificate,
+    certificate,
     domain: serverDomain,
-    connectionString,
     cluster,
-    graphqlUrl,
-    auth0Domain,
-    hasuraGraphqlAdminSecret,
-    imagePath: serverPath,
-    auth0Audience: auth0.audience,
+    image: awsx.ecs.Image.fromPath("image", serverPath),
+    env: {
+      HASURA_GRAPHQL_DATABASE_URL: connectionString,
+      // Enable downloading plugins which are not present.
+      // https://github.com/hasura/graphql-engine/issues/4651#issuecomment-623414531
+      HASURA_GRAPHQL_CLI_ENVIRONMENT: "default",
+      HASURA_GRAPHQL_ADMIN_SECRET: config.requireSecret(
+        "hasuraGraphqlAdminSecret"
+      ),
+      HASURA_GRAPHQL_JWT_SECRET: pulumi.interpolate`{"jwk_url":"https://${auth0Domain}/.well-known/jwks.json","audience":"${auth0Audience}"}`,
+    },
   });
 
   // @remove-web-begin
   new StaticWebsite(path.basename(webPath), {
-    certificate: domainCertificate,
+    certificate,
     domain,
-    graphqlUrl,
-    auth0Audience: auth0.audience,
-    auth0Domain,
-    webClientId: auth0.webClientId,
     webPath,
+    env: {
+      REACT_APP_GRAPHQL_URL: graphqlUrl,
+      REACT_APP_AUTH0_AUDIENCE: auth0Audience,
+      REACT_APP_AUTH0_DOMAIN: auth0Domain,
+      REACT_APP_AUTH0_CLIENT_ID: auth0WebClientId,
+    },
   });
   // @remove-web-end
 }
@@ -125,12 +154,12 @@ export const expoProjectUrl = isDevelopment
       username: expoConfig.require("username"),
       password: expoConfig.requireSecret("password"),
       releaseChannel: pulumi.getStack(),
-      projectDir: mobilePath,
+      mobilePath,
       env: {
         GRAPHQL_URL: graphqlUrl,
-        AUTH0_AUDIENCE: auth0.audience,
+        AUTH0_AUDIENCE: auth0Audience,
         AUTH0_DOMAIN: auth0Domain,
-        AUTH0_CLIENT_ID: auth0.mobileClientId,
+        AUTH0_CLIENT_ID: auth0MobileClientId,
       },
     }).url;
 // @remove-mobile-end

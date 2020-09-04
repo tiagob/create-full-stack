@@ -1,9 +1,3 @@
 {
-  "compilerOptions": {
-    // Explicitly include custom third-party type declarations in ./typings
-    // Fixes issue with `pulumi up`
-    // error TS7016: Could not find a declaration file for module 'folder-hash'
-    "typeRoots": ["./node_modules/@types", "./typings"]
-  },
   "extends": "../../tsconfig"
 }

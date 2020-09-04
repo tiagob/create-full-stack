@@ -1,28 +1,15 @@
 {
   "name": "pulumi-aws",
   "version": "0.1.0",
-  "license": "MIT",
+  "private": true,
   "dependencies": {
-    "@babel/core": "^7.11.1",
-    "@expo/config": "^3.2.18",
-    "@expo/xdl": "^57.9.29",
     "@pulumi/auth0": "^1.0.2",
-    "@pulumi/aws": "^2.7.0",
-    "@pulumi/awsx": "^0.20.0",
+    "@pulumi/aws": "^2.0.0",
+    "@pulumi/awsx": "^0.21.0",
     "@pulumi/pulumi": "^2.0.0",
-    "aws-sdk": "^2.691.0",
-    "cross-spawn": "^7.0.3",
-    "folder-hash": "^3.3.2",
-    "lodash.isequal": "^4.5.0",
-    "mime": "^2.4.6",
-    "node-fetch": "^2.6.0",
-    "react-refresh": "^0.8.3"
+    "cfs-pulumi": "^0.1.4"
   },
   "devDependencies": {
-    "@types/cross-spawn": "^6.0.2",
-    "@types/lodash.isequal": "^4.5.5",
-    "@types/mime": "^2.0.2",
-    "@types/node": "^10.0.0",
-    "@types/node-fetch": "^2.5.7"
+    "@types/node": "^10.0.0"
   }
 }
