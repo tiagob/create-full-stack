@@ -1,9 +1,9 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { useAuth0 } from "cfs-expo-auth0";
 import React from "react";
 import { Platform } from "react-native";
 import { Avatar, Header as ElementsHeader } from "react-native-elements";
 
-import { useAuth0 } from "../utils/reactNativeAuth0";
 import { RootStackParamList } from "../utils/types";
 
 interface Props {

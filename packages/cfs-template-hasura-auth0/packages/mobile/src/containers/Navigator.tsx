@@ -4,12 +4,12 @@ import {
   NavigationContainer,
   NavigationContainerRef,
 } from "@react-navigation/native";
+import { useAuth0 } from "cfs-expo-auth0";
 import React from "react";
 import { Icon } from "react-native-elements";
 
-import CustomDrawerContent from "../components/CustomDrawerContent";
+import DrawerContent from "../components/DrawerContent";
 import getApolloClient from "../utils/getApolloClient";
-import { useAuth0 } from "../utils/reactNativeAuth0";
 import { RootStackParamList } from "../utils/types";
 import About from "./About";
 import SignIn from "./SignIn";
@@ -22,7 +22,7 @@ interface Props {
 }
 
 export default function Navigator({ navigationRef }: Props) {
-  const { token, logout } = useAuth0();
+  const { token } = useAuth0();
   const apolloClient = getApolloClient(token);
 
   return (
@@ -30,7 +30,7 @@ export default function Navigator({ navigationRef }: Props) {
       <NavigationContainer ref={navigationRef}>
         <Drawer.Navigator
           initialRouteName="SignIn"
-          drawerContent={CustomDrawerContent(() => logout?.())}
+          drawerContent={DrawerContent}
         >
           <Drawer.Screen
             name="SignIn"

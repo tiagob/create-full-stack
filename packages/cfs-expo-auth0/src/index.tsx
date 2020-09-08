@@ -1,25 +1,19 @@
 // Adapted from
 // https://github.com/expo/examples/tree/master/with-auth0
 import * as AuthSession from "expo-auth-session";
-import * as Linking from "expo-linking";
 import * as Random from "expo-random";
-import * as WebBrowser from "expo-web-browser";
 import React, { useContext, useEffect, useState } from "react";
 import { Alert, Platform } from "react-native";
 
-// TODO: Fix Android
-// https://github.com/expo/expo/issues/9845
-// https://github.com/expo/examples/issues/210
-
-interface User {
-  // Database & Google user
+export interface User {
+  // Common auth0 user fields
   name: string;
   nickname: string;
   picture: string;
   sub: string;
   updated_at: string;
 
-  // Google user
+  // Google user fields
   email?: string;
   email_verified?: boolean;
   given_name?: string;
@@ -28,9 +22,7 @@ interface User {
 }
 
 // Create a custom type for result to fix AuthSession.AuthSessionResult
-// https://github.com/microsoft/TypeScript/issues/12815
-// TODO: File an expo bug
-// https://github.com/expo/expo/issues/new?labels=Issue+needs+review&template=bug_report.md
+// https://github.com/expo/expo/issues/10104
 type Result = {
   type: "cancel" | "dismiss" | "locked" | "error" | "success";
   errorCode?: string | null;
@@ -53,9 +45,8 @@ interface Auth0ProviderOptions {
   children: React.ReactElement;
   clientId: string;
   audience: string;
-  authorizationEndpoint: string;
+  domain: string;
   onLogin: () => void;
-  onLogout: () => void;
 }
 
 const useProxy = Platform.select({ web: false, default: true });
@@ -70,14 +61,13 @@ export const Auth0Context = React.createContext<Auth0Context>({
   token: undefined,
 });
 export const useAuth0 = () => useContext(Auth0Context);
-export const Auth0Provider = ({
+export function Auth0Provider({
   children,
   clientId,
   audience,
-  authorizationEndpoint,
+  domain,
   onLogin,
-  onLogout,
-}: Auth0ProviderOptions) => {
+}: Auth0ProviderOptions) {
   const [token, setToken] = useState<string | undefined>();
   const [user, setUser] = useState<User | undefined>();
   const [nonce, setNonce] = useState<string>("nonce");
@@ -90,26 +80,46 @@ export const Auth0Provider = ({
     getNonce();
   }, []);
 
-  const [request, auth0Result, promptAsync] = AuthSession.useAuthRequest(
+  const authSessionParams = {
+    redirectUri,
+    clientId,
+    // id_token will return a JWT token
+    responseType: AuthSession.ResponseType.Token,
+    // retrieve the user's profile
+    scopes: ["openid", "profile"],
+    extraParams: {
+      nonce,
+      audience,
+    },
+  };
+  const authorizationEndpoint = `https://${domain}/authorize`;
+  const [auth0request, auth0Result, promptAsync] = AuthSession.useAuthRequest(
     {
-      redirectUri,
-      clientId,
-      // id_token will return a JWT token
-      responseType: AuthSession.ResponseType.Token,
-      // retrieve the user's profile
-      scopes: ["openid", "profile"],
+      ...authSessionParams,
       // Server should prompt the user to re-authenticate.
       prompt: AuthSession.Prompt.Login,
-      extraParams: {
-        nonce,
-        audience,
-      },
     },
     {
       authorizationEndpoint,
     } as AuthSession.DiscoveryDocument
   );
-  const result = auth0Result as Result;
+  // Re-login after token expiration since refresh tokens aren't possible
+  // https://github.com/expo/examples/issues/209
+  const [
+    refreshAuth0Request,
+    refreshAuth0Result,
+    refreshPromptAsync,
+  ] = AuthSession.useAuthRequest(
+    {
+      ...authSessionParams,
+      // Server should NOT prompt the user to re-authenticate.
+      prompt: AuthSession.Prompt.None,
+    },
+    {
+      authorizationEndpoint,
+    } as AuthSession.DiscoveryDocument
+  );
+  const result = (refreshAuth0Result || auth0Result) as Result;
 
   useEffect(() => {
     const getTokenAndUser = async () => {
@@ -125,11 +135,15 @@ export const Auth0Provider = ({
           // Retrieve the JWT token and decode it
           const accessToken = result?.params?.access_token;
           setToken(accessToken);
+          if (result?.params?.expires_in) {
+            setTimeout(() => {
+              refreshPromptAsync?.({ useProxy });
+            }, Number(result?.params?.expires_in) * 1000);
+          }
 
-          const userInfoResponse = await fetch(
-            `https://${process.env.AUTH0_DOMAIN}/userinfo`,
-            { headers: { Authorization: `Bearer ${accessToken}` } }
-          );
+          const userInfoResponse = await fetch(`https://${domain}/userinfo`, {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          });
           const userInfo = await userInfoResponse.json();
           setUser(userInfo);
           onLogin();
@@ -137,38 +151,20 @@ export const Auth0Provider = ({
       }
     };
     getTokenAndUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onLogin, result]);
-
-  function handleRedirect() {
-    WebBrowser.dismissBrowser();
-    onLogout();
-  }
 
   return (
     <Auth0Context.Provider
       value={{
-        request,
+        request: refreshAuth0Request || auth0request,
         result,
         login: () => promptAsync?.({ useProxy }),
-        logout: async () => {
-          // Adapted from this example for Linking
-          // https://github.com/expo/examples/blob/master/with-webbrowser-redirect/app/App.js
-          // TODO: Test Android. May run into https://github.com/expo/expo/issues/5555
-          Linking.addEventListener("url", handleRedirect);
-          const redirectUrl = Linking.makeUrl("/");
-          // Adapted from this example for logging out
-          // https://github.com/expo/auth0-example/issues/25#issuecomment-468533295
-          await WebBrowser.openBrowserAsync(
-            `https://${process.env.AUTH0_DOMAIN}/v2/logout?client_id=${process.env.AUTH0_CLIENT_ID}&returnTo=${redirectUrl}`
-          );
-          Linking.removeEventListener("url", handleRedirect);
-        },
         user,
-        // TODO: Token refresh
         token,
       }}
     >
       {children}
     </Auth0Context.Provider>
   );
-};
+}

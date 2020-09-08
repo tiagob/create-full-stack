@@ -1,9 +1,7 @@
-import * as Linking from "expo-linking";
+import { useAuth0 } from "cfs-expo-auth0";
 import React from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
-import { Button, Text } from "react-native-elements";
-
-import { useAuth0 } from "../utils/reactNativeAuth0";
+import { Button } from "react-native-elements";
 
 const styles = StyleSheet.create({
   root: {
