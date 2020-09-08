@@ -83,6 +83,10 @@ killall node
 
 React in both `packages/mobile/package.json` and `packages/web/package.json` need to be the same version since they're shared in Yarn Workspaces (unless you add [nohoist](https://yarnpkg.com/blog/2018/02/15/nohoist/)).
 
+#### Auth0 login hangs on Android virtual device
+
+Must use Android 11. https://github.com/expo/expo/issues/9845
+
 #### Yarn Workspaces with Expo
 
 Using [expo-yarn-workspaces](https://www.npmjs.com/package/expo-yarn-workspaces) which provides a workaround to make Yarn Workspaces work with Expo. Yarn Workspaces is required to share `node_modules` between `packages/web` and `packages/mobile`.
