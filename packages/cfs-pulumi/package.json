@@ -1,6 +1,6 @@
 {
   "name": "cfs-pulumi",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "license": "MIT",
   "main": "build/index.js",
   "typings": "build/index.d.ts",
