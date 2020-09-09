@@ -98,14 +98,14 @@ if (isDevelopment) {
   });
   // @remove-mobile-end
 } else {
-  const certificate = new Certificate("certificate", {
+  const certificateArn = new Certificate("certificate", {
     domain,
     subjectAlternativeNames: [`*.${domain}`],
     // There's a hidden limit on the number of certificates an AWS account can create
     // and destroy, 20.
     // https://github.com/aws/aws-cdk/issues/5889#issuecomment-599609939
     protect: true,
-  });
+  }).arn;
 
   const dbName = config.require("dbName");
   const dbUsername = config.require("dbUsername");
@@ -116,7 +116,7 @@ if (isDevelopment) {
     dbPassword,
   });
   new Fargate(path.basename(serverPath), {
-    certificate,
+    certificateArn,
     domain: serverDomain,
     cluster,
     image: awsx.ecs.Image.fromPath("image", serverPath),
@@ -134,7 +134,7 @@ if (isDevelopment) {
 
   // @remove-web-begin
   new StaticWebsite(path.basename(webPath), {
-    certificate,
+    certificateArn,
     domain,
     webPath,
     env: {

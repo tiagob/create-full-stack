@@ -1,11 +1,11 @@
 import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
+import { Output } from "@pulumi/pulumi";
 
 import { Env } from "../common";
 import { InvalidateCloudfront } from "../providers/invalidateCloudfront";
 import { SyncWeb } from "../providers/syncWeb";
 import { getDomainAndSubdomain } from "../utils";
-import Certificate from "./certificate";
 
 // Adapted from
 // https://github.com/pulumi/examples/blob/master/aws-ts-static-website/index.ts
@@ -13,7 +13,7 @@ import Certificate from "./certificate";
 const tenMinutes = 60 * 10;
 
 export interface StaticWebsiteArgs {
-  certificate: Certificate;
+  certificateArn: Output<string> | string;
   domain: string;
   webPath: string;
   env: Env;
@@ -25,7 +25,7 @@ export default class StaticWebsite extends pulumi.ComponentResource {
     args: StaticWebsiteArgs,
     opts?: pulumi.ResourceOptions
   ) {
-    const { certificate, domain, webPath, env } = args;
+    const { certificateArn, domain, webPath, env } = args;
     super("aws:StaticWebsite", name, args, opts);
 
     const contentBucket = new aws.s3.Bucket(
@@ -131,7 +131,7 @@ export default class StaticWebsite extends pulumi.ComponentResource {
       },
 
       viewerCertificate: {
-        acmCertificateArn: certificate.arn, // Per AWS, ACM certificate must be in the us-east-1 region.
+        acmCertificateArn: certificateArn, // Per AWS, ACM certificate must be in the us-east-1 region.
         sslSupportMethod: "sni-only",
       },
 
