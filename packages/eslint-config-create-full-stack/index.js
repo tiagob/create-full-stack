@@ -39,6 +39,7 @@ module.exports = {
     // https://typeorm.io/#/migrations/creating-a-new-migration
     // Found in the templates in packages/server/src/migration/
     "class-methods-use-this": ["error", { exceptMethods: ["up", "down"] }],
+    "eslint-comments/disable-enable-pair": ["error", { allowWholeFile: true }],
     "import/prefer-default-export": "off",
     // Overload airbnb definition to allow 'ForOfStatement'
     // https://github.com/airbnb/javascript/blob/b6fc6dc7c3cb76497db0bb81edaa54d8f3427796/packages/eslint-config-airbnb-base/rules/style.js#L257
