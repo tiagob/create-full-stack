@@ -3,7 +3,7 @@ id: configuration
 title: Configuration
 ---
 
-Configuration across web, mobile and apollo-sever-express follows CRA's `.env` [environment variables](https://create-react-app.dev/docs/adding-custom-environment-variables/). Configuration specific to cloud deployment is found in the [Pulumi stack](https://www.pulumi.com/docs/intro/concepts/stack/).
+Configuration across web, mobile and apollo-sever-express follows CRA's [environment variables](https://create-react-app.dev/docs/adding-custom-environment-variables/). Configuration specific to cloud deployment is found in the [Pulumi stack](https://www.pulumi.com/docs/intro/concepts/stack/).
 
 `.env` files are in their corresponding platform packages directories. For instance, `packages/web/.env.production` or `packages/mobile/.env.production`.
 
@@ -26,8 +26,4 @@ Files on the left have more priority than files on the right:
 
 Pulumi stack configuration is in the `pulumi-aws` package. For instance, `packages/pulumi-aws/Pulumi.production.yml`. If Auth0 is included, Auth0 local development configuration is included in the Pulumi stack `Pulumi.development.yml` since this exists in the cloud.
 
-## Without Pulumi AWS
-
-| development        | test        |
-| ------------------ | ----------- |
-| `.env.development` | `.env.test` |
+Pulumi stacks shouldn't be confused with `NODE_ENV`. A `NODE_ENV` of production tells CRA and Node to set various optimizations (ex. minification) relevant for running on a server. `NODE_ENV` is used to determine which `.env` files are loaded. Alternatively, Pulumi stacks can be seen as deployed environment (ex. production or staging). If you were to create a staging environment you'd want a `Pulumi.staging.yml` which would also load `.env.production`.
