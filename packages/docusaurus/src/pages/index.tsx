@@ -1,4 +1,6 @@
 /* eslint-disable import/no-unresolved */
+// Docusaurus with TS doesn't resolve types
+// https://github.com/facebook/docusaurus/issues/3424
 import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
