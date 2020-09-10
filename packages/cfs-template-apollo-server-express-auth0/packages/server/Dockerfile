@@ -23,8 +23,9 @@ WORKDIR /usr/src/app
 COPY package.json .
 COPY yarn.lock .
 COPY tsconfig.json .
-COPY packages/server/package.json packages/server/package.json
-COPY packages/server/ormconfig.js packages/server/ormconfig.js
+COPY packages/server/package.json packages/server/
+COPY packages/server/ormconfig.js packages/server/
+COPY packages/server/.env* packages/server/
 
 COPY --from=build /usr/src/app/packages/server/build /usr/src/app/packages/server/build
 
