@@ -6,6 +6,6 @@ module.exports = {
       "available_scripts",
       "libraries_and_frameworks",
     ],
-    Development: ["configuration", "migrations"],
+    Development: ["configuration", "migrations", "gotchas"],
   },
 };

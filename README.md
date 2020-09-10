@@ -87,10 +87,6 @@ React in both `packages/mobile/package.json` and `packages/web/package.json` nee
 
 Must use Android 11. https://github.com/expo/expo/issues/9845
 
-#### Yarn Workspaces with Expo
-
-Using [expo-yarn-workspaces](https://www.npmjs.com/package/expo-yarn-workspaces) which provides a workaround to make Yarn Workspaces work with Expo. Yarn Workspaces is required to share `node_modules` between `packages/web` and `packages/mobile`.
-
 ## References
 
 - [Create React App](https://reactjs.org/docs/create-a-new-react-app.html)
