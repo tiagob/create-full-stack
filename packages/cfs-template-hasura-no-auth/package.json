@@ -1,6 +1,6 @@
 {
   "name": "cfs-template-hasura-no-auth",
-  "version": "0.1.35",
+  "version": "0.1.36",
   "description": "The Hasura without auth template for Create Full Stack.",
   "license": "MIT"
 }
