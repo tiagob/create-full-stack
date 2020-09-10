@@ -1,6 +1,4 @@
 /* eslint-disable import/no-unresolved */
-// Docusaurus with TS doesn't resolve types
-// https://github.com/facebook/docusaurus/issues/3424
 import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
@@ -28,7 +26,7 @@ const features = [
   },
   {
     title: "Most popular tools in class",
-    imageUrl: "img/undraw_docusaurus_react.svg",
+    imageUrl: "img/framework.svg",
     description: <>Better support with fewer edge cases.</>,
   },
 ];
