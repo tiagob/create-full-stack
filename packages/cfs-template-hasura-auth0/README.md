@@ -211,8 +211,6 @@ pulumi config set expo:password [YOUR EXPO PASSWORD] --secret
 <!-- @remove-mobile-end -->
 ```
 
-The `expo:logoutUrl` in the pulumi configurations have been set to development values. You'll need to update this when you deploy your app. See [Linking to your app](https://docs.expo.io/workflow/linking/#linking-to-your-app)
-
 <!-- @remove-pulumi-aws-end -->
 <!-- @remove-manual-config-begin -->
 

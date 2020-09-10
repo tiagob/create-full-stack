@@ -10,7 +10,6 @@ export interface Auth0Args {
   mobile?: {
     clientName: string;
     expoUsername: string;
-    expoLogoutUrl: string;
     slug: string;
   };
 }
@@ -63,7 +62,6 @@ export default class Auth0 extends pulumi.ComponentResource {
           oidcConformant: true,
           ssoDisabled: false,
           crossOriginAuth: false,
-          allowedLogoutUrls: [mobile.expoLogoutUrl],
           callbacks: [
             `https://auth.expo.io/@${mobile.expoUsername}/${mobile.slug}`,
           ],

@@ -4,6 +4,3 @@ config:
   auth0:clientSecret:
     secure:
   auth0:domain:
-  # @remove-mobile-begin
-  expo:logoutUrl: exp://192.168.0.21:19000/--/
-  # @remove-mobile-end
