@@ -1,4 +1,5 @@
 {
+  "version": "0.1.0",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -20,9 +21,8 @@
     "src/**.{ts,tsx}": "eslint --fix"
   },
   "devDependencies": {
-    "husky": "^4.2.5",
-    "lerna": "^3.22.0",
-    "lint-staged": "^10.2.2"
-  },
-  "version": "0.0.0"
+    "husky": "^4.3.0",
+    "lerna": "^3.22.1",
+    "lint-staged": "^10.3.0"
+  }
 }
