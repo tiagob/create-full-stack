@@ -36,16 +36,43 @@ type Result = {
 interface Auth0Context {
   request?: AuthSession.AuthRequest | null;
   result?: Result;
+  /**
+   * ```ts
+   * await login();
+   * ```
+   *
+   * Prompt the user to authenticate in a user interaction or web browsers will
+   * block it.
+   */
   login?(): void;
-  logout?(): void;
   user?: User;
+  /**
+   * The Auth0 access token.
+   */
   token?: string;
 }
 interface Auth0ProviderOptions {
+  /**
+   * The child nodes your provider has wrapped.
+   */
   children: React.ReactElement;
+  /**
+   * The client ID found on your application settings page.
+   */
   clientId: string;
+  /**
+   * The default audience to be used for requesting API access.
+   */
   audience: string;
+  /**
+   * Your Auth0 account domain such as `'example.auth0.com'`,
+   * `'example.eu.auth0.com'` or , `'example.mycompany.com'`
+   * (when using [custom domains](https://auth0.com/docs/custom-domains))
+   */
   domain: string;
+  /**
+   * Callback for auth0 login.
+   */
   onLogin: () => void;
 }
 
@@ -56,11 +83,38 @@ export const Auth0Context = React.createContext<Auth0Context>({
   request: undefined,
   result: undefined,
   login: undefined,
-  logout: undefined,
   user: undefined,
   token: undefined,
 });
+/**
+ * ```ts
+ * const {
+ *   // Auth state:
+ *   request,
+ *   result,
+ *   user,
+ *   token,
+ *   // Auth methods:
+ *   login,
+ * } = useAuth0();
+ * ```
+ *
+ * Use the `useAuth0` hook in your components to access the auth state and methods.
+ */
 export const useAuth0 = () => useContext(Auth0Context);
+
+/**
+ * ```jsx
+ * <Auth0Provider
+ *   domain={domain}
+ *   clientId={clientId}
+ *   audience={audience}>
+ *   <MyApp />
+ * </Auth0Provider>
+ * ```
+ *
+ * Provides the Auth0Context to its child components.
+ */
 export function Auth0Provider({
   children,
   clientId,

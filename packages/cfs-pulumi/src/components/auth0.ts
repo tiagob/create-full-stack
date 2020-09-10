@@ -5,11 +5,26 @@ export interface Auth0Args {
   resourceServerName: string;
   web?: {
     clientName: string;
+    /**
+     * The website URL.
+     *
+     * Set as the Auth0 web client allowed logout and callback URL.
+     */
     url: string;
   };
   mobile?: {
     clientName: string;
+    /**
+     * Your Expo username. Found by running `expo whoami`.
+     *
+     * Used for constructing the Auth0 mobile client callback URL.
+     */
     expoUsername: string;
+    /**
+     * The Expo app slug. Found in `packages/mobile/app.json`.
+     *
+     * Used for constructing the Auth0 mobile client callback URL.
+     */
     slug: string;
   };
 }
@@ -98,9 +113,23 @@ export default class Auth0 extends pulumi.ComponentResource {
     });
 
     this.registerOutputs({
+      /**
+       * The unique identifier of the audience for an issued token, identified
+       * within a JSON Web Token as the `aud` claim. The audience value is
+       * either the application (`Client ID`) for an ID Token or the API that
+       * is being called (`API Identifier`) for an Access Token. At Auth0, the
+       * Audience value sent in a request for an Access Token dictates whether
+       * that token is returned in an opaque or JWT format.
+       */
       audience: this.audience,
+      /**
+       * The generated Auth0 SPA application client ID.
+       */
       webClientId: this.webClientId,
-      mobileClient: this.mobileClientId,
+      /**
+       * The generated Auth0 native application client ID.
+       */
+      mobileClientId: this.mobileClientId,
     });
   }
 }

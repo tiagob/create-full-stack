@@ -6,8 +6,24 @@ import { getDomainAndSubdomain } from "../utils";
 const tenMinutes = 60 * 10;
 
 export interface CertificateArgs {
+  /**
+   * A domain name for which the certificate should be issued.
+   */
   domain: string;
+  /**
+   * When set to true, protect ensures this resource cannot be deleted.
+   *
+   * There's a hidden limit on the number of certificates an AWS account can create.
+   * Protect this resource so it doesn't get deleted on destroy. Otherwise, if you create
+   * this 20 times you'll have to contact AWS to increase your limit.
+   * https://github.com/aws/aws-cdk/issues/5889#issuecomment-599609939
+   */
   protect: boolean;
+  /**
+   * Set of domains that should be SANs in the issued certificate. To remove all
+   * elements of a previously configured list, set this value equal to an empty list
+   * ([]) to trigger recreation.
+   */
   subjectAlternativeNames: string[];
 }
 
@@ -52,10 +68,6 @@ export default class Certificate extends pulumi.ComponentResource {
       {
         parent: this,
         provider: eastRegion,
-        // There's a hidden limit on the number of certificates an AWS account can create.
-        // Protect this resource so it doesn't get deleted on destroy. Otherwise, if you create
-        // this 20 times you'll have to contact AWS to increase your limit.
-        // https://github.com/aws/aws-cdk/issues/5889#issuecomment-599609939
         protect,
       }
     );
@@ -92,6 +104,9 @@ export default class Certificate extends pulumi.ComponentResource {
     this.arn = certificateValidation.certificateArn;
 
     this.registerOutputs({
+      /**
+       * The Amazon Resource Name (ARN) of the certificate.
+       */
       arn: this.arn,
     });
   }

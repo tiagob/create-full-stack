@@ -8,10 +8,35 @@ import { Env } from "../common";
 import { getDomainAndSubdomain } from "../utils";
 
 export interface FargateArgs {
+  /**
+   * The ARN of the default SSL server certificate. Exactly one certificate is
+   * required if the protocol is HTTPS.
+   */
   certificateArn: Output<string> | string;
+  /**
+   * The domain name this fargate service should use.
+   */
   domain: string;
+  /**
+   * Cluster this service will run in.
+   */
   cluster: Cluster;
+  /**
+   * The image id to use for the container. If this is provided then the image
+   * with this idq will be pulled from Docker Hub. To provide customized image
+   * retrieval, provide [imageProvide] which can do whatever custom work is
+   * necessary. See [Image](https://www.pulumi.com/docs/reference/pkg/docker/image/)
+   * for common ways to create an image from a local docker build.
+   */
   image: awsx.ecs.Image;
+  /**
+   * An object containing environment variables to pass to this service.
+   *
+   * Ex.
+   * ```ts
+   * { DATABASE_URL: "postgres://postgres:postgrespassword@postgres:5432/postgres" }
+   * ```
+   */
   env: Env;
 }
 

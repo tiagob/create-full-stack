@@ -4,8 +4,22 @@ import { Cluster } from "@pulumi/awsx/ecs";
 import * as pulumi from "@pulumi/pulumi";
 
 export interface RdsArgs {
+  /**
+   * The name of the database to create when the DB instance is created. If this
+   * parameter is not specified, no database is created in the DB instance. Note
+   * that this does not apply for Oracle or SQL Server engines. See the
+   * [AWS documentation](https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html)
+   * for more details on what applies for those engines.
+   */
   dbName: string;
+  /**
+   * Username for the master DB user.
+   */
   dbUsername: string;
+  /**
+   * Password for the master DB user. Note that this may show up in logs, and
+   * it will be stored in the state file.
+   */
   dbPassword: pulumi.Output<string>;
 }
 
@@ -43,7 +57,17 @@ export default class Rds extends pulumi.ComponentResource {
     this.connectionString = pulumi.interpolate`postgres://${dbUsername}:${dbPassword}@${db.endpoint}/${dbName}`;
 
     this.registerOutputs({
+      /**
+       * Specifies information about a data source and the means of connecting
+       * to it.
+       *
+       * Ex. `"postgres://postgres:postgrespassword@postgres:5432/postgres"`
+       */
       connectionString: this.connectionString,
+      /**
+       * A Cluster is a general purpose ECS cluster configured to run in a
+       * provided Network.
+       */
       cluster: this.cluster,
     });
   }

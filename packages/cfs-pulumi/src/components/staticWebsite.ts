@@ -13,9 +13,27 @@ import { getDomainAndSubdomain } from "../utils";
 const tenMinutes = 60 * 10;
 
 export interface StaticWebsiteArgs {
+  /**
+   * The ARN of the AWS Certificate Manager certificate that you wish to use
+   * with this distribution. The ACM certificate must be in US-EAST-1.
+   */
   certificateArn: Output<string> | string;
+  /**
+   * The domain name this website uses.
+   */
   domain: string;
+  /**
+   * The path to the React website npm package to deploy.
+   */
   webPath: string;
+  /**
+   * An object containing environment variables to pass to this service.
+   *
+   * Ex.
+   * ```ts
+   * { DATABASE_URL: "postgres://postgres:postgrespassword@postgres:5432/postgres" }
+   * ```
+   */
   env: Env;
 }
 
