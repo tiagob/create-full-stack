@@ -34,3 +34,14 @@ Applies all migrations to the database.
 ### `hasura migrate status`
 
 Displays the current status of migrations on a database.
+
+## Resetting Docker Postgres locally
+
+Sometimes you may need to completely wipe your local Postgres DB running on Docker. For instance, you're developing Create Full Stack and switching between Auth0 and no auth 😃.
+
+Todo this remove the Docker container then the volume.
+
+```bash
+docker rm <project name>_postgres_1
+docker volume rm <project name>_db_data
+```
