@@ -73,7 +73,7 @@ Creates or updates the resources in a stack
 
 Destroys an existing stack and its resources
 
-### `pulumi stack select [<stack>]`
+### `pulumi stack select <stack>`
 
 Switches the current workspace to the given stack
 

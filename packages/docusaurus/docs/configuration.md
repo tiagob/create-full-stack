@@ -5,6 +5,8 @@ title: Configuration
 
 Configuration across web, mobile and apollo-sever-express follows CRA's [environment variables](https://create-react-app.dev/docs/adding-custom-environment-variables/). Configuration specific to cloud deployment is found in the [Pulumi stack](https://www.pulumi.com/docs/intro/concepts/stack/).
 
+Create Full Stack loads environment variables from `.env` files into `process.env`. Storing configuration in the environment separate from code is based on [The Twelve-Factor App methodology](https://12factor.net/config).
+
 `.env` files are in their corresponding platform packages directories. For instance, `packages/web/.env.production` or `packages/mobile/.env.production`.
 
 - `.env`: Default.

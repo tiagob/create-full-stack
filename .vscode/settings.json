@@ -5,5 +5,5 @@
     "source.fixAll": true
   },
   "editor.tabSize": 2,
-  "cSpell.words": ["hasura", "postgres", "postgresql", "pulumi"]
+  "cSpell.words": ["hasura", "postgres", "postgresql", "pulumi", "typeorm"]
 }
