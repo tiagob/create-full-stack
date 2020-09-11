@@ -258,7 +258,6 @@ From the Auth0 console https://manage.auth0.com/dashboard/
 - Create a Native Application for the React Native mobile app
   - Applications > CREATE APPLICATION > Native
   - Set "Allowed Callback URLs" to "https://auth.expo.io/@[YOUR EXPO USERNAME]/[YOUR EXPO APP SLUG]"
-  - Set "Allowed Logout URLs" to "exp://192.168.0.21:19000/--/" (the [Expo link url](https://docs.expo.io/workflow/linking/#linking-to-your-app))
   - Get YOUR EXPO USERNAME by running `expo whoami`
   - Get YOUR EXPO SLUG from `packages/mobile/app.json` `"slug"`
 
