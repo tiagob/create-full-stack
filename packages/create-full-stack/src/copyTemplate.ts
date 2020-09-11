@@ -335,11 +335,11 @@ export default async function copyTemplate(options: {
     }
   });
   fs.renameSync(
-    path.join(projectPath, "template.json"),
+    path.join(projectPath, "template.package.json"),
     path.join(projectPath, "package.json")
   );
   fs.renameSync(
-    path.join(projectPath, "README.template.md"),
+    path.join(projectPath, "template.README.md"),
     path.join(projectPath, "README.md")
   );
 
