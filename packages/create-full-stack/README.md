@@ -1,6 +1,6 @@
 # create-full-stack
 
-This package includes the global command for [Create Full Stack](https://github.com/facebook/create-full-stack).
+This package includes the global command for [Create Full Stack](https://github.com/tiagob/create-full-stack).
 
 Please refer to its documentation:
 

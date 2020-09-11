@@ -1,6 +1,6 @@
 # eslint-config-create-full-stack
 
-This package includes the shareable ESLint configuration used by [Create Full Stack](https://github.com/facebook/create-full-stack).<br>
+This package includes the shareable ESLint configuration used by [Create Full Stack](https://github.com/tiagob/create-full-stack).<br>
 Please refer to its documentation:
 
 - [Getting Started](https://create-full-stack.com/docs) – How to create a new full stack.
@@ -8,7 +8,7 @@ Please refer to its documentation:
 
 ## Usage in Create Full Stack Projects
 
-The easiest way to use this configuration is with [Create Full Stack](https://github.com/facebook/create-full-stack), which includes it by default.
+The easiest way to use this configuration is with [Create Full Stack](https://github.com/tiagob/create-full-stack), which includes it by default.
 
 **You don’t need to install it separately in Create Full Stack projects.**
 
