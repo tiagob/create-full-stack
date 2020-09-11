@@ -257,6 +257,14 @@ AUTH0_DOMAIN=[YOUR AUTH0 DOMAIN]
 ```
 
 <!-- @remove-mobile-end -->
+
+#### Universal login
+
+It's recommended you use the "New Universal Login Experience" which stores user credentials on page refresh. This is also helpful for developing so you don't need to re-authenticate to view changes you make.
+
+- Switch from "Classic" to "New" Universal Login
+  - Universal Login > New
+
 <!-- @remove-manual-config-end -->
 <!-- @remove-github-actions-begin -->
 
