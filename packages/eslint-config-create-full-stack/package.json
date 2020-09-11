@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-create-full-stack",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "ESLint configuration used by Create Full Stack",
   "bugs": {
     "url": "https://github.com/tiagob/create-full-stack/issues"

@@ -1,6 +1,6 @@
 {
   "name": "cfs-expo-auth0",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Library for Auth0 React context for Expo in Create Full Stack.",
   "bugs": {
     "url": "https://github.com/tiagob/create-full-stack/issues"
