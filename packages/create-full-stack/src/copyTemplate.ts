@@ -338,6 +338,10 @@ export default async function copyTemplate(options: {
     path.join(projectPath, "template.json"),
     path.join(projectPath, "package.json")
   );
+  fs.renameSync(
+    path.join(projectPath, "README.template.md"),
+    path.join(projectPath, "README.md")
+  );
 
   if (hasMobile) {
     updateAppJson(appName, projectPath);
