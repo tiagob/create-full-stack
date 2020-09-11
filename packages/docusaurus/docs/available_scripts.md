@@ -67,15 +67,19 @@ Common commands are shown below. Additional commands are documented at https://w
 
 ### `pulumi up`
 
-Creates or updates the resources in a stack
+Creates or updates the resources in a stack.
 
 ### `pulumi destroy`
 
-Destroys an existing stack and its resources
+Destroys an existing stack and its resources.
 
 ### `pulumi stack select <stack>`
 
-Switches the current workspace to the given stack
+Switches the current workspace to the given stack.
+
+### `pulumi stack ls`
+
+List stacks.
 
 ## Web
 
