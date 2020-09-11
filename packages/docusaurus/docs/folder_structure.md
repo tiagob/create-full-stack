@@ -15,7 +15,7 @@ packages/
   web/  # If web is included
 ```
 
-Common contains shared mobile and web code. Any updates to common must first be built before used in `mobile/` or `web/`.
+`common/` contains shared mobile and web code. Any updates to common must first be built before used in `mobile/` or `web/`.
 
 ```bash
 cd packages/common

@@ -1,37 +1,5 @@
 This project was bootstrapped with [Create Full Stack](https://github.com/tiagob/create-full-stack).
 
-## Run
-
-```bash
-yarn start
-```
-
-Spins up postgres in Docker, the Hasura server and all clients.
-
-<!-- @remove-pulumi-aws-begin -->
-
-## Deploy
-
-### Development
-
-```bash
-cd packages/pulumi-aws
-pulumi stack select development
-pulumi up
-```
-
-This sets up Auth0 which is required for authentication locally.
-
-### Production
-
-```bash
-cd packages/pulumi-aws
-pulumi stack select production
-pulumi up
-```
-
-<!-- @remove-pulumi-aws-end -->
-
 ## Setup
 
 _Assumes MacOS_
@@ -48,10 +16,7 @@ _Assumes MacOS_
 brew cask install docker
 ```
 
-References
-
-- https://stackoverflow.com/a/43365425/709040
-- https://docs.docker.com/get-docker/
+Alternatively, you can install via the GUI at https://docs.docker.com/get-docker/
 
 <!-- @remove-mobile-begin -->
 
@@ -230,6 +195,28 @@ In `hasura/.env.development` fill in the field
 HASURA_GRAPHQL_JWT_SECRET={"jwk_url":"https://[YOUR AUTH0 DOMAIN]/.well-known/jwks.json","audience":"[YOUR AUTH0 API AUDIENCE]"}
 ```
 
+#### Auth0 Rule
+
+From the Auth0 console https://manage.auth0.com/dashboard/
+
+- Create an Auth0 Rule to add the custom JWT claims
+  - Rules > CREATE RULE > Empty rule
+  - Name the rule (ex. "Hasura access token")
+  - Paste the code snippet below into the "Script" section
+
+```js
+function hasuraAccessToken(user, context, callback) {
+  const namespace = "https://hasura.io/jwt/claims";
+  // eslint-disable-next-line no-param-reassign
+  context.accessToken[namespace] = {
+    "x-hasura-default-role": "user",
+    "x-hasura-allowed-roles": ["user"],
+    "x-hasura-user-id": user.user_id,
+  };
+  callback(undefined, user, context);
+}
+```
+
 <!-- @remove-web-begin -->
 
 #### Web
@@ -289,3 +276,35 @@ References
 - https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets
 
 <!-- @remove-github-actions-end -->
+
+## Run
+
+```bash
+yarn start
+```
+
+Spins up postgres in Docker, the Hasura server and all clients.
+
+<!-- @remove-pulumi-aws-begin -->
+
+## Deploy
+
+### Development
+
+```bash
+cd packages/pulumi-aws
+pulumi stack select development
+pulumi up
+```
+
+This sets up Auth0 which is required for authentication locally.
+
+### Production
+
+```bash
+cd packages/pulumi-aws
+pulumi stack select production
+pulumi up
+```
+
+<!-- @remove-pulumi-aws-end -->

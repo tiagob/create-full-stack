@@ -1,37 +1,5 @@
 This project was bootstrapped with [Create Full Stack](https://github.com/tiagob/create-full-stack).
 
-## Run
-
-```bash
-yarn start
-```
-
-Spins up postgres in Docker, the Hasura server and all clients.
-
-<!-- @remove-pulumi-aws-begin -->
-
-## Deploy
-
-### Development
-
-```bash
-cd packages/pulumi-aws
-pulumi stack select development
-pulumi up
-```
-
-This sets up Auth0 which is required for authentication locally.
-
-### Production
-
-```bash
-cd packages/pulumi-aws
-pulumi stack select production
-pulumi up
-```
-
-<!-- @remove-pulumi-aws-end -->
-
 ## Setup
 
 _Assumes MacOS_
@@ -48,10 +16,7 @@ _Assumes MacOS_
 brew cask install docker
 ```
 
-References
-
-- https://stackoverflow.com/a/43365425/709040
-- https://docs.docker.com/get-docker/
+Alternatively, you can install via the GUI at https://docs.docker.com/get-docker/
 
 <!-- @remove-mobile-begin -->
 
@@ -169,3 +134,35 @@ References
 - https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets
 
 <!-- @remove-github-actions-end -->
+
+## Run
+
+```bash
+yarn start
+```
+
+Spins up postgres in Docker, the Hasura server and all clients.
+
+<!-- @remove-pulumi-aws-begin -->
+
+## Deploy
+
+### Development
+
+```bash
+cd packages/pulumi-aws
+pulumi stack select development
+pulumi up
+```
+
+This sets up Auth0 which is required for authentication locally.
+
+### Production
+
+```bash
+cd packages/pulumi-aws
+pulumi stack select production
+pulumi up
+```
+
+<!-- @remove-pulumi-aws-end -->

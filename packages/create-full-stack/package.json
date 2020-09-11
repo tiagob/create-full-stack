@@ -1,7 +1,22 @@
 {
   "name": "create-full-stack",
   "version": "0.1.41",
-  "description": "Configuration and scripts for Create Full Stack.",
+  "description": "Create an opinionated full stack with minimal configuration.",
+  "keywords": [
+    "react",
+    "react-native",
+    "hasura",
+    "apollo",
+    "typescript"
+  ],
+  "bugs": {
+    "url": "https://github.com/tiagob/create-full-stack/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tiagob/create-full-stack.git",
+    "directory": "packages/create-full-stack"
+  },
   "license": "MIT",
   "bin": {
     "create-full-stack": "./build/src/index.js"

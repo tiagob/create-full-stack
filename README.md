@@ -1,6 +1,11 @@
 # Create Full Stack
 
-Create full stack TypeScript apps with no configuration.
+Create an opinionated full stack with minimal configuration.
+
+- [Getting Started](https://create-full-stack.com/docs) – How to create a new full stack.
+- [User Guide](https://create-full-stack.com) – How to develop apps bootstrapped with Create Full Stack.
+
+If something doesn’t work, please file an [issue](https://github.com/tiagob/create-full-stack/issues).
 
 ## Philosophy
 
@@ -86,17 +91,3 @@ React in both `packages/mobile/package.json` and `packages/web/package.json` nee
 #### Auth0 login hangs on Android virtual device
 
 Must use Android 11. https://github.com/expo/expo/issues/9845
-
-## References
-
-- [Create React App](https://reactjs.org/docs/create-a-new-react-app.html)
-- [TypeScript Node Starter](https://github.com/microsoft/TypeScript-Node-Starter)
-- [TypesScript](https://www.typescriptlang.org/)
-- [React](https://reactjs.org/)
-- [React Native](https://facebook.github.io/react-native/)
-- [Expo](https://docs.expo.io)
-- [Apollo Client](https://www.apollographql.com/docs/react/)
-- [Apollo Server](https://www.apollographql.com/docs/apollo-server/)
-- [GraphQL Codegen](https://graphql-code-generator.com/docs/getting-started/)
-- [TypeORM](https://typeorm.io/#/)
-- [Yarn Workspaces](https://yarnpkg.com/lang/en/docs/workspaces/)
