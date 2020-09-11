@@ -8,5 +8,32 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     env_file: "./postgres/.env.development"
+  #
+  # To debug packages/server/Dockerfile uncomment the "server" service below
+  # Run `docker-compose up` to see something like the following output.
+  #
+  # ```bash
+  # Step 21/22 : EXPOSE 8080
+  #  ---> Using cache
+  #  ---> 9e01378434d1
+  # Step 22/22 : CMD ["yarn", "start-production"]
+  #  ---> Using cache
+  #  ---> 78e717e8d895
+  # ```
+  #
+  # Run `docker run --rm -it 9e01378434d1 sh` to start a container on a specific
+  # image and run bash.
+  #
+  # server:
+  #   build:
+  #     context: .
+  #     dockerfile: packages/server/Dockerfile
+  #   restart: always
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - postgres
+  #   environment:
+  #     DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
 volumes:
   db_data:
