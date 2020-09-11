@@ -9,14 +9,14 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@apollo/client": "^3.1.2",
+    "@apollo/client": "^3.1.5",
     "graphql": "^15.3.0",
     "react": "~16.11.0",
     "react-dom": "~16.11.0",
-    "subscriptions-transport-ws": "^0.9.17",
-    "typescript": "^4.0.2"
+    "subscriptions-transport-ws": "^0.9.18"
   },
   "devDependencies": {
-    "@types/react": "^16.9.0"
+    "@types/react": "^16.9.49",
+    "typescript": "^4.0.2"
   }
 }

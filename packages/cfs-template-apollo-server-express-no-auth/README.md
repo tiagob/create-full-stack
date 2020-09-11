@@ -107,10 +107,10 @@ pulumi stack init production
 pulumi config set domain [YOUR ROUTE53 DOMAIN]
 pulumi config set dbName [YOUR POSTGRES DB NAME]
 pulumi config set dbUsername [YOUR POSTGRES DB USERNAME]
-pulumi config set dbPassword [YOUR POSTGRES DB PASSWORD] --secret
+pulumi config set --secret dbPassword [YOUR POSTGRES DB PASSWORD]
 <!-- @remove-mobile-begin -->
 pulumi config set expo:username [YOUR EXPO USERNAME]
-pulumi config set expo:password [YOUR EXPO PASSWORD] --secret
+pulumi config set --secret expo:password [YOUR EXPO PASSWORD]
 <!-- @remove-mobile-end -->
 ```
 

@@ -22,24 +22,24 @@ export default function Todo({ todo }: Props) {
     });
 
   return (
-    <ListItem
-      onPress={onPress}
-      leftElement={<CheckBox onPress={onPress} checked={todo.complete} />}
-      title={todo.name}
-      titleStyle={todo.complete ? styles.lineThrough : undefined}
-      rightElement={
-        <Button
-          icon={
-            <Icon
-              name="delete"
-              accessibilityLabel="delete"
-              onPress={() => deleteTodo({ variables: { id: todo.id } })}
-            />
-          }
-          type="outline"
-          raised
-        />
-      }
-    />
+    <ListItem onPress={onPress}>
+      <CheckBox onPress={onPress} checked={todo.complete} />
+      <ListItem.Content>
+        <ListItem.Title style={todo.complete ? styles.lineThrough : undefined}>
+          {todo.name}
+        </ListItem.Title>
+      </ListItem.Content>
+      <Button
+        icon={
+          <Icon
+            name="delete"
+            accessibilityLabel="delete"
+            onPress={() => deleteTodo({ variables: { id: todo.id } })}
+          />
+        }
+        type="outline"
+        raised
+      />
+    </ListItem>
   );
 }
