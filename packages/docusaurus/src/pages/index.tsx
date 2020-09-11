@@ -68,11 +68,20 @@ function Home() {
             <Link
               className={clsx(
                 "button button--outline button--secondary button--lg",
-                styles.getStarted
+                styles.heroButton
               )}
               to={useBaseUrl("docs/")}
             >
               Get Started
+            </Link>
+            <Link
+              className={clsx(
+                "button button--outline button--secondary button--lg",
+                styles.heroButton
+              )}
+              to="https://demo-full-stack.com"
+            >
+              View Demo
             </Link>
           </div>
         </div>

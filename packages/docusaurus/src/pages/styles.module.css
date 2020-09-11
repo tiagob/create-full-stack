@@ -36,6 +36,7 @@
   width: 200px;
 }
 
-.getStarted {
+.heroButton {
   color: var(--ifm-hero-text-color) !important;
+  margin: 0 1rem;
 }
