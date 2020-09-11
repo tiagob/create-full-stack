@@ -116,8 +116,8 @@ Use the created Machine to Machine Application to set the pulumi configuration
 cd packages/pulumi-aws
 pulumi stack init development
 pulumi config set auth0:domain [YOUR AUTH0 TENANT DOMAIN]
-pulumi config set auth0:clientId [YOUR AUTH0 MACHINE TO MACHINE CLIENT ID] --secret
-pulumi config set auth0:clientSecret [YOUR AUTH0 MACHINE TO MACHINE CLIENT SECRET] --secret
+pulumi config set --secret auth0:clientId [YOUR AUTH0 MACHINE TO MACHINE CLIENT ID]
+pulumi config set --secret auth0:clientSecret [YOUR AUTH0 MACHINE TO MACHINE CLIENT SECRET]
 ```
 
 References
@@ -139,8 +139,8 @@ Use the created Machine to Machine Application to set the pulumi configuration
 cd packages/pulumi-aws
 pulumi stack init production
 pulumi config set auth0:domain [YOUR AUTH0 TENANT DOMAIN]
-pulumi config set auth0:clientId [YOUR AUTH0 MACHINE TO MACHINE CLIENT ID] --secret
-pulumi config set auth0:clientSecret [YOUR AUTH0 MACHINE TO MACHINE CLIENT SECRET] --secret
+pulumi config set --secret auth0:clientId [YOUR AUTH0 MACHINE TO MACHINE CLIENT ID]
+pulumi config set --secret auth0:clientSecret [YOUR AUTH0 MACHINE TO MACHINE CLIENT SECRET]
 ```
 
 References
@@ -168,11 +168,11 @@ pulumi stack select production
 pulumi config set domain [YOUR ROUTE53 DOMAIN]
 pulumi config set dbName [YOUR POSTGRES DB NAME]
 pulumi config set dbUsername [YOUR POSTGRES DB USERNAME]
-pulumi config set dbPassword [YOUR POSTGRES DB PASSWORD] --secret
-pulumi config set hasuraGraphqlAdminSecret [YOUR HASURA GRAPHQL ADMIN SECRET] --secret
+pulumi config set dbPassword --secret [YOUR POSTGRES DB PASSWORD]
+pulumi config set hasuraGraphqlAdminSecret --secret [YOUR HASURA GRAPHQL ADMIN SECRET]
 <!-- @remove-mobile-begin -->
 pulumi config set expo:username [YOUR EXPO USERNAME]
-pulumi config set expo:password [YOUR EXPO PASSWORD] --secret
+pulumi config set expo:password --secret [YOUR EXPO PASSWORD]
 <!-- @remove-mobile-end -->
 ```
 

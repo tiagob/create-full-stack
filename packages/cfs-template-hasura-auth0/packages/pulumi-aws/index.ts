@@ -32,10 +32,9 @@ const mobilePath = "../mobile";
 const stack = pulumi.getStack();
 const isDevelopment = stack === "development";
 const config = new pulumi.Config();
-const domain = config.require("domain");
 const serverDomain = isDevelopment
   ? "localhost:8080"
-  : `${path.basename(serverPath)}.${domain}`;
+  : `${path.basename(serverPath)}.${config.require("domain")}`;
 const auth0Domain = new pulumi.Config("auth0").require("domain");
 // @remove-mobile-begin
 const expoConfig = new pulumi.Config("expo");
@@ -47,7 +46,7 @@ export const graphqlUrl = `${
 // @remove-web-begin
 export const webUrl = isDevelopment
   ? "http://localhost:3000"
-  : `https://${domain}`;
+  : `https://${config.require("domain")}`;
 // @remove-web-end
 
 const {
@@ -97,6 +96,8 @@ if (isDevelopment) {
   });
   // @remove-mobile-end
 } else {
+  // `domain` is only required for the production stack
+  const domain = config.require("domain");
   const certificateArn = new Certificate("certificate", {
     domain,
     subjectAlternativeNames: [`*.${domain}`],

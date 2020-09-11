@@ -1,5 +1,5 @@
 import { MockedProvider } from "@apollo/client/testing";
-import { fireEvent, render, wait } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import {
   CreateTodoDocument,
   DeleteTodoDocument,
@@ -23,14 +23,14 @@ it("renders an input", async () => {
       },
     },
   ];
-  const { getByPlaceholderText } = render(
+  const { findByPlaceholderText } = render(
     <MockedProvider mocks={mocks}>
       <Todos />
     </MockedProvider>
   );
 
-  await wait();
-  expect(getByPlaceholderText("What needs to be done?")).toBeInTheDocument();
+  const input = await findByPlaceholderText("What needs to be done?");
+  expect(input).toBeInTheDocument();
 });
 
 it("renders a todo", async () => {
@@ -47,14 +47,14 @@ it("renders a todo", async () => {
       },
     },
   ];
-  const { getByText } = render(
+  const { findByText } = render(
     <MockedProvider mocks={mocks}>
       <Todos />
     </MockedProvider>
   );
 
-  await wait();
-  expect(getByText(name)).toBeInTheDocument();
+  const todo = await findByText(name);
+  expect(todo).toBeInTheDocument();
 });
 
 it("creates a todo", async () => {
@@ -84,13 +84,12 @@ it("creates a todo", async () => {
       },
     },
   ];
-  const { queryByText, getByText, getByPlaceholderText } = render(
+  const { queryByText, findByText, getByPlaceholderText } = render(
     <MockedProvider mocks={mocks}>
       <Todos />
     </MockedProvider>
   );
 
-  await wait();
   expect(queryByText(name)).toBeNull();
   const input = getByPlaceholderText(
     "What needs to be done?"
@@ -98,13 +97,11 @@ it("creates a todo", async () => {
   expect(input).toBeInTheDocument();
   fireEvent.change(input, { target: { value: name } });
 
-  await wait();
-  expect(input.value).toBe(name);
+  await waitFor(() => expect(input.value).toBe(name));
   fireEvent.keyPress(input, { key: "Enter", code: 13, charCode: 13 });
 
-  await wait();
+  const todo = await findByText(name);
   expect(input.value).toBe("");
-  const todo = getByText(name);
   expect(todo).toBeInTheDocument();
 });
 
@@ -135,19 +132,19 @@ it("updates a todo", async () => {
       },
     },
   ];
-  const { getByText } = render(
+  const { findByText } = render(
     <MockedProvider mocks={mocks}>
       <Todos />
     </MockedProvider>
   );
 
-  await wait();
-  const todo = getByText(name);
+  const todo = await findByText(name);
   expect(todo).toBeInTheDocument();
   fireEvent.click(todo);
 
-  await wait();
-  expect(getByText(name)).toHaveStyle("text-decoration: line-through;");
+  await waitFor(() =>
+    expect(todo).toHaveStyle("text-decoration: line-through;")
+  );
 });
 
 it("deletes a todo", async () => {
@@ -173,17 +170,15 @@ it("deletes a todo", async () => {
       },
     },
   ];
-  const { getByLabelText, queryByText } = render(
+  const { findByLabelText, queryByText } = render(
     <MockedProvider mocks={mocks}>
       <Todos />
     </MockedProvider>
   );
 
-  await wait();
-  const button = getByLabelText(/delete/i);
+  const button = await findByLabelText(/delete/i);
   expect(button).toBeInTheDocument();
   fireEvent.click(button);
 
-  await wait();
-  expect(queryByText(name)).toBeNull();
+  await waitFor(() => expect(queryByText(name)).toBeNull());
 });
