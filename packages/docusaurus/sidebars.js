@@ -1,10 +1,10 @@
 module.exports = {
   someSidebar: {
+    "Why?": ["why", "libraries_and_frameworks"],
     "Getting Started": [
       "getting_started",
       "folder_structure",
       "available_scripts",
-      "libraries_and_frameworks",
     ],
     Development: ["configuration", "migrations", "gotchas"],
   },

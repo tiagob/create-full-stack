@@ -27,6 +27,14 @@ AWS had >5 year head start over Azure and GCP. It holds the largest market share
 
 Used for the cloud infrastructure.
 
+## Create React App
+
+Create React App is an officially supported way to create single-page React applications. It offers a modern build setup with no configuration. https://create-react-app.dev/docs/getting-started/
+
+CRA remains the most popular choice for React development. Newer alternatives, like Next.js and Gatsby, use SSR or static site generation. Neither of these approaches perform well with dynamic React sites. Many websites at the forefront of web development use client side React rendering including the makers of React (Facebook). CRA provides the best user experience for this pattern.
+
+Used for the web application.
+
 ## Expo
 
 A framework and a platform for universal React applications. It is a set of tools and services built around React Native and native platforms that help you develop, build, deploy, and quickly iterate on iOS, Android, and web apps from the same JavaScript/TypeScript codebase. https://docs.expo.io/
