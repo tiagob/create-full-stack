@@ -173,3 +173,21 @@ export function tryGitInit(appPath: string) {
     return false;
   }
 }
+
+export function getCdPath(projectPath: string) {
+  const appName = path.basename(projectPath);
+  // Display the most elegant way to cd.
+  // This needs to handle an undefined originalDirectory for
+  // backward compatibility with old global-cli's.
+  const originalDirectory = process.cwd();
+  let cdpath;
+  if (
+    originalDirectory &&
+    path.join(originalDirectory, appName) === projectPath
+  ) {
+    cdpath = appName;
+  } else {
+    cdpath = projectPath;
+  }
+  return cdpath;
+}

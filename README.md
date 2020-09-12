@@ -39,7 +39,7 @@ brew install yarn
 ## Run
 
 ```bash
-yarn create full-stack ~/my-full-stack
+yarn create full-stack my-full-stack
 ```
 
 ### Help

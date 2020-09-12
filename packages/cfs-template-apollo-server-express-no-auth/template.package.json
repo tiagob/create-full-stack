@@ -13,7 +13,7 @@
   },
   "scripts": {
     "generate": "graphql-codegen",
-    "lint": "eslint packages/**/*.{ts,tsx} --fix",
+    "lint": "eslint packages/** --ext ts,tsx --fix",
     "prettier": "prettier --write ."
   },
   "husky": {

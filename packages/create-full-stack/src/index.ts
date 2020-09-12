@@ -6,6 +6,7 @@ import commander from "commander";
 import fs from "fs-extra";
 import inquirer from "inquirer";
 import isOnline from "is-online";
+import open from "open";
 import path from "path";
 import semver from "semver";
 
@@ -26,11 +27,12 @@ import {
 import copyTemplate from "./copyTemplate";
 import {
   checkAppName,
+  getCdPath,
   isSafeToCreateProjectIn,
   shouldUseYarn,
   tryGitInit,
 } from "./createReactAppUtils";
-import { checkPulumiAndAws, runYarn } from "./utils";
+import { checkDocker, checkPulumiAndAws, runYarn } from "./utils";
 
 let projectName = "";
 
@@ -97,6 +99,8 @@ async function run() {
     console.log();
     process.exit(1);
   }
+  // Docker is required for all templates
+  checkDocker();
 
   // Which template should be used?
   let { template } = program;
@@ -225,30 +229,22 @@ async function run() {
     console.log();
   }
 
-  // Display the most elegant way to cd.
-  // This needs to handle an undefined originalDirectory for
-  // backward compatibility with old global-cli's.
-  const originalDirectory = process.cwd();
-  let cdpath;
-  if (
-    originalDirectory &&
-    path.join(originalDirectory, appName) === projectPath
-  ) {
-    cdpath = appName;
-  } else {
-    cdpath = projectPath;
-  }
   console.log();
   console.log(`Success! Created ${appName} at ${projectName}`);
   console.log();
-  console.log(
-    `Follow steps in the Setup heading on ${cdpath}/README.md to complete the configuration`
-  );
-  // TODO: Automate manual setup steps
-  // console.log("We suggest that you begin by typing:");
-  // console.log();
-  // console.log(chalk.cyan("  cd"), cdpath);
-  // console.log(`  ${chalk.cyan("yarn start")}`);
+  if (auth === Auth.none && cloudPlatform === CloudPlatform.none) {
+    // Additional manual setup isn't required
+    console.log("We suggest that you begin by typing:");
+    console.log();
+    console.log(chalk.cyan("  cd"), getCdPath(projectPath));
+    console.log(`  ${chalk.cyan("yarn start")}`);
+  } else {
+    // Additional manual setup is required
+    console.log(
+      "Complete the steps on setup.html or README.md to get started."
+    );
+    open(`${projectName}/setup.html`);
+  }
   console.log();
   console.log("Happy hacking!");
 }

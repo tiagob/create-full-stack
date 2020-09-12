@@ -10,10 +10,11 @@ _Assumes MacOS_
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 ```
 
-### Install Docker
+### Install and start Docker
 
 ```bash
 brew cask install docker
+open /Applications/Docker.app
 ```
 
 Alternatively, you can install via the GUI at https://docs.docker.com/get-docker/

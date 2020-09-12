@@ -31,3 +31,17 @@ export function checkPulumiAndAws() {
     console.log();
   }
 }
+
+export function checkDocker() {
+  const pulumiProc = spawn.sync("docker-compose", ["--version"], {
+    stdio: "inherit",
+  });
+  if (pulumiProc.status !== 0) {
+    console.warn(
+      chalk.yellow(
+        "Docker is required. See https://docs.docker.com/get-docker/"
+      )
+    );
+    console.log();
+  }
+}

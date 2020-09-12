@@ -1,7 +1,9 @@
 import { JSONSchemaForNPMPackageJsonFiles } from "@schemastore/package";
 import chalk from "chalk";
 import fs from "fs-extra";
+import hljs from "highlight.js";
 import yaml from "js-yaml";
+import markdownIt from "markdown-it";
 import os from "os";
 import path from "path";
 import sortPackageJson from "sort-package-json";
@@ -24,17 +26,16 @@ function filterCopySyncWithExcludeList(
   };
 }
 
-function copySync(
+function templateCopySync(
   templatePath: string,
   projectPath: string,
-  silent = false,
   excludePathList: string[] = []
 ) {
   if (fs.existsSync(templatePath)) {
     fs.copySync(templatePath, projectPath, {
       filter: filterCopySyncWithExcludeList(excludePathList),
     });
-  } else if (!silent) {
+  } else {
     console.error(
       `Could not locate supplied template: ${chalk.green(templatePath)}`
     );
@@ -283,6 +284,36 @@ function recursiveRemoveEmptyDir(dir: string) {
   }
 }
 
+function generateSetupHtml(projectPath: string) {
+  const md = markdownIt({
+    html: true,
+    linkify: true,
+    typographer: true,
+    highlight(str, lang) {
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          return hljs.highlight(lang, str).value;
+        } catch (error) {
+          // Pass through
+        }
+      }
+
+      return ""; // Use external default escaping
+    },
+  });
+  fs.writeFileSync(
+    path.join(projectPath, "setup.html"),
+    // Add CSS and padding. Using React feels too heavy for something this simple
+    `
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.0/build/styles/default.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap.css">
+    <div style="padding: 40px;">
+    ${md.render(fs.readFileSync(path.join(projectPath, "README.md"), "utf8"))}
+    </div>
+    `
+  );
+}
+
 export default async function copyTemplate(options: {
   appName: string;
   projectPath: string;
@@ -306,13 +337,6 @@ export default async function copyTemplate(options: {
 
   const fullTemplate = `cfs-template-${template}`;
 
-  runYarn(projectPath, ["add", fullTemplate]);
-  const templatePath = path.dirname(
-    require.resolve(path.join(fullTemplate, "package.json"), {
-      paths: [projectPath],
-    })
-  );
-
   const excludeList = [];
   if (!hasMobile) {
     excludeList.push("mobile");
@@ -326,7 +350,31 @@ export default async function copyTemplate(options: {
   if (!hasGithubActions) {
     excludeList.push(".github", ".pulumi");
   }
-  copySync(templatePath, projectPath, false, excludeList);
+
+  // Use a local template if in this create-full-stack yarn workspace
+  let templatePath: string;
+  let packageTemplatePath: string | undefined;
+  try {
+    packageTemplatePath = require.resolve(
+      path.join(fullTemplate, "package.json")
+    );
+  } catch (error) {
+    if (error.code !== "MODULE_NOT_FOUND") {
+      throw error;
+    }
+  }
+  if (packageTemplatePath) {
+    templatePath = path.dirname(packageTemplatePath);
+  } else {
+    runYarn(projectPath, ["add", fullTemplate]);
+    templatePath = path.dirname(
+      require.resolve(path.join(fullTemplate, "package.json"), {
+        paths: [projectPath],
+      })
+    );
+  }
+  templateCopySync(templatePath, projectPath, excludeList);
+
   // ".gitignore" isn't included in "npm publish" so copy it over as gitignore
   // and rename (CRA does this)
   recursiveFileFunc(projectPath, (dir, file) => {
@@ -371,4 +419,7 @@ export default async function copyTemplate(options: {
     removeInFile(path.join(dir, file), removeBlockInFileKeys)
   );
   recursiveRemoveEmptyDir(projectPath);
+
+  // Generate setup.html after code blocks have been removed from the README.md
+  generateSetupHtml(projectPath);
 }
