@@ -36,6 +36,8 @@ _Assumes MacOS_
 brew install yarn
 ```
 
+CFS support for `npm` will be added when [npm v7](https://blog.npmjs.org/post/626173315965468672/npm-v7-series-beta-release-and-semver-major) is stable, which contains the required [workspaces feature](https://github.com/npm/rfcs/blob/latest/accepted/0026-workspaces.md).
+
 ## Run
 
 ```bash
