@@ -18,10 +18,6 @@ export interface FargateArgs {
    */
   domain: string;
   /**
-   * Cluster this service will run in.
-   */
-  cluster: Cluster;
-  /**
    * The image id to use for the container. If this is provided then the image
    * with this idq will be pulled from Docker Hub. To provide customized image
    * retrieval, provide [imageProvide] which can do whatever custom work is
@@ -38,11 +34,28 @@ export interface FargateArgs {
    * ```
    */
   env: Env;
+  /**
+   * Overrides fields defined in this component's taskDefinitionArgs, the task
+   * definition to create this Fargate service from.
+   */
+  taskDefinitionArgs?: awsx.ecs.FargateTaskDefinitionArgs;
+  /**
+   * Cluster this service will run in. If none is provided, the default for the
+   * current aws account and region is used.
+   */
+  cluster?: Cluster;
 }
 
 export default class Fargate extends pulumi.ComponentResource {
   constructor(name: string, args: FargateArgs, opts?: pulumi.ResourceOptions) {
-    const { certificateArn, domain, cluster, image, env } = args;
+    const {
+      certificateArn,
+      domain,
+      image,
+      env,
+      taskDefinitionArgs,
+      cluster,
+    } = args;
     super("aws:Fargate", name, args, opts);
     const domainParts = getDomainAndSubdomain(domain);
 
@@ -67,11 +80,13 @@ export default class Fargate extends pulumi.ComponentResource {
         { parent: this }
       );
 
+    const clusterOrDefault = cluster ?? awsx.ecs.Cluster.getDefault();
+
     // Create a Fargate service task that can scale out.
     new awsx.ecs.FargateService(
       `${name}-fargate-service`,
       {
-        cluster,
+        cluster: clusterOrDefault,
         taskDefinitionArgs: {
           container: {
             image,
@@ -91,6 +106,7 @@ export default class Fargate extends pulumi.ComponentResource {
                 };
               }),
           },
+          ...taskDefinitionArgs,
         },
       },
       {
