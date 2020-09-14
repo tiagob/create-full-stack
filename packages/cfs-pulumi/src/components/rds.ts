@@ -1,5 +1,7 @@
 import * as aws from "@pulumi/aws";
+import { InstanceArgs } from "@pulumi/aws/rds";
 import * as awsx from "@pulumi/awsx";
+import { Vpc } from "@pulumi/awsx/ec2";
 import { Cluster } from "@pulumi/awsx/ecs";
 import * as pulumi from "@pulumi/pulumi";
 
@@ -21,24 +23,37 @@ export interface RdsArgs {
    * it will be stored in the state file.
    */
   dbPassword: pulumi.Output<string>;
+  /**
+   * Overrides fields defined in this component's instanceArgs, the set of
+   * arguments for constructing this RDS resource.
+   */
+  instanceArgs?: InstanceArgs;
+  /**
+   * Cluster this RDS will run in. If none is provided, the default for the
+   * current aws account and region is used.
+   */
+  cluster?: Cluster;
+  /**
+   * VPC this RDS will run in. If none is provided, the default for the current
+   * aws account and region is used.
+   */
+  vpc?: Vpc;
 }
 
 export default class Rds extends pulumi.ComponentResource {
   connectionString: pulumi.Output<string>;
 
-  cluster: Cluster;
-
   constructor(name: string, args: RdsArgs, opts?: pulumi.ResourceOptions) {
-    const { dbName, dbUsername, dbPassword } = args;
+    const { dbName, dbUsername, dbPassword, instanceArgs, cluster, vpc } = args;
     super("aws:Rds", name, args, opts);
 
     // Get the default VPC and ECS Cluster for your account.
-    const vpc = awsx.ec2.Vpc.getDefault();
-    this.cluster = awsx.ecs.Cluster.getDefault();
+    const vpcOrDefault = vpc ?? awsx.ec2.Vpc.getDefault();
+    const clusterOrDefault = cluster ?? awsx.ecs.Cluster.getDefault();
 
     // Create a new subnet group for the database.
     const subnetGroup = new aws.rds.SubnetGroup(`${name}-subnet-group`, {
-      subnetIds: vpc.publicSubnetIds,
+      subnetIds: vpcOrDefault.publicSubnetIds,
     });
 
     // Create a new database, using the subnet and cluster groups.
@@ -47,11 +62,12 @@ export default class Rds extends pulumi.ComponentResource {
       instanceClass: aws.rds.InstanceTypes.T3_Micro,
       allocatedStorage: 5,
       dbSubnetGroupName: subnetGroup.id,
-      vpcSecurityGroupIds: this.cluster.securityGroups.map((g) => g.id),
+      vpcSecurityGroupIds: clusterOrDefault.securityGroups.map((g) => g.id),
       name: dbName,
       username: dbUsername,
       password: dbPassword,
       skipFinalSnapshot: true,
+      ...instanceArgs,
     });
 
     this.connectionString = pulumi.interpolate`postgres://${dbUsername}:${dbPassword}@${db.endpoint}/${dbName}`;
@@ -64,11 +80,6 @@ export default class Rds extends pulumi.ComponentResource {
        * Ex. `"postgres://postgres:postgrespassword@postgres:5432/postgres"`
        */
       connectionString: this.connectionString,
-      /**
-       * A Cluster is a general purpose ECS cluster configured to run in a
-       * provided Network.
-       */
-      cluster: this.cluster,
     });
   }
 }
