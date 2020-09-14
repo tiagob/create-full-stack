@@ -86,21 +86,21 @@ In your development Auth0 tenant create a Machine to Machine Application.
 
 - Applications > CREATE APPLICATION
 
-![Auth0 Create Application](https://create-full-stack.com/img/readme/auth0_create_application.png)
+<img alt="Auth0 Create Application" src="https://create-full-stack.com/img/readme/auth0_create_application.png" width="512">
 
 - Give it a name (ex. "pulumi")
 - Select "Machine to Machine Applications"
 
-![Auth0 Machine to Machine](https://create-full-stack.com/img/readme/auth0_m2m.png)
+<img alt="Auth0 Machine to Machine" src="https://create-full-stack.com/img/readme/auth0_m2m.png" width="512">
 
 - Select the "Auth0 Management API" under "Select an API..." dropdown
 - Select "All" scopes
 
-![Auth0 Machine to Machine Scopes](https://create-full-stack.com/img/readme/auth0_m2m_scopes.png)
+<img alt="Auth0 Machine to Machine Scopes" src="https://create-full-stack.com/img/readme/auth0_m2m_scopes.png" width="512">
 
 Use the created Machine to Machine Application to set the pulumi configuration
 
-![Auth0 Machine to Machine Settings](https://create-full-stack.com/img/readme/auth0_m2m_settings.png)
+<img alt="Auth0 Machine to Machine Settings" src="https://create-full-stack.com/img/readme/auth0_m2m_settings.png" width="512">
 
 ```bash
 pulumi config set auth0:domain [YOUR AUTH0 TENANT DOMAIN]
@@ -163,7 +163,7 @@ brew install awscli
 
 If you're new to AWS, register at https://portal.aws.amazon.com/billing/signup#/start. Then, if you don't have an access key, create a new one. From https://console.aws.amazon.com/iam/home#/security_credentials goto Access Keys > Create New Access Key.
 
-![AWS Access Key](https://create-full-stack.com/img/readme/aws_access_key.png)
+<img alt="AWS Access Key" src="https://create-full-stack.com/img/readme/aws_access_key.png" width="512">
 
 Configure the AWS CLI by inputting your access key ID and secret access key. Default region name and output format are not required.
 
@@ -207,27 +207,27 @@ References
 
 Create a new [Auth0 tenant](https://auth0.com/docs/getting-started/the-basics#account-and-tenants) for production.
 
-![Auth0 Tenant](https://create-full-stack.com/img/readme/auth0_tenant.png)
+<img alt="Auth0 Tenant" src="https://create-full-stack.com/img/readme/auth0_tenant.png" width="512">
 
 In your production Auth0 tenant create a Machine to Machine Application
 
 - Applications > CREATE APPLICATION
 
-![Auth0 Create Application](https://create-full-stack.com/img/readme/auth0_create_application.png)
+<img alt="Auth0 Create Application" src="https://create-full-stack.com/img/readme/auth0_create_application.png" width="512">
 
 - Give it a name (ex. "pulumi")
 - Select "Machine to Machine Applications"
 
-![Auth0 Machine to Machine](https://create-full-stack.com/img/readme/auth0_m2m.png)
+<img alt="Auth0 Machine to Machine" src="https://create-full-stack.com/img/readme/auth0_m2m.png" width="512">
 
 - Select the "Auth0 Management API" under "Select an API..." dropdown
 - Select "All" scopes
 
-![Auth0 Machine to Machine Scopes](https://create-full-stack.com/img/readme/auth0_m2m_scopes.png)
+<img alt="Auth0 Machine to Machine Scopes" src="https://create-full-stack.com/img/readme/auth0_m2m_scopes.png" width="512">
 
 Use the created Machine to Machine Application to set the pulumi configuration
 
-![Auth0 Machine to Machine Settings](https://create-full-stack.com/img/readme/auth0_m2m_settings.png)
+<img alt="Auth0 Machine to Machine Settings" src="https://create-full-stack.com/img/readme/auth0_m2m_settings.png" width="512">
 
 ```bash
 pulumi config set auth0:domain [YOUR AUTH0 TENANT DOMAIN]
@@ -256,7 +256,7 @@ This creates resources in your Auth0 production tenant and on your AWS account.
 
 **Record your tenant domain for steps below**
 
-![Auth0 Signup](https://create-full-stack.com/img/readme/auth0_signup.png)
+<img alt="Auth0 Signup" src="https://create-full-stack.com/img/readme/auth0_signup.png" width="512">
 
 #### Server
 
@@ -264,12 +264,12 @@ Create an Auth0 API for the Apollo server
 
 - APIs > CREATE API
 
-![Auth0 Create API](https://create-full-stack.com/img/readme/auth0_create_api.png)
+<img alt="Auth0 Create API" src="https://create-full-stack.com/img/readme/auth0_create_api.png" width="512">
 
 - Set the name (ex. "server").
 - Record the identifier/audience.
 
-![Auth0 API](https://create-full-stack.com/img/readme/auth0_api_settings.png)
+<img alt="Auth0 API" src="https://create-full-stack.com/img/readme/auth0_api_settings.png" width="512">
 
 In [`packages/server/.env.development`](packages/server/.env.development) fill in the fields
 
@@ -288,20 +288,20 @@ Create a Single Page Application for the React website
 
 - Applications > CREATE APPLICATION
 
-![Auth0 Create Application](https://create-full-stack.com/img/readme/auth0_create_application.png)
+<img alt="Auth0 Create Application" src="https://create-full-stack.com/img/readme/auth0_create_application.png" width="512">
 
 - Set the name (ex. "web")
 - Select "Single Page Web Applications"
 
-![Auth0 Single Page Web App](https://create-full-stack.com/img/readme/auth0_spa.png)
+<img alt="Auth0 Single Page Web App" src="https://create-full-stack.com/img/readme/auth0_spa.png" width="512">
 
 - Under "Settings" set "Allowed Callback URLs", "Allowed Logout URLs", and "Allowed Web Origins" to "http://localhost:3000"
 
-![Auth0 Single Page Web App URLs](https://create-full-stack.com/img/readme/auth0_spa_urls.png)
+<img alt="Auth0 Single Page Web App URLs" src="https://create-full-stack.com/img/readme/auth0_spa_urls.png" width="512">
 
 In [`packages/web/.env.development`](packages/web/.env.development) fill in the fields from the server API you created above and your Single Page Web Application's "Settings" page.
 
-![Auth0 Single Page Web App URLs](https://create-full-stack.com/img/readme/auth0_spa_settings.png)
+<img alt="Auth0 Single Page Web App URLs" src="https://create-full-stack.com/img/readme/auth0_spa_settings.png" width="512">
 
 ```
 REACT_APP_AUTH0_AUDIENCE=[YOUR AUTH0 API AUDIENCE]
@@ -318,22 +318,22 @@ Create a Native Application for the React Native mobile app
 
 - Applications > CREATE APPLICATION
 
-![Auth0 Create Application](https://create-full-stack.com/img/readme/auth0_create_application.png)
+<img alt="Auth0 Create Application" src="https://create-full-stack.com/img/readme/auth0_create_application.png" width="512">
 
 - Set the name (ex. "mobile")
 - Select "Native"
 
-![Auth0 Native](https://create-full-stack.com/img/readme/auth0_native.png)
+<img alt="Auth0 Native" src="https://create-full-stack.com/img/readme/auth0_native.png" width="512">
 
 - Set "Allowed Callback URLs" to "https://auth.expo.io/@[YOUR EXPO USERNAME]/[YOUR EXPO APP SLUG]"
   - Get YOUR EXPO USERNAME by running `expo whoami`
   - Get YOUR EXPO APP SLUG from [`packages/mobile/app.json`](packages/mobile/app.json) `"slug"`
 
-![Auth0 Native Application URLs](https://create-full-stack.com/img/readme/auth0_native_urls.png)
+<img alt="Auth0 Native Application URLs" src="https://create-full-stack.com/img/readme/auth0_native_urls.png" width="512">
 
 In [`packages/mobile/.env.development`](packages/mobile/.env.development) fill in the fields from the server API you created above and your Native Application's "Settings" page.
 
-![Auth0 Native Application Settings](https://create-full-stack.com/img/readme/auth0_native_settings.png)
+<img alt="Auth0 Native Application Settings" src="https://create-full-stack.com/img/readme/auth0_native_settings.png" width="512">
 
 ```
 AUTH0_AUDIENCE=[YOUR AUTH0 API AUDIENCE]
@@ -350,7 +350,7 @@ It's recommended you use the "New Universal Login Experience" which stores user 
 - Navigate to "Universal Login"
 - Switch from "Classic" to "New"
 
-![Auth0 Universal Login](https://create-full-stack.com/img/readme/auth0_universal_login.png)
+<img alt="Auth0 Universal Login" src="https://create-full-stack.com/img/readme/auth0_universal_login.png" width="512">
 
 #### Start
 
@@ -367,7 +367,7 @@ yarn start
 
 Create a Pulumi access token from the Pulumi [Access Tokens Page](https://app.pulumi.com/account/tokens).
 
-![Pulumi Access Token](https://create-full-stack.com/img/readme/pulumi_access_token.png)
+<img alt="Pulumi Access Token" src="https://create-full-stack.com/img/readme/pulumi_access_token.png" width="512">
 
 - Give it a description (ex. "github actions")
 
@@ -377,7 +377,7 @@ After your code is pushed to a GitHub repo, add the following secrets for the Ac
 - `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`
 
-![GitHub Secrets](https://create-full-stack.com/img/readme/github_secrets.png)
+<img alt="GitHub Secrets" src="https://create-full-stack.com/img/readme/github_secrets.png" width="512">
 
 `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` come from the "Install AWS CLI" section above.
 

@@ -99,7 +99,7 @@ brew install awscli
 
 If you're new to AWS, register at https://portal.aws.amazon.com/billing/signup#/start. Then, if you don't have an access key, create a new one. From https://console.aws.amazon.com/iam/home#/security_credentials goto Access Keys > Create New Access Key.
 
-![AWS Access Key](https://create-full-stack.com/img/readme/aws_access_key.png)
+<img alt="AWS Access Key" src="https://create-full-stack.com/img/readme/aws_access_key.png" width="512">
 
 Configure the AWS CLI by inputting your access key ID and secret access key. Default region name and output format are not required.
 
@@ -154,7 +154,7 @@ This creates resources in your AWS account.
 
 Create a Pulumi access token from the Pulumi [Access Tokens Page](https://app.pulumi.com/account/tokens).
 
-![Pulumi Access Token](https://create-full-stack.com/img/readme/pulumi_access_token.png)
+<img alt="Pulumi Access Token" src="https://create-full-stack.com/img/readme/pulumi_access_token.png" width="512">
 
 - Give it a description (ex. "github actions")
 
@@ -164,7 +164,7 @@ After your code is pushed to a GitHub repo, add the following secrets for the Ac
 - `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`
 
-![GitHub Secrets](https://create-full-stack.com/img/readme/github_secrets.png)
+<img alt="GitHub Secrets" src="https://create-full-stack.com/img/readme/github_secrets.png" width="512">
 
 `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` come from the "Install AWS CLI" section above.
 
