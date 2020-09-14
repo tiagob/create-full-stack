@@ -1,5 +1,6 @@
 import * as awsx from "@pulumi/awsx";
 import * as pulumi from "@pulumi/pulumi";
+import { Output } from "@pulumi/pulumi";
 import {
   Auth0,
   Certificate,
@@ -36,6 +37,8 @@ const serverDomain = isDevelopment
 const auth0Domain = new pulumi.Config("auth0").require("domain");
 // @remove-mobile-begin
 const expoConfig = new pulumi.Config("expo");
+// eslint-disable-next-line import/no-mutable-exports
+let expoProjectUrl: Output<string> | undefined;
 // @remove-mobile-end
 
 export const graphqlUrl = `${
@@ -99,7 +102,7 @@ if (isDevelopment) {
   const dbName = config.require("dbName");
   const dbUsername = config.require("dbUsername");
   const dbPassword = config.requireSecret("dbPassword");
-  const { connectionString, cluster } = new Rds("server-db", {
+  const { connectionString } = new Rds("server-db", {
     dbName,
     dbUsername,
     dbPassword,
@@ -107,7 +110,6 @@ if (isDevelopment) {
   new Fargate(path.basename(serverPath), {
     certificateArn,
     domain: serverDomain,
-    cluster,
     image: awsx.ecs.Image.fromDockerBuild("image", {
       context: "../..",
       dockerfile: `${serverPath}/Dockerfile`,
@@ -134,22 +136,23 @@ if (isDevelopment) {
       REACT_APP_AUTH0_CLIENT_ID: auth0.webClientId,
     },
   });
-  // @remove-web-end
+
+  // @remove-mobile-begin
+  expoProjectUrl = new PublishExpo("publish-expo", {
+    username: expoConfig.require("username"),
+    password: expoConfig.requireSecret("password"),
+    releaseChannel: pulumi.getStack(),
+    mobilePath,
+    env: {
+      GRAPHQL_URL: graphqlUrl,
+      AUTH0_AUDIENCE: auth0.audience,
+      AUTH0_DOMAIN: auth0Domain,
+      AUTH0_CLIENT_ID: auth0.mobileClientId,
+    },
+  }).url;
+  // @remove-mobile-end
 }
 
 // @remove-mobile-begin
-export const expoProjectUrl = isDevelopment
-  ? undefined
-  : new PublishExpo("publish-expo", {
-      username: expoConfig.require("username"),
-      password: expoConfig.requireSecret("password"),
-      releaseChannel: pulumi.getStack(),
-      mobilePath,
-      env: {
-        GRAPHQL_URL: graphqlUrl,
-        AUTH0_AUDIENCE: auth0.audience,
-        AUTH0_DOMAIN: auth0Domain,
-        AUTH0_CLIENT_ID: auth0.mobileClientId,
-      },
-    }).url;
+export { expoProjectUrl };
 // @remove-mobile-end

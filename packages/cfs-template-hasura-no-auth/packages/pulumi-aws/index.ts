@@ -45,7 +45,7 @@ const certificateArn = new Certificate("certificate", {
 const dbName = config.require("dbName");
 const dbUsername = config.require("dbUsername");
 const dbPassword = config.requireSecret("dbPassword");
-const { connectionString, cluster } = new Rds("server-db", {
+const { connectionString } = new Rds("server-db", {
   dbName,
   dbUsername,
   dbPassword,
@@ -53,7 +53,6 @@ const { connectionString, cluster } = new Rds("server-db", {
 new Fargate(path.basename(serverPath), {
   certificateArn,
   domain: serverDomain,
-  cluster,
   image: awsx.ecs.Image.fromPath("image", serverPath),
   env: {
     HASURA_GRAPHQL_DATABASE_URL: connectionString,
