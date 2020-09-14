@@ -232,14 +232,20 @@ async function run() {
   console.log();
   console.log(`Success! Created ${appName} at ${projectName}`);
   console.log();
-  if (auth === Auth.none && cloudPlatform === CloudPlatform.none) {
-    // Additional manual setup isn't required
+  if (auth === Auth.none) {
+    if (cloudPlatform !== CloudPlatform.none) {
+      console.log(
+        "Additional setup for production is required. See setup.html or README.md."
+      );
+      console.log();
+    }
+    // Additional manual setup isn't required for development
     console.log("We suggest that you begin by typing:");
     console.log();
     console.log(chalk.cyan("  cd"), getCdPath(projectPath));
     console.log(`  ${chalk.cyan("yarn start")}`);
   } else {
-    // Additional manual setup is required
+    // Additional manual setup is required for development
     console.log(
       "Complete the steps on setup.html or README.md to get started."
     );
