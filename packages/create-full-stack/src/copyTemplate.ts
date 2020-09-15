@@ -415,6 +415,9 @@ export default async function copyTemplate(options: {
   if (!hasGithubActions) {
     removeBlockInFileKeys.push("github-actions");
   }
+  if (process.platform !== "darwin") {
+    removeBlockInFileKeys.push("mac");
+  }
   recursiveFileFunc(projectPath, (dir, file) =>
     removeInFile(path.join(dir, file), removeBlockInFileKeys)
   );

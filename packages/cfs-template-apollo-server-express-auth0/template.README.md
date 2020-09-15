@@ -2,41 +2,34 @@ This project was bootstrapped with [Create Full Stack](https://github.com/tiagob
 
 ## Setup
 
-_Assumes MacOS_
-
-### Install Homebrew
-
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-```
-
 ### Install and start Docker
+
+Follow instructions at https://docs.docker.com/get-docker/
+
+<!-- @remove-mac-begin -->
+
+Or with [Homebrew](https://brew.sh/) run:
 
 ```bash
 brew cask install docker
 open /Applications/Docker.app
 ```
 
-Alternatively, you can install via the GUI at https://docs.docker.com/get-docker/
-
+<!-- @remove-mac-end -->
 <!-- @remove-mobile-begin -->
 
 ### Install and configure Expo CLI
 
-```bash
-yarn global add expo-cli
-```
-
 If you're new to Expo, register. Expo is free.
 
 ```bash
-expo register
+yarn expo register
 ```
 
 Or login if you have an account
 
 ```bash
-expo login
+yarn expo login
 ```
 
 References
@@ -48,19 +41,23 @@ References
 
 ### Install and configure Pulumi CLI
 
+Follow instructions at https://www.pulumi.com/docs/get-started/install/
+
+<!-- @remove-mac-begin -->
+
+Or with [Homebrew](https://brew.sh/) run:
+
 ```bash
 brew install pulumi
 ```
+
+<!-- @remove-mac-end -->
 
 If you're new to Pulumi, register at https://app.pulumi.com/signup. Pulumi is free. Then login.
 
 ```bash
 pulumi login
 ```
-
-References
-
-- https://www.pulumi.com/docs/get-started/install/
 
 ### Development stack
 
@@ -157,9 +154,17 @@ Constraints: At least 8 printable ASCII characters. Can't contain any of the fol
 
 #### Install AWS CLI
 
+Follow instructions at https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
+
+<!-- @remove-mac-begin -->
+
+Or with [Homebrew](https://brew.sh/) run:
+
 ```bash
 brew install awscli
 ```
+
+<!-- @remove-mac-end -->
 
 If you're new to AWS, register at https://portal.aws.amazon.com/billing/signup#/start. Then, if you don't have an access key, create a new one. From https://console.aws.amazon.com/iam/home#/security_credentials goto Access Keys > Create New Access Key.
 

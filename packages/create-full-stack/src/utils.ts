@@ -43,5 +43,7 @@ export function checkDocker() {
       )
     );
     console.log();
+    return false;
   }
+  return true;
 }

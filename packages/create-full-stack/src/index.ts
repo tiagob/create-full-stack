@@ -100,7 +100,7 @@ async function run() {
     process.exit(1);
   }
   // Docker is required for all templates
-  checkDocker();
+  const hasDocker = checkDocker();
 
   // Which template should be used?
   let { template } = program;
@@ -240,7 +240,13 @@ async function run() {
       console.log();
     }
     // Additional manual setup isn't required for development
-    console.log("We suggest that you begin by typing:");
+    if (hasDocker) {
+      console.log("We suggest that you begin by typing:");
+    } else {
+      console.log(
+        "We suggest you install Docker (https://docs.docker.com/get-docker/) then type:"
+      );
+    }
     console.log();
     console.log(chalk.cyan("  cd"), getCdPath(projectPath));
     console.log(`  ${chalk.cyan("yarn start")}`);

@@ -7,7 +7,11 @@ title: Available Scripts
 
 ### `yarn start`
 
-Starts all platforms for local development. Platforms will reload if edits are made. You will see any lint errors in the console.
+Starts all platforms for local development. Platforms automatically reload if edits are made. Lint errors are displayed in the console.
+
+:::caution
+This continues to run if one of the processes fails. You may need to scroll up to find the error. [concurrently/issues/135](https://github.com/kimmobrunfeldt/concurrently/issues/135).
+:::
 
 ### `yarn test`
 

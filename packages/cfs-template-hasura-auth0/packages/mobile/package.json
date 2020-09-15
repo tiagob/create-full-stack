@@ -52,6 +52,7 @@
     "@types/react-test-renderer": "^16.9.3",
     "babel-plugin-expo-cfs-dotenv": "^0.1.2",
     "babel-preset-expo": "~8.2.3",
+    "expo-cli": "^3.27.4",
     "expo-yarn-workspaces": "^1.2.1",
     "jest": "^26.4.2",
     "jest-expo": "^38.0.2",

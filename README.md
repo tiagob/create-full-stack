@@ -7,6 +7,8 @@ Create an opinionated full stack with minimal configuration.
 
 If something doesn’t work, please file an [issue](https://github.com/tiagob/create-full-stack/issues).
 
+**Looking for co-contributors. If this project interests you, email me@tiagobandeira.com**
+
 ## Philosophy
 
 - Single language (TypeScript)
