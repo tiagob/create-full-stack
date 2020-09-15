@@ -95,3 +95,12 @@ React in both `packages/mobile/package.json` and `packages/web/package.json` nee
 #### Auth0 login hangs on Android virtual device
 
 Must use Android 11. https://github.com/expo/expo/issues/9845
+
+#### FatalError: relation \"todos\" already exists
+
+Reset your docker Postgres volume. This wipes any existing data.
+
+```bash
+docker rm <project name>_postgres_1
+docker volume rm <project name>_db_data
+```
