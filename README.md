@@ -24,18 +24,10 @@ If something doesn’t work, please file an [issue](https://github.com/tiagob/cr
 
 ## Setup
 
-_Assumes MacOS_
-
-### Install [Homebrew](https://brew.sh/)
-
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-```
-
 ### Install [Yarn](https://yarnpkg.com/)
 
 ```bash
-brew install yarn
+npm install -g yarn
 ```
 
 CFS support for `npm` will be added when [npm v7](https://blog.npmjs.org/post/626173315965468672/npm-v7-series-beta-release-and-semver-major) is stable, which contains the required [workspaces feature](https://github.com/npm/rfcs/blob/latest/accepted/0026-workspaces.md).
