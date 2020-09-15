@@ -5,6 +5,7 @@ Create an opinionated full stack with minimal configuration.
 - [Getting Started](https://create-full-stack.com/docs) – How to create a new full stack.
 - [User Guide](https://create-full-stack.com) – How to develop apps bootstrapped with Create Full Stack.
 
+Create Full Stack works on macOS, and Linux.<br>
 If something doesn’t work, please file an [issue](https://github.com/tiagob/create-full-stack/issues).
 
 **Looking for co-contributors. If this project interests you, email me@tiagobandeira.com**
@@ -24,10 +25,14 @@ If something doesn’t work, please file an [issue](https://github.com/tiagob/cr
 
 ## Setup
 
-### Install [Yarn](https://yarnpkg.com/)
+### Install Yarn
+
+Follow instructions at https://classic.yarnpkg.com/en/docs/install
+
+Or with [Homebrew](https://brew.sh/) run:
 
 ```bash
-npm install -g yarn
+brew install yarn
 ```
 
 CFS support for `npm` will be added when [npm v7](https://blog.npmjs.org/post/626173315965468672/npm-v7-series-beta-release-and-semver-major) is stable, which contains the required [workspaces feature](https://github.com/npm/rfcs/blob/latest/accepted/0026-workspaces.md).
@@ -37,6 +42,8 @@ CFS support for `npm` will be added when [npm v7](https://blog.npmjs.org/post/62
 ```bash
 yarn create full-stack my-full-stack
 ```
+
+**Node v12.10.0 or later is required**. You can use [n](https://github.com/tj/n) to switch Node versions.
 
 ### Help
 
@@ -52,15 +59,7 @@ Options:
 
 ## Setup [VSCode](https://code.visualstudio.com/) (recommended IDE/Editor)
 
-The config files (`.vscode/`) are included which formats on save.
-
-### Install recommended [extensions](https://code.visualstudio.com/docs/editor/extension-gallery)
-
-- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-- [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-- [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
-- [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
-- [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+The config files (`.vscode/`) are included which formats on save and includes recommended extensions.
 
 ## Generated project notes
 

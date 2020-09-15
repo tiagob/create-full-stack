@@ -12,9 +12,6 @@ import { DrawerNavigationState } from "@react-navigation/native";
 import * as React from "react";
 import { Divider, Icon } from "react-native-elements";
 
-// https://reactnavigation.org/docs/drawer-navigator#providing-a-custom-drawercontent
-// https://github.com/react-navigation/react-navigation/blob/main/packages/drawer/src/views/DrawerItemList.tsx
-
 type Props = Omit<DrawerContentOptions, "contentContainerStyle" | "style"> & {
   state: DrawerNavigationState;
   navigation: DrawerNavigationHelpers;
