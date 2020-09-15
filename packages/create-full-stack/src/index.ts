@@ -32,7 +32,7 @@ import {
   shouldUseYarn,
   tryGitInit,
 } from "./createReactAppUtils";
-import { checkDocker, checkPulumiAndAws, runYarn } from "./utils";
+import { hasDocker, runYarn } from "./utils";
 
 let projectName = "";
 
@@ -99,8 +99,6 @@ async function run() {
     console.log();
     process.exit(1);
   }
-  // Docker is required for all templates
-  const hasDocker = checkDocker();
 
   // Which template should be used?
   let { template } = program;
@@ -140,15 +138,10 @@ async function run() {
     type: "list",
     choices: cloudPlatforms,
     name: "cloudPlatform",
-    message:
-      "Which cloud platform? (Requires Pulumi CLI, https://www.pulumi.com/)",
+    message: "Which cloud platform?",
     default: CloudPlatform.none,
   });
   const { cloudPlatform } = cloudPlatformAnswer;
-  if (cloudPlatform !== CloudPlatform.none) {
-    // Error as soon as possible if pulumi and aws aren't installed.
-    checkPulumiAndAws();
-  }
   const hasWebAnswer = await inquirer.prompt({
     type: "confirm",
     name: "hasWeb",
@@ -240,11 +233,13 @@ async function run() {
       console.log();
     }
     // Additional manual setup isn't required for development
-    if (hasDocker) {
+    if (hasDocker()) {
       console.log("We suggest that you begin by typing:");
     } else {
       console.log(
-        "We suggest you install Docker (https://docs.docker.com/get-docker/) then type:"
+        `We suggest you ${chalk.bold(
+          "install and start Docker"
+        )} (https://docs.docker.com/get-docker/) then type:`
       );
     }
     console.log();

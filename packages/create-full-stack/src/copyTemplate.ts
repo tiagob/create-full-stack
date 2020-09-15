@@ -169,7 +169,11 @@ async function updatePackage({
   appPackage.scripts = {
     ...appPackage.scripts,
     build: buildCommands.join(" && "),
-    start: getConcurrentlyScript(startCommands),
+    // Run `docker-compose up --no-start` first to create the docker images
+    // before starting the dependent platforms
+    start: `docker-compose up --no-start && ${getConcurrentlyScript(
+      startCommands
+    )}`,
     test:
       testCommands.length > 0
         ? getConcurrentlyScript(testCommands)

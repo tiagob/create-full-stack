@@ -1,4 +1,3 @@
-import chalk from "chalk";
 import spawn from "cross-spawn";
 
 export function runYarn(cwd: string, args: string[] = []) {
@@ -11,38 +10,9 @@ export function runYarn(cwd: string, args: string[] = []) {
   }
 }
 
-export function checkPulumiAndAws() {
-  const pulumiProc = spawn.sync("pulumi", ["version"], { stdio: "inherit" });
+export function hasDocker() {
+  const pulumiProc = spawn.sync("docker-compose", ["--version"]);
   if (pulumiProc.status !== 0) {
-    console.warn(
-      chalk.yellow(
-        "Pulumi CLI is required. See https://www.pulumi.com/docs/get-started/aws/begin/#install-pulumi"
-      )
-    );
-    console.log();
-  }
-  const awsProc = spawn.sync("aws", ["--version"], { stdio: "inherit" });
-  if (awsProc.status !== 0) {
-    console.warn(
-      chalk.yellow(
-        "AWS CLI is required. See https://www.pulumi.com/docs/get-started/aws/begin/#configure-aws"
-      )
-    );
-    console.log();
-  }
-}
-
-export function checkDocker() {
-  const pulumiProc = spawn.sync("docker-compose", ["--version"], {
-    stdio: "inherit",
-  });
-  if (pulumiProc.status !== 0) {
-    console.warn(
-      chalk.yellow(
-        "Docker is required. See https://docs.docker.com/get-docker/"
-      )
-    );
-    console.log();
     return false;
   }
   return true;

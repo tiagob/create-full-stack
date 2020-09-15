@@ -45,10 +45,4 @@ export enum CloudPlatform {
   aws = "aws",
   none = "none",
 }
-export const cloudPlatforms = [
-  {
-    name: `${CloudPlatform.aws} (Requires AWS CLI)`,
-    value: CloudPlatform.aws,
-  },
-  CloudPlatform.none,
-];
+export const cloudPlatforms = [CloudPlatform.aws, CloudPlatform.none];
