@@ -78,7 +78,7 @@ pulumi config set --secret expo:password [YOUR EXPO PASSWORD]
 
 ##### `dbName`
 
-The name must be unique across all DB instances owned by your AWS account in the current AWS Region. The DB instance identifier is case-insensitive, but is stored as all lowercase (as in "mydbinstance"). Constraints: 1 to 60 alphanumeric characters or hyphens (1 to 15 for SQL Server). First character must be a letter. Can't contain two consecutive hyphens. Can't end with a hyphen.
+Must begin with a letter and contain only alphanumeric characters.
 
 ##### `dbUsername`
 
@@ -86,7 +86,7 @@ The name must be unique across all DB instances owned by your AWS account in the
 
 ##### `dbPassword`
 
-Constraints: At least 8 printable ASCII characters. Can't contain any of the following: / (slash), '(single quote), "(double quote) and @ (at sign).
+At least 8 printable ASCII characters. Can't contain any of the following: / (slash), '(single quote), "(double quote) and @ (at sign).
 
 #### Install AWS CLI
 

@@ -116,7 +116,10 @@ async function updatePackage({
     path.join(projectPath, "package.json")
   );
   appPackage.name = appName;
-  const buildCommands = ["graphql-codegen", "yarn --cwd packages/common build"];
+  // Cannot include "graphql-codegen" because that requires Hasura running (when
+  // Hasura is selected as the BE). The build command is used in CI/CD for setup.
+  // GitHub actions cannot run Hasura.
+  const buildCommands = ["yarn --cwd packages/common build"];
   const startCommands: Command[] = [
     {
       name: "Docker",
@@ -309,12 +312,16 @@ function generateSetupHtml(projectPath: string) {
     path.join(projectPath, "setup.html"),
     // Add CSS and padding. Using React feels too heavy for something this simple
     `
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.0/build/styles/default.min.css">
+<html>
+  <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap.css">
-    <div style="padding: 40px;">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.0/build/styles/default.min.css">
+  </head>
+  <body style="padding: 40px;">
     ${md.render(fs.readFileSync(path.join(projectPath, "README.md"), "utf8"))}
-    </div>
-    `
+  </body>
+</html>
+`
   );
 }
 

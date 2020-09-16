@@ -57,7 +57,7 @@ Common commands are shown below. Additional commands are documented at https://d
 
 ### `yarn start`
 
-Starts or restarts a local server for your app and gives you a url to it.
+Starts or restarts a local server for your app and gives you a url to it. Unlike the default `expo start` this clears the Metro bundler cache. The cache is cleared between runs in case a `.env` file is updated otherwise stale values may persist.
 
 ### `yarn test`
 

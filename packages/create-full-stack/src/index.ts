@@ -180,7 +180,6 @@ async function run() {
 
   if (!(await isOnline())) {
     console.log(chalk.yellow("You appear to be offline."));
-    console.log(chalk.yellow("Falling back to the local Yarn cache."));
     console.log();
   }
 
@@ -246,9 +245,13 @@ async function run() {
     console.log(chalk.cyan("  cd"), getCdPath(projectPath));
     console.log(`  ${chalk.cyan("yarn start")}`);
   } else {
+    console.log("We suggest that you begin by typing:");
+    console.log();
+    console.log(chalk.cyan("  cd"), getCdPath(projectPath));
+    console.log();
     // Additional manual setup is required for development
     console.log(
-      "Complete the steps on setup.html or README.md to get started."
+      "And complete the steps on setup.html or README.md to get started."
     );
     open(`${projectName}/setup.html`);
   }

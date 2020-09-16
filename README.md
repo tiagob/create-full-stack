@@ -96,6 +96,18 @@ docker rm <project name>_postgres_1
 docker volume rm <project name>_db_data
 ```
 
-#### An unexpected error occurred: "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz: ENOENT: no such file or directory
+#### An unexpected error occurred: "https://github.com/expo/react-native/archive/sdk-x.x.x.tar.gz: ENOENT: no such file or directory
 
 An unknown issue with the yarn cache that can occur when running `yarn create full-stack <project-directory>`. Resolve by re-running.
+
+#### pulumi:providers:aws default_x_x_x error: no resource plugin 'aws-vx.x.x' found in the workspace or on your \$PATH, install the plugin using `pulumi plugin install resource aws vx.x.x`
+
+This can occur in continuous deployment (CD) with GitHub actions. You must setup and deploy the production stack locally first before GitHub actions can deploy. https://github.com/pulumi/pulumi/issues/2097
+
+To deploy the production stack run:
+
+```bash
+cd packages/pulumi-aws
+pulumi stack select production
+pulumi up
+```
