@@ -89,6 +89,16 @@ export default class Auth0 extends pulumi.ComponentResource {
           appType: "native",
           grantTypes: ["authorization_code", "implicit", "refresh_token"],
           customLoginPageOn: true,
+          // TODO: Set refreshToken rotationType to "rotating".
+          // https://github.com/tiagob/create-full-stack/issues/134
+          // https://github.com/pulumi/pulumi-auth0/issues/30
+          // Should look something like:
+          // refreshToken: {
+          //   leeway: 0,
+          //   tokenLifetime: 2592000,
+          //   rotationType: "rotating",
+          //   expirationType: "expiring",
+          // },
         },
         { parent: this }
       ).clientId;
@@ -99,7 +109,13 @@ export default class Auth0 extends pulumi.ComponentResource {
       {
         name: resourceServerName,
         identifier: resourceServerName,
-        allowOfflineAccess: false,
+        // Allow refresh tokens for mobile.
+        // https://auth0.com/docs/tokens/refresh-tokens
+        // For native applications, refresh tokens improve the authentication
+        // experience significantly. The user has to authenticate only once,
+        // through the web authentication process. Subsequent re-authentication
+        // can take place without user interaction, using the refresh token.
+        allowOfflineAccess: Boolean(mobile),
         skipConsentForVerifiableFirstPartyClients: true,
         tokenLifetime: 86400,
         tokenLifetimeForWeb: 7200,

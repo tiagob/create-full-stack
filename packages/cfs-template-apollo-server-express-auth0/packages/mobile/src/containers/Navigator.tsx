@@ -22,8 +22,8 @@ interface Props {
 }
 
 export default function Navigator({ navigationRef }: Props) {
-  const { token } = useAuth0();
-  const apolloClient = getApolloClient(token);
+  const { accessToken } = useAuth0();
+  const apolloClient = getApolloClient(accessToken);
 
   return (
     <ApolloProvider client={apolloClient}>

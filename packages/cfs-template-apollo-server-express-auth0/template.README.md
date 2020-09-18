@@ -281,8 +281,14 @@ Create an Auth0 API for the Apollo server
 
 <img alt="Auth0 Create API" src="https://create-full-stack.com/img/readme/auth0_create_api.png" width="512">
 
-- Set the name (ex. "server").
-- Record the identifier/audience.
+- Set the name (ex. "server")
+<!-- @remove-mobile-begin -->
+- Enable "Allow Offline Access"
+
+<img alt="Auth0 API Offline Access" src="https://create-full-stack.com/img/readme/auth0_api_offline_access.png" width="512">
+<!-- @remove-mobile-end -->
+
+- Record the identifier/audience
 
 <img alt="Auth0 API" src="https://create-full-stack.com/img/readme/auth0_api_settings.png" width="512">
 
@@ -345,6 +351,10 @@ Create a Native Application for the React Native mobile app
   - Get YOUR EXPO APP SLUG from [`packages/mobile/app.json`](packages/mobile/app.json) `"slug"`
 
 <img alt="Auth0 Native Application URLs" src="https://create-full-stack.com/img/readme/auth0_native_urls.png" width="512">
+
+- Set "Refresh Token Behavior" to "Rotating"
+
+<img alt="Auth0 Native Refresh Token" src="https://create-full-stack.com/img/readme/auth0_native_refresh_token.png" width="512">
 
 In [`packages/mobile/.env.development`](packages/mobile/.env.development) fill in the fields from the server API you created above and your Native Application's "Settings" page.
 

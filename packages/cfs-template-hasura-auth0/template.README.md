@@ -311,8 +311,14 @@ Create an Auth0 API for the Apollo server
 
 <img alt="Auth0 Create API" src="https://create-full-stack.com/img/readme/auth0_create_api.png" width="512">
 
-- Set the name (ex. "server").
-- Record the identifier/audience.
+- Set the name (ex. "server")
+<!-- @remove-mobile-begin -->
+- Enable "Allow Offline Access"
+
+<img alt="Auth0 API Offline Access" src="https://create-full-stack.com/img/readme/auth0_api_offline_access.png" width="512">
+<!-- @remove-mobile-end -->
+
+- Record the identifier/audience
 
 <img alt="Auth0 API" src="https://create-full-stack.com/img/readme/auth0_api_settings.png" width="512">
 
@@ -342,6 +348,10 @@ Create a Single Page Application for the React website
 - Under "Settings" set "Allowed Callback URLs", "Allowed Logout URLs", and "Allowed Web Origins" to "http://localhost:3000"
 
 <img alt="Auth0 Single Page Web App URLs" src="https://create-full-stack.com/img/readme/auth0_spa_urls.png" width="512">
+
+- Set "Refresh Token Behavior" to "Rotating"
+
+<img alt="Auth0 Native Refresh Token" src="https://create-full-stack.com/img/readme/auth0_native_refresh_token.png" width="512">
 
 In [`packages/web/.env.development`](packages/web/.env.development) fill in the fields from the server API you created above and your Single Page Web Application's "Settings" page.
 

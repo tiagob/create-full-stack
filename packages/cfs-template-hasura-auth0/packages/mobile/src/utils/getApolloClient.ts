@@ -10,17 +10,15 @@ const uri =
 
 const httpLink = createHttpLink({ uri });
 
-export default function getApolloClient(token: string | undefined) {
+export default function getApolloClient(accessToken: string | undefined) {
   const authLink = setContext(async (_, { headers }) => {
-    // get the authentication token from local storage if it exists
-    if (!token) {
+    if (!accessToken) {
       return { headers };
     }
-    // return the headers to the context so httpLink can read them
     return {
       headers: {
         ...headers,
-        authorization: token ? `Bearer ${token}` : "",
+        authorization: `Bearer ${accessToken}`,
       },
     };
   });

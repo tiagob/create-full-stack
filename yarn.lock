@@ -6917,9 +6917,9 @@ dateformat@^3.0.0:
   integrity sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==
 
 dayjs@^1.8.15:
-  version "1.8.35"
-  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.8.35.tgz#67118378f15d31623f3ee2992f5244b887606888"
-  integrity sha512-isAbIEenO4ilm6f8cpqvgjZCsuerDAz2Kb7ri201AiNn58aqXuaLJEnCtfIMdCvERZHNGRY5lDMTr/jdAnKSWQ==
+  version "1.8.36"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.8.36.tgz#be36e248467afabf8f5a86bae0de0cdceecced50"
+  integrity sha512-3VmRXEtw7RZKAf+4Tv1Ym9AGeo8r8+CjDi26x+7SYQil1UqtqdaokhzoEJohqlzt0m5kacJSDhJQkG/LWhpRBw==
 
 debug@2, debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.9:
   version "2.6.9"
@@ -8176,15 +8176,15 @@ expand-brackets@^2.1.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-expo-auth-session@^1.4.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/expo-auth-session/-/expo-auth-session-1.5.1.tgz#7ecf4514e9d0240a454bfcf9fbe30a84b452ae60"
-  integrity sha512-YbTgvxEB8B9jJ9q7fI93TvMUN/Q6SqpJ8Bg9pd3sVk0mcquNOWdSLFTALkX2CrwehEAXgXVyv2mVdXFGY5NSSg==
+expo-auth-session@~1.4.0:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/expo-auth-session/-/expo-auth-session-1.4.2.tgz#4bc342cd911401fd9dafabbd0f5490a078cc9995"
+  integrity sha512-wJ/b4680tqAC8RjQzrylqlY8AyoPVMMd6fu6OCulJk3qODjYq0n7y99Gh8X1nMYiWmfv4QEFUBXOls2XC1RT0w==
   dependencies:
     expo-constants "^9.2.0"
-    expo-crypto "~8.2.1"
+    expo-crypto "^8.3.0"
     expo-linking "~1.0.4"
-    expo-random "~8.2.1"
+    expo-random "^8.3.0"
     expo-web-browser "^8.5.0"
     invariant "^2.2.4"
     qs "6.9.1"
@@ -8197,10 +8197,10 @@ expo-constants@^9.2.0, expo-constants@~9.2.0:
     fbjs "1.0.0"
     uuid "^3.3.2"
 
-expo-crypto@~8.2.1:
-  version "8.2.1"
-  resolved "https://registry.yarnpkg.com/expo-crypto/-/expo-crypto-8.2.1.tgz#307eb857912e231d26babba3aa87963e686f4cac"
-  integrity sha512-P7/gmPEb1mRhEHyhJI4qNKZuW4jq6dkbxG3q6Meo4pbJHsH2xQz/3gokOcZwB4OMd0IJ+5yfRd2gXoqU8D9Xmw==
+expo-crypto@^8.3.0:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/expo-crypto/-/expo-crypto-8.3.0.tgz#b46f09dd813f24b77edb367520b69149496db86e"
+  integrity sha512-PbfxihKJsAkAy5M6jfv5Eiv9pRHU1BjBa7jLcwKDH6aUiWiJNjUvfdwku/Odt/lpXDuNcyDASy4WrD/PZDHtLA==
 
 expo-linking@~1.0.4:
   version "1.0.4"
@@ -8224,17 +8224,10 @@ expo-pwa@0.0.35:
     fs-extra "9.0.0"
     update-check "1.5.3"
 
-expo-random@^8.2.1:
+expo-random@^8.3.0:
   version "8.3.1"
   resolved "https://registry.yarnpkg.com/expo-random/-/expo-random-8.3.1.tgz#1a984c64747b7976650d42c75b54087f186b6270"
   integrity sha512-h09yiQP8mhhfzEQwYDIDrB6rnDlOkeAdya00skCCie+wCW9/5kSuVsDQZ1oE1lHVZlxzF9t0hUvYE7PI98RNYA==
-  dependencies:
-    base64-js "^1.3.0"
-
-expo-random@~8.2.1:
-  version "8.2.1"
-  resolved "https://registry.yarnpkg.com/expo-random/-/expo-random-8.2.1.tgz#dafb19b3dcc8c7a74939c5c33a769ff5371ab289"
-  integrity sha512-5qcR00xMONKXy6QyNWOcslD0Ka6FYE+5wDLxeG6sZYakBMZ+7CZqXIHU56z2oY3ZjrA6sqy5mJcj1naNOweHMw==
   dependencies:
     base64-js "^1.3.0"
 

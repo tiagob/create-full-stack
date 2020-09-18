@@ -1,9 +1,14 @@
-// Adapted from
-// https://github.com/expo/examples/tree/master/with-auth0
 import * as AuthSession from "expo-auth-session";
-import * as Random from "expo-random";
 import React, { useContext, useEffect, useState } from "react";
 import { Alert, Platform } from "react-native";
+
+// Official Expo Auth0 example doesn't handle refresh tokens
+// https://github.com/expo/examples/tree/master/with-auth0
+// This is adapted to handle no refresh tokens, refresh tokens and refresh
+// tokens with rotation enabled
+
+// Request a new access token this many seconds prior to expiration
+const requestNewAccessTokenBuffer = 5 * 1000;
 
 export interface User {
   // Common auth0 user fields
@@ -49,7 +54,7 @@ interface Auth0Context {
   /**
    * The Auth0 access token.
    */
-  token?: string;
+  accessToken?: string;
 }
 interface Auth0ProviderOptions {
   /**
@@ -74,6 +79,10 @@ interface Auth0ProviderOptions {
    * Callback for auth0 login.
    */
   onLogin: () => void;
+  /**
+   * Callback for if the access token request fails.
+   */
+  onTokenRequestFailure: () => void;
 }
 
 const useProxy = Platform.select({ web: false, default: true });
@@ -84,7 +93,7 @@ export const Auth0Context = React.createContext<Auth0Context>({
   result: undefined,
   login: undefined,
   user: undefined,
-  token: undefined,
+  accessToken: undefined,
 });
 /**
  * ```ts
@@ -93,7 +102,7 @@ export const Auth0Context = React.createContext<Auth0Context>({
  *   request,
  *   result,
  *   user,
- *   token,
+ *   accessToken,
  *   // Auth methods:
  *   login,
  * } = useAuth0();
@@ -102,6 +111,94 @@ export const Auth0Context = React.createContext<Auth0Context>({
  * Use the `useAuth0` hook in your components to access the auth state and methods.
  */
 export const useAuth0 = () => useContext(Auth0Context);
+
+interface Token {
+  access_token: string;
+  expires_in: number;
+  // Only sends back a refresh token if rotation is enabled
+  // https://auth0.com/docs/tokens/refresh-tokens/refresh-token-rotation
+  refresh_token?: string;
+  token_type: string;
+}
+
+interface TokenData {
+  grant_type: "authorization_code";
+  client_id: string;
+  code: string;
+  redirect_uri: string;
+  code_verifier: string;
+}
+
+interface RefreshTokenData {
+  grant_type: "refresh_token";
+  client_id: string;
+  refresh_token: string;
+  redirect_uri: string;
+  code_verifier: string;
+}
+
+async function fetchAccessToken(
+  data: TokenData | RefreshTokenData,
+  domain: string,
+  setAccessToken: (accessToken: string) => void,
+  setUser: (user: User) => void,
+  onTokenRequestFailure: () => void
+) {
+  // URLSearchParams doesn't work in RN.
+  // `new URLSearchParams(Object.entries({ a: "b", c: "d" })).toString()` gives "0=a,b&1=c,d"
+  // So manually do the encoding
+  const formBody = Object.entries(data)
+    .map(
+      ([key, value]) =>
+        `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+    )
+    .join("&");
+  // Fetch the access token and possibly the refresh token (if rotation is
+  // enabled) following
+  // https://auth0.com/docs/tokens/refresh-tokens/get-refresh-tokens
+  const tokenResponse = await fetch(`https://${domain}/oauth/token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+    },
+    body: formBody,
+  });
+
+  if (tokenResponse.ok) {
+    const token = (await tokenResponse.json()) as Token;
+
+    // Refetch the access token before it expires
+    setTimeout(() => {
+      let refreshTokenData: TokenData | RefreshTokenData = data;
+      if (token.refresh_token) {
+        refreshTokenData = {
+          ...data,
+          refresh_token: token.refresh_token,
+          grant_type: "refresh_token",
+        };
+      }
+      fetchAccessToken(
+        refreshTokenData,
+        domain,
+        setAccessToken,
+        setUser,
+        onTokenRequestFailure
+      );
+    }, token.expires_in * 1000 - requestNewAccessTokenBuffer);
+
+    const userInfoResponse = await fetch(`https://${domain}/userinfo`, {
+      headers: { Authorization: `Bearer ${token.access_token}` },
+    });
+    const userInfo = await userInfoResponse.json();
+
+    // Set state at the same time to trigger a single update on the context
+    // otherwise components are sent two separate updates
+    setAccessToken(token.access_token);
+    setUser(userInfo);
+  } else {
+    onTokenRequestFailure();
+  }
+}
 
 /**
  * ```jsx
@@ -113,7 +210,14 @@ export const useAuth0 = () => useContext(Auth0Context);
  * </Auth0Provider>
  * ```
  *
- * Provides the Auth0Context to its child components.
+ * Provides the Auth0Context to its child components. It's recommended offline
+ * access is enabled for the mobile client on the Auth0 dashboard to keep the
+ * user signed in after token expiration.
+ *
+ * For native applications, refresh tokens (offline access) improve the
+ * authentication experience significantly. The user has to authenticate only
+ * once, through the web authentication process. Subsequent re-authentication
+ * can take place without user interaction, using the refresh token.
  */
 export function Auth0Provider({
   children,
@@ -121,28 +225,17 @@ export function Auth0Provider({
   audience,
   domain,
   onLogin,
+  onTokenRequestFailure,
 }: Auth0ProviderOptions) {
-  const [token, setToken] = useState<string | undefined>();
+  const [accessToken, setAccessToken] = useState<string | undefined>();
   const [user, setUser] = useState<User | undefined>();
-  const [nonce, setNonce] = useState<string>("nonce");
-
-  useEffect(() => {
-    const getNonce = async () => {
-      const randomBytes = await Random.getRandomBytesAsync(16);
-      setNonce(randomBytes.toString());
-    };
-    getNonce();
-  }, []);
 
   const authSessionParams = {
     redirectUri,
     clientId,
-    // id_token will return a JWT token
-    responseType: AuthSession.ResponseType.Token,
-    // retrieve the user's profile
-    scopes: ["openid", "profile"],
+    responseType: AuthSession.ResponseType.Code,
+    scopes: ["offline_access", "openid", "profile"],
     extraParams: {
-      nonce,
       audience,
     },
   };
@@ -157,65 +250,55 @@ export function Auth0Provider({
       authorizationEndpoint,
     } as AuthSession.DiscoveryDocument
   );
-  // Re-login after token expiration since refresh tokens aren't possible
-  // https://github.com/expo/examples/issues/209
-  const [
-    refreshAuth0Request,
-    refreshAuth0Result,
-    refreshPromptAsync,
-  ] = AuthSession.useAuthRequest(
-    {
-      ...authSessionParams,
-      // Server should NOT prompt the user to re-authenticate.
-      prompt: AuthSession.Prompt.None,
-    },
-    {
-      authorizationEndpoint,
-    } as AuthSession.DiscoveryDocument
-  );
-  const result = (refreshAuth0Result || auth0Result) as Result;
+  const result = auth0Result as Result;
 
   useEffect(() => {
-    const getTokenAndUser = async () => {
-      if (result) {
-        if (result.error) {
-          Alert.alert(
-            "Authentication error",
-            result?.params?.error_description || "something went wrong"
-          );
-          return;
-        }
-        if (result.type === "success") {
-          // Retrieve the JWT token and decode it
-          const accessToken = result?.params?.access_token;
-          setToken(accessToken);
-          if (result?.params?.expires_in) {
-            setTimeout(() => {
-              refreshPromptAsync?.({ useProxy });
-            }, Number(result?.params?.expires_in) * 1000);
-          }
-
-          const userInfoResponse = await fetch(`https://${domain}/userinfo`, {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          });
-          const userInfo = await userInfoResponse.json();
-          setUser(userInfo);
-          onLogin();
-        }
+    async function getToken() {
+      if (
+        result.type === "success" &&
+        result?.params?.code &&
+        auth0request?.redirectUri &&
+        auth0request?.codeVerifier
+      ) {
+        fetchAccessToken(
+          {
+            grant_type: "authorization_code",
+            client_id: clientId,
+            code: result.params.code,
+            redirect_uri: auth0request.redirectUri,
+            // Expo AuthSession uses Authorization Code Flow with PKCE
+            // Code verifier is required with PKCE
+            // https://auth0.com/docs/flows/call-your-api-using-the-authorization-code-flow-with-pkce
+            code_verifier: auth0request.codeVerifier,
+          },
+          domain,
+          setAccessToken,
+          setUser,
+          onTokenRequestFailure
+        );
+        onLogin();
+      } else {
+        Alert.alert(
+          "Authentication error",
+          result?.params?.error_description || "something went wrong"
+        );
+        onTokenRequestFailure();
       }
-    };
-    getTokenAndUser();
+    }
+    if (result) {
+      getToken();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onLogin, result]);
+  }, [onLogin, result, clientId]);
 
   return (
     <Auth0Context.Provider
       value={{
-        request: refreshAuth0Request || auth0request,
+        request: auth0request,
         result,
         login: () => promptAsync?.({ useProxy }),
         user,
-        token,
+        accessToken,
       }}
     >
       {children}

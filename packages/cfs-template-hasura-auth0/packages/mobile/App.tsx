@@ -30,6 +30,9 @@ export default function App(): ReactElement {
       onLogin={() => {
         navigationRef.current?.navigate("Todos");
       }}
+      onTokenRequestFailure={() => {
+        navigationRef.current?.navigate("SignIn");
+      }}
     >
       <Navigator navigationRef={navigationRef} />
     </Auth0Provider>

@@ -20,8 +20,7 @@
   "dependencies": {
     "@babel/core": "*",
     "@unimodules/core": "~5.1.2",
-    "expo-auth-session": "^1.4.1",
-    "expo-random": "^8.2.1",
+    "expo-auth-session": "~1.4.0",
     "react": "~16.11.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz"
   },
