@@ -59,22 +59,22 @@ export default class Fargate extends pulumi.ComponentResource {
     super("aws:Fargate", name, args, opts);
     const domainParts = getDomainAndSubdomain(domain);
 
-    const listener = new awsx.lb.NetworkLoadBalancer(
-      // There's a 32 character limit on names so abbreviate to "nlb".
-      `${name}-nlb`,
+    const listener = new awsx.elasticloadbalancingv2.ApplicationLoadBalancer(
+      // There's a 32 character limit on names so abbreviate to "alb".
+      `${name}-alb`,
       {},
       { parent: this }
     )
       .createTargetGroup(
         `${name}-target-group`,
-        { port: 8080, protocol: "TCP" },
+        { port: 8080 },
         { parent: this }
       )
       .createListener(
         `${name}-listener`,
         {
           port: 443,
-          protocol: "TLS",
+          protocol: "HTTPS",
           certificateArn,
         },
         { parent: this }
@@ -109,14 +109,7 @@ export default class Fargate extends pulumi.ComponentResource {
           ...taskDefinitionArgs,
         },
       },
-      {
-        customTimeouts: {
-          create: "20m",
-          update: "20m",
-          delete: "20m",
-        },
-        parent: this,
-      }
+      { parent: this }
     );
 
     const hostedZoneId = aws.route53
