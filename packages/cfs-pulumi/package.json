@@ -1,6 +1,6 @@
 {
   "name": "cfs-pulumi",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Library for Pulumi resources and providers in Create Full Stack.",
   "bugs": {
     "url": "https://github.com/tiagob/create-full-stack/issues"
