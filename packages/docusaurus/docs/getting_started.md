@@ -25,3 +25,12 @@ yarn start
 :::note
 CFS support for `npm` will be added when [npm v7](https://blog.npmjs.org/post/626173315965468672/npm-v7-series-beta-release-and-semver-major) is stable, which contains the required [workspaces feature](https://github.com/npm/rfcs/blob/latest/accepted/0026-workspaces.md).
 :::
+
+## Development URLs
+
+`yarn start` brings up the development stack locally. The following URLs are available if the given services are selected.
+
+- backend (apollo-server-express): [http://localhost:8080/graphql](http://localhost:8080/graphql)
+- backend (hasura): [http://localhost:8080/v1/graphql](http://localhost:8080/v1/graphql)
+- mobile (expo devtools): [http://localhost:19003](http://localhost:19003)
+- web: [http://localhost:3000](http://localhost:3000)

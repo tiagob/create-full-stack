@@ -162,7 +162,9 @@ async function updatePackage({
     buildCommands.push("yarn --cwd packages/web build");
     startCommands.push({
       name: "Web",
-      command: "yarn --cwd packages/web start",
+      // Don't open the browser because it doesn't work right away and needs to
+      // be refreshed when run in concurrently
+      command: "BROWSER=none yarn --cwd packages/web start",
     });
     testCommands.push({
       name: "Web",

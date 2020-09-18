@@ -124,6 +124,16 @@ cd ../..  # Goto root
 yarn start
 ```
 
+URLs available:
+
+- backend: [http://localhost:8080/v1/graphql](http://localhost:8080/v1/graphql)
+<!-- @remove-mobile-begin -->
+- mobile (expo devtools): [http://localhost:19003](http://localhost:19003)
+  <!-- @remove-mobile-end -->
+  <!-- @remove-web-begin -->
+- web: [http://localhost:3000](http://localhost:3000)
+<!-- @remove-web-end -->
+
 ### Production stack
 
 ```bash
@@ -388,11 +398,21 @@ It's recommended you use the "New Universal Login Experience" which stores user 
 
 #### Start
 
-From the root of the project run
+From the root of the project run:
 
 ```bash
 yarn start
 ```
+
+URLs available:
+
+- backend: [http://localhost:8080/v1/graphql](http://localhost:8080/v1/graphql)
+<!-- @remove-mobile-begin -->
+- mobile (expo devtools): [http://localhost:19003](http://localhost:19003)
+  <!-- @remove-mobile-end -->
+  <!-- @remove-web-begin -->
+- web: [http://localhost:3000](http://localhost:3000)
+<!-- @remove-web-end -->
 
 <!-- @remove-manual-config-end -->
 <!-- @remove-github-actions-begin -->
