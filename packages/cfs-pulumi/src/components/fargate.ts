@@ -44,6 +44,11 @@ export interface FargateArgs {
    * current aws account and region is used.
    */
   cluster?: Cluster;
+  /**
+   * HTTP port the Fargate service exposes. If none is provided, it defaults to
+   * 8080.
+   */
+  servicePort?: number;
 }
 
 export default class Fargate extends pulumi.ComponentResource {
@@ -55,6 +60,7 @@ export default class Fargate extends pulumi.ComponentResource {
       env,
       taskDefinitionArgs,
       cluster,
+      servicePort,
     } = args;
     super("aws:Fargate", name, args, opts);
     const domainParts = getDomainAndSubdomain(domain);
@@ -67,7 +73,7 @@ export default class Fargate extends pulumi.ComponentResource {
     )
       .createTargetGroup(
         `${name}-target-group`,
-        { port: 8080 },
+        { port: servicePort ?? 8080 },
         { parent: this }
       )
       .createListener(

@@ -6,7 +6,13 @@ import AWS from "aws-sdk";
 // https://github.com/pulumi/pulumi-aws/issues/916
 
 export interface InvalidateCloudfrontResourceInputs {
+  /**
+   * The AWS ID of the CloudFront distribution.
+   */
   distributionId: pulumi.Input<string>;
+  /**
+   * An array of file paths to invalidate in CloudFront.
+   */
   paths: pulumi.Input<string[]>;
 }
 
