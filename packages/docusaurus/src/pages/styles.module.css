@@ -40,3 +40,10 @@
   color: var(--ifm-hero-text-color) !important;
   margin: 0 1rem;
 }
+
+.logos {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 40px;
+}

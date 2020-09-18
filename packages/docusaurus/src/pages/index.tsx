@@ -10,24 +10,34 @@ import styles from "./styles.module.css";
 
 const features = [
   {
+    title: "Most popular tools in class",
+    imageUrl: "img/framework.svg",
+    description: (
+      <>
+        Better support with fewer edge cases integrating tools like React,
+        Apollo, Hasura, Expo, AWS, Pulumi and Auth0.
+      </>
+    ),
+  },
+  {
     title: "Single statically typed language",
     imageUrl: "img/typescript.svg",
     description: (
       <>
-        By using TypeScript everywhere, this minimize context switching and
-        prefers compile time over runtime bugs.
+        Using TypeScript everywhere, minimizes context switching and prefers
+        compile time over runtime bugs.
       </>
     ),
   },
   {
     title: "Scales",
     imageUrl: "img/rocket.svg",
-    description: <>By requests, features, and complexity.</>,
-  },
-  {
-    title: "Most popular tools in class",
-    imageUrl: "img/framework.svg",
-    description: <>Better support with fewer edge cases.</>,
+    description: (
+      <>
+        Whether it&apos;s millions of requests or you&apos;re building the next
+        Facebook these tools grow with you while minimizing complexity.
+      </>
+    ),
   },
 ];
 
@@ -74,15 +84,6 @@ function Home() {
             >
               Get Started
             </Link>
-            <Link
-              className={clsx(
-                "button button--outline button--secondary button--lg",
-                styles.heroButton
-              )}
-              to="https://demo-full-stack.com"
-            >
-              View Demo
-            </Link>
           </div>
         </div>
       </header>
@@ -99,6 +100,7 @@ function Home() {
           </section>
         )}
       </main>
+      <img src="img/logos.png" alt="Logos" className={styles.logos} />
     </Layout>
   );
 }
