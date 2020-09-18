@@ -78,11 +78,11 @@ interface Auth0ProviderOptions {
   /**
    * Callback for auth0 login.
    */
-  onLogin: () => void;
+  onLogin: () => void | undefined;
   /**
    * Callback for if the access token request fails.
    */
-  onTokenRequestFailure: () => void;
+  onTokenRequestFailure: () => void | undefined;
 }
 
 const useProxy = Platform.select({ web: false, default: true });
@@ -142,7 +142,7 @@ async function fetchAccessToken(
   domain: string,
   setAccessToken: (accessToken: string) => void,
   setUser: (user: User) => void,
-  onTokenRequestFailure: () => void
+  onTokenRequestFailure?: () => void
 ) {
   // URLSearchParams doesn't work in RN.
   // `new URLSearchParams(Object.entries({ a: "b", c: "d" })).toString()` gives "0=a,b&1=c,d"
@@ -196,7 +196,7 @@ async function fetchAccessToken(
     setAccessToken(token.access_token);
     setUser(userInfo);
   } else {
-    onTokenRequestFailure();
+    onTokenRequestFailure?.();
   }
 }
 
@@ -276,13 +276,13 @@ export function Auth0Provider({
           setUser,
           onTokenRequestFailure
         );
-        onLogin();
+        onLogin?.();
       } else {
         Alert.alert(
           "Authentication error",
           result?.params?.error_description || "something went wrong"
         );
-        onTokenRequestFailure();
+        onTokenRequestFailure?.();
       }
     }
     if (result) {
