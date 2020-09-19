@@ -23,15 +23,36 @@ import { InputEnv } from "../common";
 // https://www.pulumi.com/docs/tutorials/aws/serializing-functions/#capturing-modules-in-a-javascript-function
 
 export interface SyncWebResourceInputs {
+  /**
+   * The S3 bucket name to publish the website to.
+   */
   bucketName: pulumi.Input<string>;
+  /**
+   * Path to the directory containing the website's package.json. This dynamic
+   * provider assumes it contains a build command which it runs.
+   */
   webPath: pulumi.Input<string>;
+  /**
+   * An object containing environment variables to pass to the build.
+   *
+   * Ex.
+   * ```ts
+   * { REACT_APP_WEBSITE_NAME: "My Website" }
+   * ```
+   */
   env: InputEnv;
+  /**
+   * Path to the build output. This is what gets published to S3. Defaults to
+   * `${webPath}/build`.
+   */
+  buildPath?: pulumi.Input<string>;
 }
 
 interface SyncWebInputs {
   bucketName: string;
   webPath: string;
   env?: NodeJS.ProcessEnv;
+  buildPath?: string;
 }
 
 interface Keys {
@@ -87,11 +108,13 @@ async function syncWeb(
   const mimeModule = await import("mime");
   const mime = mimeModule.default;
   const s3 = new AWS.S3();
-  const { bucketName, webPath, env } = inputs;
+  const { bucketName, webPath, env, buildPath } = inputs;
 
   buildWeb(webPath, env);
-  const pathToBuild = `${webPath}/build`;
-  const webContentsRootPath = path.join(process.cwd(), pathToBuild);
+  const webContentsRootPath = path.join(
+    process.cwd(),
+    buildPath ?? `${webPath}/build`
+  );
   const keys: Keys[] = [];
   crawlDirectory(webContentsRootPath, (filePath: string) => {
     const relativeFilePath = filePath.replace(`${webContentsRootPath}/`, "");

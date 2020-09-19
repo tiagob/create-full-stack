@@ -13,10 +13,33 @@ import { InputEnv } from "../common";
 // https://www.pulumi.com/docs/tutorials/aws/serializing-functions/#capturing-modules-in-a-javascript-function
 
 export interface PublishExpoResourceInputs {
+  /**
+   * Your expo username. Find by running `expo whoami`.
+   */
   username: pulumi.Input<string>;
+  /**
+   * Your expo password.
+   */
   password: pulumi.Input<string>;
+  /**
+   * The Expo release channel to publish the project to.
+   *
+   * See https://docs.expo.io/distribution/release-channels/
+   */
   releaseChannel: pulumi.Input<string>;
+  /**
+   * Path to the directory containing the mobile app's package.json. This dynamic
+   * provider assumes it contains a build command which it runs.
+   */
   mobilePath: pulumi.Input<string>;
+  /**
+   * An object containing environment variables to pass to the build.
+   *
+   * Ex.
+   * ```ts
+   * { MOBILE_APP_NAME: "My Mobile App" }
+   * ```
+   */
   env: InputEnv;
 }
 
