@@ -12,4 +12,4 @@ Leaving Google and returning to the outside world I'm dismayed that the same sol
 
 Create Full Stack is my attempt to solve these problems and share my development philosophy. It's inspired by tools like CRA and Expo but applied to the backend, API layer, and dev ops.
 
-It's a continuation of my thoughts and feedback around _[One full-stack to rule them all!](https://medium.com/@tiagsters/one-full-stack-to-rule-them-all-5ca39ded16c1)_
+It's a continuation of my thoughts and feedback around _[One full-stack to rule them all!](/blog/rule_them_all)_

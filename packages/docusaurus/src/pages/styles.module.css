@@ -41,6 +41,13 @@
   margin: 0 1rem;
 }
 
+.summary {
+  margin-left: 40px;
+  margin-right: 40px;
+  margin-top: 40px;
+  text-align: center;
+}
+
 .logos {
   display: block;
   margin-left: auto;

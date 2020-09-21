@@ -1,6 +1,6 @@
 module.exports = {
   title: "Create Full Stack",
-  tagline: "An opinionated full stack solution",
+  tagline: "Set up a modern full stack with one command",
   url: "https://create-full-stack.com",
   baseUrl: "/",
   onBrokenLinks: "throw",

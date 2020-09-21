@@ -88,6 +88,16 @@ function Home() {
         </div>
       </header>
       <main>
+        <div className={styles.summary}>
+          Focus on building your application and delighting your users, not
+          fitting libraries and frameworks together. Get started today without
+          the need to rewrite tomorrow. Learn more on{" "}
+          <i>
+            <a href="/docs/why">Why?</a>
+          </i>{" "}
+          or checkout <a href="/blog/create_full_stack">the blog post</a> for
+          context.
+        </div>
         {features && features.length > 0 && (
           <section className={styles.features}>
             <div className="container">
@@ -99,8 +109,8 @@ function Home() {
             </div>
           </section>
         )}
+        <img src="img/logos.png" alt="Logos" className={styles.logos} />
       </main>
-      <img src="img/logos.png" alt="Logos" className={styles.logos} />
     </Layout>
   );
 }
