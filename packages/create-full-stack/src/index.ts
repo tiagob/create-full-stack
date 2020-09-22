@@ -198,20 +198,7 @@ async function run() {
   console.log(`Installing packages using yarnpkg...`);
   console.log();
   // This also, uninstalls the template
-  try {
-    runYarn(projectName);
-  } catch (error) {
-    if (error.code === "ENOENT") {
-      // Re-run yarn install if it throws an "ENOENT" error
-      // It's likely https://github.com/tiagob/create-full-stack/issues/123
-      // Unfortunately, this is a long existing issue with yarn
-      // https://github.com/yarnpkg/yarn/issues/4563
-      // https://github.com/yarnpkg/yarn/issues/2629
-      runYarn(projectName);
-    } else {
-      throw error;
-    }
-  }
+  runYarn(projectName);
 
   console.log("Building common...");
   console.log();
