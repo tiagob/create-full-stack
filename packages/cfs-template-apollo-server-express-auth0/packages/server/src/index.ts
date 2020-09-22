@@ -54,7 +54,7 @@ async function run() {
 
       audience: process.env.AUTH0_AUDIENCE,
       issuer: `https://${process.env.AUTH0_DOMAIN}/`,
-      algorithm: ["RS256"],
+      algorithms: ["RS256"],
     })
   );
 
