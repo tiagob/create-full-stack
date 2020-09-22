@@ -78,6 +78,9 @@ try {
 }
 
 async function run() {
+  // Inquirer prompt can run into the create-full-stack installation.
+  console.log();
+
   const projectPath = path.resolve(projectName);
   const appName = path.basename(projectPath);
   checkAppName(appName);
@@ -195,10 +198,17 @@ async function run() {
     hasGithubActions,
   });
 
-  console.log(`Installing packages using yarnpkg...`);
+  console.log(`Installing packages using yarn...`);
   console.log();
   // This also, uninstalls the template
-  runYarn(projectName);
+  try {
+    runYarn(projectName);
+  } catch (error) {
+    console.warn(
+      "First install attempt failed. Likely https://github.com/yarnpkg/yarn/issues/2629. Trying again."
+    );
+    runYarn(projectName);
+  }
 
   console.log("Building common...");
   console.log();

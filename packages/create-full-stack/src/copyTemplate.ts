@@ -379,25 +379,7 @@ export default async function copyTemplate(options: {
   if (packageTemplatePath) {
     templatePath = path.dirname(packageTemplatePath);
   } else {
-    try {
-      runYarn(projectPath, ["add", fullTemplate]);
-    } catch (error) {
-      console.error(
-        `An error occurred running \`yarn add ${fullTemplate}\`:`,
-        error.code,
-        error
-      );
-      if (error.code === "ENOENT") {
-        // Re-run yarn install if it throws an "ENOENT" error
-        // It's likely https://github.com/tiagob/create-full-stack/issues/123
-        // Unfortunately, this is a long existing issue with yarn
-        // https://github.com/yarnpkg/yarn/issues/4563
-        // https://github.com/yarnpkg/yarn/issues/2629
-        runYarn(projectPath, ["add", fullTemplate]);
-      } else {
-        throw error;
-      }
-    }
+    runYarn(projectPath, ["add", fullTemplate]);
     templatePath = path.dirname(
       require.resolve(path.join(fullTemplate, "package.json"), {
         paths: [projectPath],

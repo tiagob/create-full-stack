@@ -110,7 +110,7 @@ export function isSafeToCreateProjectIn(root: string, name: string) {
 
 export function shouldUseYarn() {
   try {
-    execSync("yarnpkg --version", { stdio: "ignore" });
+    execSync("yarn --version", { stdio: "ignore" });
     return true;
   } catch (error) {
     return false;
