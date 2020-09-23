@@ -109,10 +109,16 @@ References
 
 - https://www.pulumi.com/docs/intro/cloud-providers/auth0/setup/#configuring-credentials
 
+#### Install the Auth0 Pulumi plugin
+
+```bash
+pulumi plugin install resource auth0 1.1.0
+```
+
 #### Deploy
 
 ```bash
-pulumi up
+pulumi up --yes
 ```
 
 This makes all the necessary changes to Auth0 and writes local `.env` files with the proper values. No secrets are stored in the `.env` files. Feel free to check them into source control.
@@ -254,10 +260,16 @@ References
 
 - https://www.pulumi.com/docs/intro/cloud-providers/auth0/setup/#configuring-credentials
 
+#### Install the AWS Pulumi plugin
+
+```bash
+pulumi plugin install resource aws 3.2.1
+```
+
 #### Deploy
 
 ```bash
-pulumi up
+pulumi up --yes
 ```
 
 This creates resources in your Auth0 production tenant and on your AWS account.

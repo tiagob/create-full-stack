@@ -297,7 +297,9 @@ function generateSetupHtml(projectPath: string) {
   const md = markdownIt({
     html: true,
     linkify: true,
-    typographer: true,
+    // Quotes beautification doesn't render correctly in Safari. For example,
+    // typographer converts "'" to "’" which renders as "â€™" in Safari.
+    typographer: false,
     highlight(str, lang) {
       if (lang && hljs.getLanguage(lang)) {
         try {
@@ -316,7 +318,7 @@ function generateSetupHtml(projectPath: string) {
     `
 <html>
   <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.0/build/styles/default.min.css">
   </head>
   <body style="padding: 40px;">

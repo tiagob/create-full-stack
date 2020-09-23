@@ -147,10 +147,16 @@ References
 
 - https://awscli.amazonaws.com/v2/documentation/api/latest/reference/route53domains/register-domain.html
 
+#### Install the AWS Pulumi plugin
+
+```bash
+pulumi plugin install resource aws 3.2.1
+```
+
 #### Deploy
 
 ```bash
-pulumi up
+pulumi up --yes
 ```
 
 This creates resources in your AWS account.
