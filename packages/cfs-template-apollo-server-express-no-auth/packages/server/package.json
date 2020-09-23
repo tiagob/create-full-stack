@@ -21,8 +21,8 @@
     "testEnvironment": "node"
   },
   "dependencies": {
-    "apollo-server-express": "^2.17.0",
-    "apollo-server-testing": "^2.17.0",
+    "apollo-server-express": "^2.18.0",
+    "apollo-server-testing": "^2.18.0",
     "cfs-dotenv": "^0.1.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",

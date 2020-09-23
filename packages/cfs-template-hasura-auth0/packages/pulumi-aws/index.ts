@@ -68,7 +68,7 @@ const {
   mobile: {
     clientName: path.basename(mobilePath),
     expoUsername: expoConfig.require("username"),
-    slug: mobileConfig.slug,
+    slug: mobileConfig.expo.slug,
   },
   // @remove-mobile-end
 });

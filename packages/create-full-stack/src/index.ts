@@ -204,9 +204,11 @@ async function run() {
   try {
     runYarn(projectName);
   } catch (error) {
-    console.warn(
+    console.log();
+    console.log(
       "First install attempt failed. Likely https://github.com/yarnpkg/yarn/issues/2629. Trying again."
     );
+    console.log();
     runYarn(projectName);
   }
 
