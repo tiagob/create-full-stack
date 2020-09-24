@@ -1,6 +1,8 @@
 import * as awsx from "@pulumi/awsx";
 import * as pulumi from "@pulumi/pulumi";
+// @remove-mobile-begin
 import { Output } from "@pulumi/pulumi";
+// @remove-mobile-end
 import {
   Auth0,
   Certificate,
