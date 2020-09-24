@@ -14,7 +14,7 @@ const features = [
     imageUrl: "img/framework.svg",
     description: (
       <>
-        Better support with fewer edge cases integrating tools like React,
+        Better support with fewer edge cases - integrating tools like React,
         Apollo, Hasura, Expo, AWS, Pulumi and Auth0.
       </>
     ),
@@ -24,7 +24,7 @@ const features = [
     imageUrl: "img/typescript.svg",
     description: (
       <>
-        Using TypeScript everywhere, minimizes context switching and prefers
+        Using TypeScript everywhere minimizes context switching and prioritizes
         compile time over runtime bugs.
       </>
     ),
@@ -34,8 +34,8 @@ const features = [
     imageUrl: "img/rocket.svg",
     description: (
       <>
-        Whether it&apos;s millions of requests or you&apos;re building the next
-        Facebook these tools grow with you while minimizing complexity.
+        Whether you&apos;re handling millions of requests or building the next
+        Facebook, Create Full Stack grows with you and your project.
       </>
     ),
   },
@@ -89,13 +89,13 @@ function Home() {
       </header>
       <main>
         <div className={styles.summary}>
-          Focus on building your application and delighting your users, not
-          fitting libraries and frameworks together. Get started today without
-          the need to rewrite tomorrow. Learn more on{" "}
+          Focus on building your ideas and delighting your users, not fitting
+          libraries and frameworks together. Get started today without the need
+          to rewrite tomorrow. Learn more on{" "}
           <i>
             <a href="/docs/why">Why?</a>
           </i>{" "}
-          or checkout <a href="/blog/create_full_stack">the blog post</a> for
+          or check out <a href="/blog/create_full_stack">the blog post</a> for
           context.
         </div>
         {features && features.length > 0 && (
