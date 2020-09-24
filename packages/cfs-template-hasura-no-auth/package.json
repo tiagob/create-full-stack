@@ -1,6 +1,6 @@
 {
   "name": "cfs-template-hasura-no-auth",
-  "version": "0.1.45",
+  "version": "0.1.46",
   "description": "The Hasura without auth template for Create Full Stack.",
   "bugs": {
     "url": "https://github.com/tiagob/create-full-stack/issues"
