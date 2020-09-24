@@ -3,7 +3,12 @@ import { Project, UserManager } from "@expo/xdl";
 import * as pulumi from "@pulumi/pulumi";
 import equal from "fast-deep-equal";
 
-import { InputEnv } from "../common";
+type InputEnv = pulumi.Input<
+  | {
+      [key: string]: pulumi.Input<string | undefined> | string | undefined;
+    }
+  | undefined
+>;
 
 // Dynamically import some modules that use native code to prevent error:
 // PromiseRejectionHandledWarning: Promise rejection was handled asynchronously

@@ -1,0 +1,27 @@
+{
+  "name": "cfs-pulumi-auth0",
+  "version": "0.1.0",
+  "description": "Library for Pulumi Auth0 resources in Create Full Stack.",
+  "bugs": {
+    "url": "https://github.com/tiagob/create-full-stack/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tiagob/create-full-stack.git",
+    "directory": "packages/cfs-pulumi-auth0"
+  },
+  "license": "MIT",
+  "main": "build/index.js",
+  "typings": "build/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "@pulumi/auth0": "^1.1.0",
+    "@pulumi/pulumi": "^2.9.2"
+  },
+  "devDependencies": {
+    "@types/node": "^10.0.0"
+  }
+}

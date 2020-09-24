@@ -4,19 +4,19 @@ import * as pulumi from "@pulumi/pulumi";
 // @remove-mobile-begin
 import { Output } from "@pulumi/pulumi";
 // @remove-mobile-end
+import { Auth0 } from "cfs-pulumi-auth0";
 import {
-  Auth0,
   Certificate,
   Fargate,
   overrideEnvVars,
-  // @remove-mobile-begin
-  PublishExpo,
-  // @remove-mobile-end
   Rds,
   // @remove-web-begin
   StaticWebsite,
   // @remove-web-end
-} from "cfs-pulumi";
+} from "cfs-pulumi-aws";
+// @remove-mobile-begin
+import { PublishExpo } from "cfs-pulumi-expo";
+// @remove-mobile-end
 import fs from "fs";
 import path from "path";
 

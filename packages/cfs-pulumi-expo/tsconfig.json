@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    // File paths are relative to the containing tsconfig.jon file location
+    // https://github.com/Microsoft/TypeScript/issues/24851
+    "outDir": "build",
+    // Explicitly include custom third-party type declarations in ./typings
+    // Fixes issue with `pulumi up`
+    // error TS7016: Could not find a declaration file for module 'folder-hash'
+    "typeRoots": ["./node_modules/@types", "./typings"]
+  },
+  "extends": "../../tsconfig"
+}

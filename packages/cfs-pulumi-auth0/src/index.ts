@@ -29,7 +29,7 @@ export interface Auth0Args {
   };
 }
 
-export default class Auth0 extends pulumi.ComponentResource {
+export class Auth0 extends pulumi.ComponentResource {
   audience: pulumi.Output<string | undefined>;
 
   webClientId: pulumi.Output<string> | undefined;

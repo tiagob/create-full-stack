@@ -1,0 +1,36 @@
+{
+  "name": "cfs-pulumi-aws",
+  "version": "0.1.0",
+  "description": "Library for Pulumi AWS resources in Create Full Stack.",
+  "bugs": {
+    "url": "https://github.com/tiagob/create-full-stack/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tiagob/create-full-stack.git",
+    "directory": "packages/cfs-pulumi-aws"
+  },
+  "license": "MIT",
+  "main": "build/index.js",
+  "typings": "build/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "@pulumi/aws": "^3.2.1",
+    "@pulumi/awsx": "^0.22.0",
+    "@pulumi/pulumi": "^2.9.2",
+    "aws-sdk": "^2.749.0",
+    "cross-spawn": "^7.0.3",
+    "fast-deep-equal": "^3.1.3",
+    "folder-hash": "^3.3.3",
+    "mime": "^2.4.6",
+    "yarn": "^1.22.5"
+  },
+  "devDependencies": {
+    "@types/cross-spawn": "^6.0.2",
+    "@types/mime": "^2.0.2",
+    "@types/node": "^10.0.0"
+  }
+}

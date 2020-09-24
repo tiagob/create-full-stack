@@ -3,14 +3,14 @@ import * as pulumi from "@pulumi/pulumi";
 import {
   Certificate,
   Fargate,
-  // @remove-mobile-begin
-  PublishExpo,
-  // @remove-mobile-end
   Rds,
   // @remove-web-begin
   StaticWebsite,
   // @remove-web-end
-} from "cfs-pulumi";
+} from "cfs-pulumi-aws";
+// @remove-mobile-begin
+import { PublishExpo } from "cfs-pulumi-expo";
+// @remove-mobile-end
 import path from "path";
 
 const serverPath = "../../hasura";
