@@ -5,7 +5,7 @@ title: Why?
 
 ## Problem
 
-As a developer you want to focus on building your application. Delighting your users! You don’t want to think about configurations and fitting libraries and frameworks together. You want something to get started today that you won’t have to rewrite tomorrow.
+Focus on building your ideas and delighting your users, not fitting libraries and frameworks together. Get started today without the need to rewrite tomorrow.
 
 ## Solution
 

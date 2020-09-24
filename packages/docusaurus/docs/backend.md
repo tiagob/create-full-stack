@@ -7,7 +7,7 @@ Backend choices for Create Full Stack.
 
 ## Apollo Server Express
 
-[![GitHub stars](https://img.shields.io/github/stars/apollographql/apollo-server.svg?style=social&label=Star&maxAge=2592000)](https://github.com/apollographql/apollo-server/)
+[![GitHub stars](https://img.shields.io/github/stars/apollographql/apollo-server.svg?style=social&label=Star&maxAge=2592000)](https://github.com/apollographql/apollo-server/stargazers/)
 
 This choice scaffolds out a TypeScript Node server at `packages/server/`.
 
@@ -24,7 +24,7 @@ This choice scaffolds out a TypeScript Node server at `packages/server/`.
 
 ## Hasura
 
-[![GitHub stars](https://img.shields.io/github/stars/hasura/graphql-engine.svg?style=social&label=Star&maxAge=2592000)](https://github.com/hasura/graphql-engine/)
+[![GitHub stars](https://img.shields.io/github/stars/hasura/graphql-engine.svg?style=social&label=Star&maxAge=2592000)](https://github.com/hasura/graphql-engine/stargazers/)
 
 This choice includes the Hasura Docker image and configuration files at `hasura/`.
 
