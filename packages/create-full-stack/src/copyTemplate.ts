@@ -202,9 +202,9 @@ function toTitleCase(name: string) {
 async function updateAppJson(appName: string, projectPath: string) {
   const filePath = `${projectPath}/packages/mobile/app.json`;
   const { default: appJson } = await import(filePath);
-  appJson.slug = appName;
-  appJson.scheme = appName;
-  appJson.name = toTitleCase(appName);
+  appJson.expo.slug = appName;
+  appJson.expo.scheme = appName;
+  appJson.expo.name = toTitleCase(appName);
   fs.writeFileSync(filePath, JSON.stringify(appJson, undefined, 2));
 }
 
