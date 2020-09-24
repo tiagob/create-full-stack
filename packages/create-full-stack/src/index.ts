@@ -112,7 +112,9 @@ async function run() {
       type: "list",
       choices: backends,
       name: "backend",
-      message: "Which backend?",
+      message: `Which backend? ${chalk.grey(
+        "(https://create-full-stack.com/docs/backend)"
+      )}`,
       default: Backend.hasura,
     });
     backend = backendAnswer.backend;
@@ -120,7 +122,9 @@ async function run() {
       type: "list",
       choices: auths,
       name: "auth",
-      message: "Which auth method?",
+      message: `Which auth method? ${chalk.grey(
+        "(https://create-full-stack.com/docs/auth)"
+      )}`,
       default: Auth.none,
     });
     auth = authAnswer.auth;
@@ -141,20 +145,26 @@ async function run() {
     type: "list",
     choices: cloudPlatforms,
     name: "cloudPlatform",
-    message: "Which cloud platform?",
+    message: `Which cloud platform? ${chalk.grey(
+      "(https://create-full-stack.com/docs/cloud)"
+    )}`,
     default: CloudPlatform.none,
   });
   const { cloudPlatform } = cloudPlatformAnswer;
   const hasWebAnswer = await inquirer.prompt({
     type: "confirm",
     name: "hasWeb",
-    message: "Include a React website?",
+    message: `Include a React website? ${chalk.grey(
+      "(https://create-full-stack.com/docs/web)"
+    )}`,
   });
   const { hasWeb } = hasWebAnswer;
   const hasMobileAnswer = await inquirer.prompt({
     type: "confirm",
     name: "hasMobile",
-    message: "Include a React Native iOS and Android app?",
+    message: `Include a React Native iOS and Android app? ${chalk.grey(
+      "(https://create-full-stack.com/docs/mobile)"
+    )}`,
   });
   const { hasMobile } = hasMobileAnswer;
   let hasGithubActions = false;
@@ -162,7 +172,9 @@ async function run() {
     const hasGithubActionsAnswer = await inquirer.prompt({
       type: "confirm",
       name: "hasGithubActions",
-      message: "Include GitHub Actions CI/CD?",
+      message: `Include GitHub Actions CI/CD? ${chalk.grey(
+        "(https://create-full-stack.com/docs/cicd)"
+      )}`,
     });
     hasGithubActions = hasGithubActionsAnswer.hasGithubActions;
   }
@@ -233,7 +245,7 @@ async function run() {
     console.log();
   }
 
-  console.log();
+  console.clear();
   console.log(`Success! Created ${appName} at ${projectName}`);
   console.log();
   if (auth === Auth.none) {

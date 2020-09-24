@@ -134,7 +134,7 @@ URLs available:
 
 - backend: [http://localhost:8080/v1/graphql](http://localhost:8080/v1/graphql)
 <!-- @remove-mobile-begin -->
-- mobile (expo devtools): [http://localhost:19003](http://localhost:19003)
+- mobile (expo devtools): [http://localhost:19002](http://localhost:19002)
   <!-- @remove-mobile-end -->
   <!-- @remove-web-begin -->
 - web: [http://localhost:3000](http://localhost:3000)
@@ -430,7 +430,7 @@ URLs available:
 
 - backend: [http://localhost:8080/v1/graphql](http://localhost:8080/v1/graphql)
 <!-- @remove-mobile-begin -->
-- mobile (expo devtools): [http://localhost:19003](http://localhost:19003)
+- mobile (expo devtools): [http://localhost:19002](http://localhost:19002)
   <!-- @remove-mobile-end -->
   <!-- @remove-web-begin -->
 - web: [http://localhost:3000](http://localhost:3000)

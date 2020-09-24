@@ -69,7 +69,7 @@ module.exports = {
         blog: {
           showReadingTime: true,
           editUrl:
-            "https://github.com/tiagob/create-full-stack/edit/master/packages/docusaurus/blog/",
+            "https://github.com/tiagob/create-full-stack/edit/master/packages/docusaurus/",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),

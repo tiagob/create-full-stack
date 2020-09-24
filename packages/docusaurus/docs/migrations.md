@@ -7,7 +7,7 @@ title: Migrations
 
 If included, run from `packages/server`.
 
-Common commands are shown below. Additional commands are documented at https://typeorm.io/#/migrations
+Common commands are shown below. Additional commands are documented on the [TypeORM docs](https://typeorm.io/#/migrations).
 
 ### `yarn typeorm migration:run`
 
@@ -25,13 +25,13 @@ Automatically generate migration files in the format `{TIMESTAMP}-{title}.ts` wi
 
 If included, run from `packages/server`.
 
-Common commands are shown below. Additional commands are documented at https://hasura.io/docs/1.0/graphql/core/hasura-cli/hasura_migrate.html#hasura-migrate. Learn more about Hasura migrations at https://hasura.io/docs/1.0/graphql/core/migrations/index.html
+Common commands are shown below. Additional commands are documented on [Hasura's docs](https://hasura.io/docs/1.0/graphql/core/hasura-cli/hasura_migrate.html#hasura-migrate). Learn more about Hasura migrations on [Hasura's migration guide](https://hasura.io/docs/1.0/graphql/core/migrations/index.html).
 
 ### `yarn hasura migrate apply`
 
 Applies all migrations to the database.
 
-### `hasura migrate status`
+### `yarn hasura migrate status`
 
 Displays the current status of migrations on a database.
 

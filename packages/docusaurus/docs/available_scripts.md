@@ -37,7 +37,11 @@ Launches the test runner in the interactive watch mode.
 
 If included, run from `hasura/`.
 
-Common commands are shown below. Additional commands are documented at https://hasura.io/docs/1.0/graphql/core/hasura-cli/index.html#commands
+Common commands are shown below. Additional commands are documented on the [Hasura docs](https://hasura.io/docs/1.0/graphql/core/hasura-cli/index.html#commands).
+
+:::info
+Create Full Stack installs the Hasura CLI locally to the workspace so you must run `yarn hasura` to access it.
+:::
 
 ### `docker-compose up`
 
@@ -53,7 +57,11 @@ Changes to the schema automatically update the migrations file.
 
 If included, run from `packages/mobile/`.
 
-Common commands are shown below. Additional commands are documented at https://docs.expo.io/workflow/expo-cli/#commands
+Common commands are shown below. Additional commands are documented on the [Expo docs](https://docs.expo.io/workflow/expo-cli/#commands).
+
+:::info
+Create Full Stack installs the Expo CLI locally to the workspace so you must run `yarn expo` to access it.
+:::
 
 ### `yarn start`
 
@@ -67,7 +75,7 @@ Launches the test runner in the interactive watch mode.
 
 If included, run from `packages/pulumi-aws`.
 
-Common commands are shown below. Additional commands are documented at https://www.pulumi.com/docs/reference/cli/#common-commands
+Common commands are shown below. Additional commands are documented on the [Pulumi docs](https://www.pulumi.com/docs/reference/cli/#common-commands).
 
 ### `pulumi up`
 
@@ -89,7 +97,7 @@ List stacks.
 
 If included, run from `packages/web/`.
 
-Common commands are shown below. Additional commands are documented at https://create-react-app.dev/docs/available-scripts
+Common commands are shown below. Additional commands are documented on the [Create React App docs](https://create-react-app.dev/docs/available-scripts).
 
 ### `yarn start`
 

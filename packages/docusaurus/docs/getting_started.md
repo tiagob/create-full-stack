@@ -32,5 +32,5 @@ CFS support for `npm` will be added when [npm v7](https://blog.npmjs.org/post/62
 
 - backend (apollo-server-express): [http://localhost:8080/graphql](http://localhost:8080/graphql)
 - backend (hasura): [http://localhost:8080/v1/graphql](http://localhost:8080/v1/graphql)
-- mobile (expo devtools): [http://localhost:19003](http://localhost:19003)
+- mobile (expo devtools): [http://localhost:19002](http://localhost:19002)
 - web: [http://localhost:3000](http://localhost:3000)

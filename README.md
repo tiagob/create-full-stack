@@ -69,7 +69,7 @@ Check specific package READMEs for setup configuration and commands.
 
 Repo uses [graphql-code-generator](https://graphql-code-generator.com/). Client React components for GraphQL queries and mutations are automatically generated via the [typescript-react-apollo plugin](https://graphql-code-generator.com/docs/plugins/typescript-react-apollo#usage) from the `*.graphql` files. The backend relies on type generation via the [typescript-resolvers plugin](https://graphql-code-generator.com/docs/plugins/typescript-resolvers). This code is automatically generated when running commands from the workspace root.
 
-### Gotchas
+### Troubleshooting
 
 #### EADDRINUSE, Address already in use
 
@@ -85,7 +85,7 @@ React in both `packages/mobile/package.json` and `packages/web/package.json` nee
 
 #### Auth0 login hangs on Android virtual device
 
-Must use Android 11. https://github.com/expo/expo/issues/9845
+Your Android virtual device (AVD) must use Android 11. [expo/issues/9845](https://github.com/expo/expo/issues/9845)
 
 #### FatalError: relation \"todos\" already exists
 
@@ -96,9 +96,13 @@ docker rm <project name>_postgres_1
 docker volume rm <project name>_db_data
 ```
 
-#### pulumi:providers:aws default_x_x_x error: no resource plugin 'aws-vx.x.x' found in the workspace or on your \$PATH, install the plugin using `pulumi plugin install resource aws vx.x.x`
+#### pulumi:providers: no resource plugin found in the workspace or on your \$PATH, install the plugin
 
-This can occur in continuous deployment (CD) with GitHub actions. You must setup and deploy the production stack locally first before GitHub actions can deploy. https://github.com/pulumi/pulumi/issues/2097
+This can occur locally or in continuous deployment (CD) with GitHub actions.
+
+If locally, run the command in the error message to install the plugin.
+
+If on GitHub actions, you must setup and deploy the production stack locally first before GitHub actions can deploy. [pulumi/issues/2097](https://github.com/pulumi/pulumi/issues/2097)
 
 To deploy the production stack run:
 
@@ -106,4 +110,18 @@ To deploy the production stack run:
 cd packages/pulumi-aws
 pulumi stack select production
 pulumi up
+```
+
+#### Something is already running on port 3000
+
+Check which service is running on the port.
+
+```bash
+sudo lsof -i tcp:3000
+```
+
+Kill it (ex. node)
+
+```bash
+pkill node
 ```
