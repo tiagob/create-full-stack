@@ -1,7 +1,7 @@
 {
   "name": "create-full-stack",
   "version": "0.1.56",
-  "description": "Create an opinionated full stack with minimal configuration.",
+  "description": "Create a TypeScript full stack with minimal configuration.",
   "keywords": [
     "react",
     "react-native",

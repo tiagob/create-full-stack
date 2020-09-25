@@ -14,8 +14,11 @@ const features = [
     imageUrl: "img/framework.svg",
     description: (
       <>
-        Better support with fewer edge cases - integrating tools like React,
-        Apollo, Hasura, Expo, AWS, Pulumi and Auth0.
+        Better support with fewer edge cases - integrating tools like{" "}
+        <a href="/docs/libraries_and_frameworks">
+          React, Apollo, Hasura, Expo, AWS, Pulumi and Auth0
+        </a>
+        .
       </>
     ),
   },
@@ -109,7 +112,6 @@ function Home() {
             </div>
           </section>
         )}
-        <img src="img/logos.png" alt="Logos" className={styles.logos} />
       </main>
     </Layout>
   );

@@ -4,6 +4,7 @@ module.exports = {
       "why",
       "backend",
       "auth",
+      "cloud",
       "web",
       "mobile",
       "cicd",

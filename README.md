@@ -1,6 +1,6 @@
 # Create Full Stack
 
-Create an opinionated full stack with minimal configuration.
+Create a TypeScript full stack with minimal configuration.
 
 - [Getting Started](https://create-full-stack.com/docs) – How to create a new full stack.
 - [User Guide](https://create-full-stack.com) – How to develop apps bootstrapped with Create Full Stack.
