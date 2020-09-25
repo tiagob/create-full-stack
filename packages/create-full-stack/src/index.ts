@@ -81,6 +81,15 @@ async function run() {
   // Inquirer prompt can run into the create-full-stack installation.
   console.log();
 
+  if (process.platform === "win32") {
+    console.log("Sorry, Windows isn't currently supported.");
+    console.log();
+    console.log(
+      "If you'd like this feature, please 👍 https://github.com/tiagob/create-full-stack/issues/146. In the meantime try using WSL (https://docs.microsoft.com/en-us/windows/wsl/)."
+    );
+    process.exit(1);
+  }
+
   const projectPath = path.resolve(projectName);
   const appName = path.basename(projectPath);
   checkAppName(appName);
