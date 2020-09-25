@@ -16,7 +16,7 @@ async function run() {
     if (error instanceof QueryFailedError) {
       // eslint-disable-next-line no-console
       console.error(
-        "Database is out of sync. To fix run `typeorm schema:drop && typeorm schema:sync`\n",
+        "Database is out of sync. To fix run `yarn typeorm schema:drop && yarn typeorm schema:sync`\n",
         "NOTE: This drops all data in the existing database.\n"
       );
     }
