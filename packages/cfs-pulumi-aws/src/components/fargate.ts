@@ -65,9 +65,11 @@ export default class Fargate extends pulumi.ComponentResource {
     super("aws:Fargate", name, args, opts);
     const domainParts = getDomainAndSubdomain(domain);
 
-    const listener = new awsx.elasticloadbalancingv2.ApplicationLoadBalancer(
-      // There's a 32 character limit on names so abbreviate to "alb".
-      `${name}-alb`,
+    // ApplicationLoadBalancer doesn't handle CORS on preflight requests from
+    // web.
+    const listener = new awsx.lb.NetworkLoadBalancer(
+      // There's a 32 character limit on names so abbreviate to "nlb".
+      `${name}-nlb`,
       {},
       { parent: this }
     )
@@ -80,7 +82,7 @@ export default class Fargate extends pulumi.ComponentResource {
         `${name}-listener`,
         {
           port: 443,
-          protocol: "HTTPS",
+          protocol: "TLS",
           certificateArn,
         },
         { parent: this }
