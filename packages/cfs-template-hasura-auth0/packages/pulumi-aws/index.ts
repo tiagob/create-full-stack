@@ -133,6 +133,9 @@ if (isDevelopment) {
         "hasuraGraphqlAdminSecret"
       ),
       HASURA_GRAPHQL_JWT_SECRET: pulumi.interpolate`{"jwk_url":"https://${auth0Domain}/.well-known/jwks.json","audience":"${auth0Audience}"}`,
+      // @remove-web-begin
+      HASURA_GRAPHQL_CORS_DOMAIN: webUrl,
+      // @remove-web-end
     },
   });
 

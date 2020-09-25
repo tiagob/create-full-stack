@@ -63,6 +63,9 @@ new Fargate(path.basename(serverPath), {
       "hasuraGraphqlAdminSecret"
     ),
     HASURA_GRAPHQL_UNAUTHORIZED_ROLE: "anonymous",
+    // @remove-web-begin
+    HASURA_GRAPHQL_CORS_DOMAIN: webUrl,
+    // @remove-web-end
   },
 });
 
