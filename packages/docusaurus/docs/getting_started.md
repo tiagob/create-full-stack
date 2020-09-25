@@ -30,7 +30,11 @@ CFS support for `npm` will be added when [npm v7](https://blog.npmjs.org/post/62
 
 `yarn start` brings up the development stack locally. The following URLs are available if the given services are selected.
 
-- backend (apollo-server-express): [http://localhost:8080/graphql](http://localhost:8080/graphql)
-- backend (hasura): [http://localhost:8080/v1/graphql](http://localhost:8080/v1/graphql)
-- mobile (expo devtools): [http://localhost:19002](http://localhost:19002)
 - web: [http://localhost:3000](http://localhost:3000)
+- mobile (expo devtools): [http://localhost:19002](http://localhost:19002)
+- backend (hasura): [http://localhost:8080/v1/graphql](http://localhost:8080/v1/graphql)
+- backend (apollo-server-express): [http://localhost:8080/graphql](http://localhost:8080/graphql)
+
+:::caution
+Expect an authorization error if [auth](/docs/auth) is enabled from the backend URLs.
+:::

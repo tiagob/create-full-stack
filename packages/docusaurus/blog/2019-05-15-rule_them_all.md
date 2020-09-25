@@ -6,6 +6,8 @@ author_url: https://github.com/tiagob
 author_image_url: https://avatars3.githubusercontent.com/u/1031522?v=4
 ---
 
+**Originally [posted on Medium](https://medium.com/@tiagsters/one-full-stack-to-rule-them-all-5ca39ded16c1)**
+
 Yes, yet another todo example app! 🤦 Needed to throw my hat in the ring because the existing solutions weren’t cutting it.
 
 We want a stack that enables rapid iteration as requirements change without producing bugs. Ideally, it should scale in terms of traffic and developers without requiring costly re-writes.

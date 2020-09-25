@@ -132,13 +132,15 @@ yarn start
 
 URLs available:
 
-- backend: [http://localhost:8080/graphql](http://localhost:8080/graphql)
-<!-- @remove-mobile-begin -->
+<!-- @remove-web-begin -->
+
+- web: [http://localhost:3000](http://localhost:3000)
+  <!-- @remove-web-end -->
+  <!-- @remove-mobile-begin -->
 - mobile (expo devtools): [http://localhost:19002](http://localhost:19002)
   <!-- @remove-mobile-end -->
-  <!-- @remove-web-begin -->
-- web: [http://localhost:3000](http://localhost:3000)
-<!-- @remove-web-end -->
+- backend: [http://localhost:8080/graphql](http://localhost:8080/graphql)
+  - **API requires authorization to access**
 
 ### Production stack
 
@@ -399,13 +401,15 @@ yarn start
 
 URLs available:
 
-- backend: [http://localhost:8080/graphql](http://localhost:8080/graphql)
-<!-- @remove-mobile-begin -->
+<!-- @remove-web-begin -->
+
+- web: [http://localhost:3000](http://localhost:3000)
+  <!-- @remove-web-end -->
+  <!-- @remove-mobile-begin -->
 - mobile (expo devtools): [http://localhost:19002](http://localhost:19002)
   <!-- @remove-mobile-end -->
-  <!-- @remove-web-begin -->
-- web: [http://localhost:3000](http://localhost:3000)
-<!-- @remove-web-end -->
+- backend: [http://localhost:8080/graphql](http://localhost:8080/graphql)
+  - **API requires authorization to access**
 
 <!-- @remove-manual-config-end -->
 <!-- @remove-github-actions-begin -->

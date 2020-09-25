@@ -10,3 +10,7 @@ For CI, Create Full Stack runs tests on all platforms (server, web, mobile) on a
 For CD, Create Full Stack deploys changes automatically using Pulumi on any push to master.
 
 In addition, Create Full Stack previews changes to AWS infra for any new pull request.
+
+:::info
+Requires AWS is selected as [cloud](/docs/cloud).
+:::

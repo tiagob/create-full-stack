@@ -41,4 +41,4 @@ src/
   utils/
 ```
 
-`containers/` includes React routes or React Native navigation screens. `components/` includes any other react components used in the containers. If components are container specific it's preferred to include them in the container itself. `utils/` includes common TS utility functions.
+`containers/` includes React routes or React Native navigation screens. `components/` includes any other react components used in the containers. If components are container specific, it's preferred to include them in the container itself. `utils/` includes common TS utility functions.

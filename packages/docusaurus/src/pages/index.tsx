@@ -92,14 +92,12 @@ function Home() {
       </header>
       <main>
         <div className={styles.summary}>
-          Focus on building your ideas and delighting your users, not fitting
-          libraries and frameworks together. Get started today without the need
-          to rewrite tomorrow. Learn more on{" "}
+          Focus on building your ideas, not fitting libraries and frameworks
+          together. Learn more on{" "}
           <i>
             <a href="/docs/why">Why?</a>
           </i>{" "}
-          or check out <a href="/blog/create_full_stack">the blog post</a> for
-          context.
+          or check out <a href="/blog/create_full_stack">the blog post</a>.
         </div>
         {features && features.length > 0 && (
           <section className={styles.features}>
