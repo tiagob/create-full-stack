@@ -1,3 +1,5 @@
+import chalk from "chalk";
+
 export enum Backend {
   apolloServerExpress = "apollo-server-express",
   hasura = "hasura",
@@ -9,6 +11,13 @@ export enum Auth {
   none = "none",
 }
 export const auths = Object.values(Auth);
+export const authChoices = [
+  {
+    name: `${Auth.auth0} ${chalk.grey("(~10m of setup)")}`,
+    value: Auth.auth0,
+  },
+  Auth.none,
+];
 export const templateToTypes = Object.freeze({
   "apollo-server-express-auth0": {
     backend: Backend.apolloServerExpress,
@@ -46,3 +55,10 @@ export enum CloudPlatform {
   none = "none",
 }
 export const cloudPlatforms = [CloudPlatform.aws, CloudPlatform.none];
+export const cloudPlatformChoices = [
+  {
+    name: `${CloudPlatform.aws} ${chalk.grey("(~15m of setup)")}`,
+    value: CloudPlatform.aws,
+  },
+  CloudPlatform.none,
+];

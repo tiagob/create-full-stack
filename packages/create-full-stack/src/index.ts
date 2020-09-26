@@ -13,11 +13,11 @@ import semver from "semver";
 import packageJson from "../package.json";
 import {
   Auth,
-  auths,
+  authChoices,
   Backend,
   backends,
   CloudPlatform,
-  cloudPlatforms,
+  cloudPlatformChoices,
   getTemplateTypeKey,
   nodeBackends,
   TemplateToTypes,
@@ -129,7 +129,7 @@ async function run() {
     backend = backendAnswer.backend;
     const authAnswer = await inquirer.prompt({
       type: "list",
-      choices: auths,
+      choices: authChoices,
       name: "auth",
       message: `Which auth method? ${chalk.grey(
         "(https://create-full-stack.com/docs/auth)"
@@ -152,7 +152,7 @@ async function run() {
   // What packages should be included/ignored in the template?
   const cloudPlatformAnswer = await inquirer.prompt({
     type: "list",
-    choices: cloudPlatforms,
+    choices: cloudPlatformChoices,
     name: "cloudPlatform",
     message: `Which cloud platform? ${chalk.grey(
       "(https://create-full-stack.com/docs/cloud)"
@@ -182,7 +182,7 @@ async function run() {
       type: "confirm",
       name: "hasGithubActions",
       message: `Include GitHub Actions CI/CD? ${chalk.grey(
-        "(https://create-full-stack.com/docs/cicd)"
+        "(~5m of setup) (https://create-full-stack.com/docs/cicd)"
       )}`,
     });
     hasGithubActions = hasGithubActionsAnswer.hasGithubActions;

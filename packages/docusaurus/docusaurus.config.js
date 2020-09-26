@@ -1,6 +1,6 @@
 module.exports = {
   title: "Create Full Stack",
-  tagline: "Set up a TypeScript full stack with minimal configuration",
+  tagline: "Set up a TypeScript full stack with one command",
   url: "https://create-full-stack.com",
   baseUrl: "/",
   onBrokenLinks: "throw",
