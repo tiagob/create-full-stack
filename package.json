@@ -22,9 +22,15 @@
     "src/**.{ts,tsx}": "eslint --fix"
   },
   "devDependencies": {
+    "@babel/core": "*",
+    "@unimodules/core": "~5.5.0",
+    "expo-application": "~2.3.0",
+    "expo-auth-session": "~2.0.0",
     "husky": "^4.3.0",
     "lerna": "^3.22.1",
     "lerna-changelog": "^1.0.1",
-    "lint-staged": "^10.3.0"
+    "lint-staged": "^10.3.0",
+    "react": "~16.13.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.2.tar.gz"
   }
 }
