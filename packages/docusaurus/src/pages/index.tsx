@@ -65,8 +65,8 @@ const features = [
             <a href="/docs/cloud">included Pulumi components</a>
           </li>
           <li>
-            <a href="/docs/cicd">CI/CD</a> - tests run on GitHub and code is
-            automatically deployed on push to master
+            <a href="/docs/cicd">CI/CD</a> - tests run on GitHub and code
+            deploys automatically on push to master
           </li>
           <li>
             <a href="/docs/migrations">Migration support</a> ensures safe DB
