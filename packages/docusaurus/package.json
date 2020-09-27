@@ -23,15 +23,15 @@
     ]
   },
   "dependencies": {
-    "@docusaurus/core": "2.0.0-alpha.64",
-    "@docusaurus/preset-classic": "2.0.0-alpha.64",
+    "@docusaurus/core": "2.0.0-alpha.63",
+    "@docusaurus/preset-classic": "2.0.0-alpha.63",
     "@mdx-js/react": "^1.6.16",
     "clsx": "^1.1.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "2.0.0-alpha.64",
+    "@docusaurus/module-type-aliases": "2.0.0-alpha.63",
     "@tsconfig/docusaurus": "^1.0.2",
     "@types/react": "^16.9.49",
     "@types/react-helmet": "^6.1.0",
