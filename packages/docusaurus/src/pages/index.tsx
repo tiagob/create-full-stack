@@ -10,35 +10,69 @@ import styles from "./styles.module.css";
 
 const features = [
   {
-    title: "Most popular tools in class",
+    title: "Curated libraries and frameworks",
     imageUrl: "img/framework.svg",
     description: (
       <>
-        Better support with fewer edge cases - integrating tools like{" "}
-        <a href="/docs/libraries_and_frameworks">
-          React, Apollo, Hasura, Expo, AWS, Pulumi and Auth0
-        </a>
-        .
+        Don&apos;t get stuck in analysis paralysis.
+        <br />
+        <br />
+        <ul>
+          <li>
+            <a href="/docs/libraries_and_frameworks">
+              Libraries and frameworks
+            </a>{" "}
+            (React, RN, Apollo, Hasura, Pulumi) are chosen for devX and
+            performance
+          </li>
+          <li>
+            CFS provides the glue and ensures{" "}
+            <a href="/docs/configuration">consistent configuration</a>
+          </li>
+        </ul>
       </>
     ),
   },
   {
-    title: "Single statically typed language",
+    title: "Guard rails",
     imageUrl: "img/typescript.svg",
     description: (
       <>
-        Using TypeScript everywhere minimizes context switching and prioritizes
-        compile time over runtime bugs.
+        Have confidence in your changes.
+        <br />
+        <br />
+        <ul>
+          <li>Type checking from UI to DB (Postgres)</li>
+          <li>
+            API uses Apollo GraphQL - TS types are automatically generated
+          </li>
+          <li>CFS includes Airbnb + Prettier linting and formatting</li>
+        </ul>
       </>
     ),
   },
   {
-    title: "Scales",
+    title: "Production ready",
     imageUrl: "img/rocket.svg",
     description: (
       <>
-        Whether you&apos;re handling millions of requests or building the next
-        Facebook, Create Full Stack grows with you and your project.
+        Deploy to AWS in minutes.
+        <br />
+        <br />
+        <ul>
+          <li>
+            Setup is simple with{" "}
+            <a href="/docs/cloud">included Pulumi components</a>
+          </li>
+          <li>
+            <a href="/docs/cicd">CI/CD</a> - tests run on GitHub and code is
+            automatically deployed on push to master
+          </li>
+          <li>
+            <a href="/docs/migrations">Migration support</a> ensures safe DB
+            changes
+          </li>
+        </ul>
       </>
     ),
   },
