@@ -293,7 +293,22 @@ function recursiveRemoveEmptyDir(dir: string) {
   }
 }
 
-function generateSetupHtml(projectPath: string) {
+function replaceStepNumbers(mdSetup: string) {
+  let stepNumber = 0;
+  const incrementStepNumbers = () => {
+    stepNumber += 1;
+    return stepNumber.toString();
+  };
+  return mdSetup.replace(/{STEP_NUMBER}/g, incrementStepNumbers);
+}
+
+function replaceTemplateStrings(mdFile: string, appName: string) {
+  let mdSetup = fs.readFileSync(mdFile, "utf8");
+  mdSetup = replaceStepNumbers(mdSetup);
+  fs.writeFileSync(mdFile, mdSetup.replace(/{APP_NAME}/g, appName));
+}
+
+function generateSetupHtml(mdFileIn: string, htmlFileOut: string) {
   const md = markdownIt({
     html: true,
     linkify: true,
@@ -313,7 +328,7 @@ function generateSetupHtml(projectPath: string) {
     },
   });
   fs.writeFileSync(
-    path.join(projectPath, "setup.html"),
+    htmlFileOut,
     // Add CSS and padding. Using React feels too heavy for something this simple
     `
 <html>
@@ -322,7 +337,7 @@ function generateSetupHtml(projectPath: string) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.0/build/styles/default.min.css">
   </head>
   <body style="padding: 40px;">
-    ${md.render(fs.readFileSync(path.join(projectPath, "README.md"), "utf8"))}
+    ${md.render(fs.readFileSync(mdFileIn, "utf8"))}
   </body>
 </html>
 `
@@ -405,6 +420,18 @@ export default async function copyTemplate(options: {
     path.join(projectPath, "template.README.md"),
     path.join(projectPath, "README.md")
   );
+  fs.renameSync(
+    path.join(projectPath, "template.DEVELOPMENT.md"),
+    path.join(projectPath, "DEVELOPMENT.md")
+  );
+  if (cloudPlatform !== CloudPlatform.none) {
+    fs.renameSync(
+      path.join(projectPath, "template.PRODUCTION.md"),
+      path.join(projectPath, "PRODUCTION.md")
+    );
+  } else {
+    fs.removeSync(path.join(projectPath, "template.PRODUCTION.md"));
+  }
 
   if (hasMobile) {
     updateAppJson(appName, projectPath);
@@ -438,6 +465,17 @@ export default async function copyTemplate(options: {
   );
   recursiveRemoveEmptyDir(projectPath);
 
-  // Generate setup.html after code blocks have been removed from the README.md
-  generateSetupHtml(projectPath);
+  // Generate html after code blocks have been removed
+  replaceTemplateStrings(path.join(projectPath, "DEVELOPMENT.md"), appName);
+  generateSetupHtml(
+    path.join(projectPath, "DEVELOPMENT.md"),
+    path.join(projectPath, "development.html")
+  );
+  if (fs.existsSync(path.join(projectPath, "PRODUCTION.md"))) {
+    replaceTemplateStrings(path.join(projectPath, "PRODUCTION.md"), appName);
+    generateSetupHtml(
+      path.join(projectPath, "PRODUCTION.md"),
+      path.join(projectPath, "production.html")
+    );
+  }
 }

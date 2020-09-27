@@ -9,17 +9,17 @@ export const navigationRef = React.createRef<NavigationContainerRef>();
 export default function App(): ReactElement {
   if (!process.env.AUTH0_CLIENT_ID) {
     throw new Error(
-      "`AUTH0_CLIENT_ID` is required. See setup.html or README.md. Changes to `.env` files requires a restart."
+      "`AUTH0_CLIENT_ID` is required. See development.html or DEVELOPMENT.md. Changes to `.env` files requires a restart."
     );
   }
   if (!process.env.AUTH0_AUDIENCE) {
     throw new Error(
-      "`AUTH0_AUDIENCE` is required. See setup.html or README.md. Changes to `.env` files requires a restart."
+      "`AUTH0_AUDIENCE` is required. See development.html or DEVELOPMENT.md. Changes to `.env` files requires a restart."
     );
   }
   if (!process.env.AUTH0_DOMAIN) {
     throw new Error(
-      "`AUTH0_DOMAIN` is required. See setup.html or README.md. Changes to `.env` files requires a restart."
+      "`AUTH0_DOMAIN` is required. See development.html or DEVELOPMENT.md. Changes to `.env` files requires a restart."
     );
   }
   return (

@@ -9,12 +9,12 @@ import * as serviceWorker from "./serviceWorker";
 
 if (!process.env.REACT_APP_AUTH0_CLIENT_ID) {
   throw new Error(
-    "`REACT_APP_AUTH0_CLIENT_ID` is required. See setup.html or README.md. Changes to `.env` files requires a restart."
+    "`REACT_APP_AUTH0_CLIENT_ID` is required. See development.html or DEVELOPMENT.md. Changes to `.env` files requires a restart."
   );
 }
 if (!process.env.REACT_APP_AUTH0_DOMAIN) {
   throw new Error(
-    "`REACT_APP_AUTH0_DOMAIN` is required. See setup.html or README.md. Changes to `.env` files requires a restart."
+    "`REACT_APP_AUTH0_DOMAIN` is required. See development.html or DEVELOPMENT.md. Changes to `.env` files requires a restart."
   );
 }
 

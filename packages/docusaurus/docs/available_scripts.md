@@ -71,6 +71,14 @@ Starts or restarts a local server for your app and gives you a url to it. Unlike
 
 Launches the test runner in the interactive watch mode.
 
+## Postgres (on Docker)
+
+To make changes to the database see [migrations documentation](/docs/migrations).
+
+### `docker exec -it <project name>_postgres_1 psql -U postgres`
+
+Connects to your Postgres instance running in docker.
+
 ## Pulumi AWS
 
 If included, run from `packages/pulumi-aws`.

@@ -9,6 +9,8 @@ Focus on building your ideas and delighting your users, not fitting libraries an
 
 ## Solution
 
+CFS provides an opinionated full stack focussing on developer productivity, safety and performance.
+
 ### Curated libraries and Frameworks
 
 - Best tools in class
@@ -34,3 +36,8 @@ Focus on building your ideas and delighting your users, not fitting libraries an
   - Run tests automatically on GitHub
   - Pushes to master automatically deploy your full stack
 - Change DB schema safely with [migration support](/docs/migrations)
+
+### No lock-in
+
+- CFS is modular - take or leave any framework
+- Don't like Expo? Eject!

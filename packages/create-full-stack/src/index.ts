@@ -82,11 +82,12 @@ async function run() {
   console.log();
 
   if (process.platform === "win32") {
-    console.log("Sorry, Windows isn't currently supported.");
+    console.error("Sorry, Windows isn't currently supported.");
     console.log();
     console.log(
       "If you'd like this feature, please 👍 https://github.com/tiagob/create-full-stack/issues/146. In the meantime try using WSL (https://docs.microsoft.com/en-us/windows/wsl/)."
     );
+    console.log();
     process.exit(1);
   }
 
@@ -260,7 +261,7 @@ async function run() {
   if (auth === Auth.none) {
     if (cloudPlatform !== CloudPlatform.none) {
       console.log(
-        "Additional setup for production is required. See setup.html or README.md."
+        "Additional setup for production is required. See production.html or PRODUCTION.md."
       );
       console.log();
     }
@@ -284,9 +285,9 @@ async function run() {
     console.log();
     // Additional manual setup is required for development
     console.log(
-      "And complete the steps on setup.html or README.md to get started."
+      "And complete the steps on development.html or DEVELOPMENT.md to get started."
     );
-    open(`${projectName}/setup.html`);
+    open(`${projectName}/development.html`);
   }
   console.log();
   console.log("Happy hacking!");

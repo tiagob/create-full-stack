@@ -29,7 +29,7 @@ If something doesn’t work, please file an [issue](https://github.com/tiagob/cr
 
 Follow instructions at https://classic.yarnpkg.com/en/docs/install
 
-Or with [Homebrew](https://brew.sh/) run:
+OR with [Homebrew](https://brew.sh/) run:
 
 ```bash
 brew install yarn
@@ -76,7 +76,7 @@ Repo uses [graphql-code-generator](https://graphql-code-generator.com/). Client 
 Kill all node processes.
 
 ```bash
-killall node
+pkill node
 ```
 
 #### Hooks can only be called inside the body of a function component

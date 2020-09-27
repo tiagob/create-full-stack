@@ -92,8 +92,7 @@ function Home() {
       </header>
       <main>
         <div className={styles.summary}>
-          Focus on building your ideas, not fitting libraries and frameworks
-          together. Learn more on{" "}
+          Like Create React App but for your full stack. Learn more on{" "}
           <i>
             <a href="/docs/why">Why?</a>
           </i>{" "}
