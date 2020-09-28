@@ -85,7 +85,7 @@ async function run() {
     console.error("Sorry, Windows isn't currently supported.");
     console.log();
     console.log(
-      "If you'd like this feature, please 👍 https://github.com/tiagob/create-full-stack/issues/146. In the meantime try using WSL (https://docs.microsoft.com/en-us/windows/wsl/)."
+      "If you'd like this feature, please +1 https://github.com/tiagob/create-full-stack/issues/146. In the meantime try using WSL (https://docs.microsoft.com/en-us/windows/wsl/)."
     );
     console.log();
     process.exit(1);

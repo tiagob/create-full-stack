@@ -289,8 +289,9 @@ URLs available:
 <!-- @remove-web-begin -->
 
 - web: [http://localhost:3000](http://localhost:3000)
-  <!-- @remove-web-end -->
-  <!-- @remove-mobile-begin -->
+  - **This redirects to your [Auth0 login page](https://auth0.com/docs/universal-login)**
+    <!-- @remove-web-end -->
+    <!-- @remove-mobile-begin -->
 - mobile (expo devtools): [http://localhost:19002](http://localhost:19002)
   <!-- @remove-mobile-end -->
 - backend: [http://localhost:8080/v1/graphql](http://localhost:8080/v1/graphql)
