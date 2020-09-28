@@ -26,8 +26,11 @@ const features = [
             performance
           </li>
           <li>
-            CFS provides the glue and ensures{" "}
+            Provides the glue and ensures{" "}
             <a href="/docs/configuration">consistent configuration</a>
+          </li>
+          <li>
+            <a href="/docs/auth">Authenticates users</a> with Auth0
           </li>
         </ul>
       </>
@@ -46,7 +49,7 @@ const features = [
           <li>
             API uses Apollo GraphQL - TS types are automatically generated
           </li>
-          <li>CFS includes Airbnb + Prettier linting and formatting</li>
+          <li>Code linting (Airbnb) and formatting (Prettier)</li>
         </ul>
       </>
     ),

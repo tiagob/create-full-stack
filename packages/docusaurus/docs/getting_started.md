@@ -36,5 +36,9 @@ CFS support for `npm` will be added when [npm v7](https://blog.npmjs.org/post/62
 - backend (apollo-server-express): [http://localhost:8080/graphql](http://localhost:8080/graphql)
 
 :::caution
-Expect an authorization error if [auth](/docs/auth) is enabled from the backend URLs.
+If [auth](/docs/auth) is enabled, expect:
+
+- A redirect to your [Auth0 login page](https://auth0.com/docs/universal-login) from web
+- An authorization error from the backend APIs
+
 :::
