@@ -8,6 +8,9 @@ module.exports = {
   organizationName: "tiagob",
   projectName: "create-full-stack",
   themeConfig: {
+    gtag: {
+      trackingID: "UA-179528483-1",
+    },
     navbar: {
       title: "Create Full Stack",
       logo: {
