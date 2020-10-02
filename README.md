@@ -10,29 +10,19 @@ If something doesn’t work, please file an [issue](https://github.com/tiagob/cr
 
 **Looking for co-contributors. If this project interests you, email me@tiagobandeira.com**
 
-## Philosophy
+## Prerequisites
 
-- Single language (TypeScript)
-  - Minimize context switching
-- Static typing everywhere (DB to UI across APIs)
-  - Compile time bugs instead of runtime bugs
-- Scales
-  - In terms of requests, features, and complexity (engineers on the project)
-- Most popular tools in class
-  - Better support and fewer edge cases
-- Simplicity over infinite flexibility
-  - Prefer simpler solutions to the 90% use case over supporting the 1% use case
+- [Yarn](https://yarnpkg.com/getting-started/install#global-install) >= v1.12.0
+- [Docker](https://docs.docker.com/get-docker/) >= 1.25.5
+- Node >= v12.10
+  - You can use [n](https://github.com/tj/n) to switch Node versions
 
-## Setup
-
-### Install Yarn
-
-Follow instructions at https://classic.yarnpkg.com/en/docs/install
-
-OR with [Homebrew](https://brew.sh/) run:
+Check versions:
 
 ```bash
-brew install yarn
+yarn --version
+docker-compose --version
+node --version
 ```
 
 CFS support for `npm` will be added when [npm v7](https://blog.npmjs.org/post/626173315965468672/npm-v7-series-beta-release-and-semver-major) is stable, which contains the required [workspaces feature](https://github.com/npm/rfcs/blob/latest/accepted/0026-workspaces.md).
@@ -42,8 +32,6 @@ CFS support for `npm` will be added when [npm v7](https://blog.npmjs.org/post/62
 ```bash
 yarn create full-stack my-full-stack
 ```
-
-**Node v12.10.0 or later is required**. You can use [n](https://github.com/tj/n) to switch Node versions.
 
 ### Help
 
