@@ -49,5 +49,5 @@ URLs available:
 
 - Check out [Available Scripts](https://create-full-stack.com/docs/available_scripts)
 <!-- @remove-pulumi-aws-begin -->
-- Deploy to AWS with the [production guide](PRODUCTION.md)
+- Deploy to AWS with the [production guide]({PRODUCTION_FILENAME})
 <!-- @remove-pulumi-aws-end -->

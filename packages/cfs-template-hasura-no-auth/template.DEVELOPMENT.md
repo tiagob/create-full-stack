@@ -60,5 +60,5 @@ Learn more about Hasura from their [docs](https://hasura.io/docs/1.0/graphql/cor
 
 - Check out [Available Scripts](https://create-full-stack.com/docs/available_scripts)
 <!-- @remove-pulumi-aws-begin -->
-- Deploy to AWS with the [production guide](PRODUCTION.md)
+- Deploy to AWS with the [production guide]({PRODUCTION_FILENAME})
 <!-- @remove-pulumi-aws-end -->

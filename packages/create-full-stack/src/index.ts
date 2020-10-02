@@ -287,8 +287,8 @@ async function run() {
     console.log(
       "And complete the steps on development.html or DEVELOPMENT.md to get started."
     );
-    open(`${projectName}/development.html`);
   }
+  open(`${projectName}/development.html`);
   console.log();
   console.log("Happy hacking!");
 }

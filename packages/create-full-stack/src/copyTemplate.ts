@@ -302,13 +302,11 @@ function replaceStepNumbers(mdSetup: string) {
   return mdSetup.replace(/{STEP_NUMBER}/g, incrementStepNumbers);
 }
 
-function replaceTemplateStrings(mdFile: string, appName: string) {
-  let mdSetup = fs.readFileSync(mdFile, "utf8");
-  mdSetup = replaceStepNumbers(mdSetup);
-  fs.writeFileSync(mdFile, mdSetup.replace(/{APP_NAME}/g, appName));
-}
-
-function generateSetupHtml(mdFileIn: string, htmlFileOut: string) {
+function generateSetupMdAndHtml(
+  mdFile: string,
+  htmlFile: string,
+  appName: string
+) {
   const md = markdownIt({
     html: true,
     linkify: true,
@@ -327,8 +325,22 @@ function generateSetupHtml(mdFileIn: string, htmlFileOut: string) {
       return ""; // Use external default escaping
     },
   });
+
+  let mdContent = fs.readFileSync(mdFile, "utf8");
+  mdContent = replaceStepNumbers(mdContent);
+  mdContent = mdContent.replace(/{APP_NAME}/g, appName);
+  // Copy to replace links to related docs (ex. DEVELOPMENT.md, production.html)
+  // with the corresponding file extension
+  const htmlContent = mdContent.slice();
+
   fs.writeFileSync(
-    htmlFileOut,
+    mdFile,
+    mdContent
+      .replace(/{PRODUCTION_FILENAME}/g, "PRODUCTION.md")
+      .replace(/{DEVELOPMENT_FILENAME}/g, "DEVELOPMENT.md")
+  );
+  fs.writeFileSync(
+    htmlFile,
     // Add CSS and padding. Using React feels too heavy for something this simple
     `
 <html>
@@ -337,7 +349,11 @@ function generateSetupHtml(mdFileIn: string, htmlFileOut: string) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.0/build/styles/default.min.css">
   </head>
   <body style="padding: 40px;">
-    ${md.render(fs.readFileSync(mdFileIn, "utf8"))}
+    ${md.render(
+      htmlContent
+        .replace(/{PRODUCTION_FILENAME}/g, "production.html")
+        .replace(/{DEVELOPMENT_FILENAME}/g, "development.html")
+    )}
   </body>
 </html>
 `
@@ -466,16 +482,21 @@ export default async function copyTemplate(options: {
   recursiveRemoveEmptyDir(projectPath);
 
   // Generate html after code blocks have been removed
-  replaceTemplateStrings(path.join(projectPath, "DEVELOPMENT.md"), appName);
-  generateSetupHtml(
+  generateSetupMdAndHtml(
+    path.join(projectPath, "README.md"),
+    path.join(projectPath, "readme.html"),
+    appName
+  );
+  generateSetupMdAndHtml(
     path.join(projectPath, "DEVELOPMENT.md"),
-    path.join(projectPath, "development.html")
+    path.join(projectPath, "development.html"),
+    appName
   );
   if (fs.existsSync(path.join(projectPath, "PRODUCTION.md"))) {
-    replaceTemplateStrings(path.join(projectPath, "PRODUCTION.md"), appName);
-    generateSetupHtml(
+    generateSetupMdAndHtml(
       path.join(projectPath, "PRODUCTION.md"),
-      path.join(projectPath, "production.html")
+      path.join(projectPath, "production.html"),
+      appName
     );
   }
 }
