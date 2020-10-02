@@ -18,8 +18,8 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@pulumi/auth0": "^1.1.0",
-    "@pulumi/pulumi": "^2.9.2"
+    "@pulumi/auth0": "^1.2.0",
+    "@pulumi/pulumi": "^2.11.2"
   },
   "devDependencies": {
     "@types/node": "^10.0.0"

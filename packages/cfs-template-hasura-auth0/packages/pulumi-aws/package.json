@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@pulumi/auth0": "^1.1.0",
-    "@pulumi/aws": "^3.2.1",
+    "@pulumi/auth0": "^1.2.0",
+    "@pulumi/aws": "^3.5.0",
     "@pulumi/awsx": "^0.22.0",
-    "@pulumi/pulumi": "^2.10.0",
+    "@pulumi/pulumi": "^2.11.2",
     "cfs-pulumi-auth0": "^0.1.0",
     "cfs-pulumi-aws": "^0.1.0",
     "cfs-pulumi-expo": "^0.1.0"

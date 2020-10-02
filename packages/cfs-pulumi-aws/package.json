@@ -18,9 +18,9 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@pulumi/aws": "^3.2.1",
+    "@pulumi/aws": "^3.5.0",
     "@pulumi/awsx": "^0.22.0",
-    "@pulumi/pulumi": "^2.9.2",
+    "@pulumi/pulumi": "^2.11.2",
     "aws-sdk": "^2.749.0",
     "cross-spawn": "^7.0.3",
     "fast-deep-equal": "^3.1.3",

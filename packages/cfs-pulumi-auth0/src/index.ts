@@ -89,16 +89,12 @@ export class Auth0 extends pulumi.ComponentResource {
           appType: "native",
           grantTypes: ["authorization_code", "implicit", "refresh_token"],
           customLoginPageOn: true,
-          // TODO: Set refreshToken rotationType to "rotating".
-          // https://github.com/tiagob/create-full-stack/issues/134
-          // https://github.com/pulumi/pulumi-auth0/issues/30
-          // Should look something like:
-          // refreshToken: {
-          //   leeway: 0,
-          //   tokenLifetime: 2592000,
-          //   rotationType: "rotating",
-          //   expirationType: "expiring",
-          // },
+          refreshToken: {
+            leeway: 0,
+            tokenLifetime: 2592000,
+            rotationType: "rotating",
+            expirationType: "expiring",
+          },
         },
         { parent: this }
       ).clientId;
