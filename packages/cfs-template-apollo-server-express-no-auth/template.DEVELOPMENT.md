@@ -1,14 +1,14 @@
-🎉 Create Full Stack has finished:
+🎉 _Create Full Stack has finished:_
 
-- Scaffolding your monorepo with your platform and feature selections
-- Installing packages
-- Generating configuration instructions based on your selection
+- _Scaffolding your monorepo with your platform and feature selections_
+- _Installing packages_
+- _Generating configuration instructions based on your selection_
 
 **Follow the steps below to run locally.**
 
 ## {STEP_NUMBER}. Setup Docker
 
-Docker runs the Postgres DB.
+_Docker runs the Postgres DB._
 
 - Install Docker from their [website](https://docs.docker.com/get-docker/)
 - Open the Docker app
@@ -26,7 +26,7 @@ open /Applications/Docker.app
 
 ## {STEP_NUMBER}. Start
 
-🎉 Congrats! Your full stack is configured and ready for development.
+🎉 _Congrats! Your full stack is configured and ready for development._
 
 From the root of the project run:
 

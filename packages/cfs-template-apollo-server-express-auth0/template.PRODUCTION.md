@@ -58,7 +58,7 @@ aws configure
 
 <!-- @remove-github-actions-begin -->
 
-**Safely record your access key ID and secret access key for the CI/CD step below**
+**Safely save your access key ID and secret access key for the CI/CD step below**
 
 <!-- @remove-github-actions-end -->
 
@@ -66,11 +66,11 @@ aws configure
 
 <!-- @remove-web-begin -->
 
-Pulumi web configuration requires a custom domain that is registered on Route53 for CloudFront.
+_Pulumi web configuration requires a custom domain that is registered on Route53 for CloudFront._
 
 <!-- @remove-web-end -->
 
-The backend uses the custom domain with a subdomain.
+_The backend uses the custom domain with a subdomain._
 
 If you don't have a domain, register a domain on Route53 from the [AWS console](https://console.aws.amazon.com/route53/home#DomainRegistration:).
 
@@ -113,7 +113,7 @@ pulumi config set --secret auth0:clientId xxxxxxxxxxx # YOUR AUTH0 MACHINE TO MA
 pulumi config set --secret auth0:clientSecret xxxxxxxxxxx # YOUR AUTH0 MACHINE TO MACHINE CLIENT SECRET
 ```
 
-You can learn more on the [Auth0 docs](https://www.pulumi.com/docs/intro/cloud-providers/auth0/setup/#configuring-credentials).
+_You can learn more on the [Auth0 docs](https://www.pulumi.com/docs/intro/cloud-providers/auth0/setup/#configuring-credentials)._
 
 ## {STEP_NUMBER}. Install the AWS Pulumi plugin
 
@@ -127,14 +127,14 @@ pulumi plugin install resource aws 3.2.1
 pulumi up --yes
 ```
 
-🎉 Congrats! Your full stack is deployed on AWS and Auth0.
+🎉 _Congrats! Your full stack is deployed on AWS and Auth0._
 
 <!-- @remove-pulumi-aws-end -->
 <!-- @remove-github-actions-begin -->
 
 ## {STEP_NUMBER}. CI/CD
 
-**You must deploy the production stack from your local machine first before deploying from GitHub Actions or you'll encounter https://github.com/pulumi/pulumi/issues/2097**
+**You must deploy the production stack from your local machine first before deploying from GitHub Actions or you'll encounter [pulumi/issues/2097](https://github.com/pulumi/pulumi/issues/2097)**
 
 Create a Pulumi access token from the Pulumi [Access Tokens Page](https://app.pulumi.com/account/tokens).
 
@@ -152,7 +152,7 @@ After your code is pushed to a GitHub repo, add the following secrets for the Ac
 
 `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` come from the "Setup the AWS CLI" section above.
 
-🎉 That's it! Push to GitHub and you should see your CI/CD jobs running under "Actions".
+🎉 _That's it!_ Push to GitHub and you should see your CI/CD jobs running under "Actions".
 
 <br/>
 References

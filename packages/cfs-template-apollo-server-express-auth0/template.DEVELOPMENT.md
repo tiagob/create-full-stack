@@ -1,14 +1,14 @@
-🎉 Create Full Stack has finished:
+🎉 _Create Full Stack has finished:_
 
-- Scaffolding your monorepo with your platform and feature selections
-- Installing packages
-- Generating configuration instructions based on your selection
+- _Scaffolding your monorepo with your platform and feature selections_
+- _Installing packages_
+- _Generating configuration instructions based on your selection_
 
 **Follow the steps below to run locally.**
 
 ## {STEP_NUMBER}. Setup Docker
 
-Docker runs the Postgres DB.
+_Docker runs the Postgres DB._
 
 - Install Docker from their [website](https://docs.docker.com/get-docker/)
 - Open the Docker app
@@ -27,7 +27,7 @@ open /Applications/Docker.app
 
 ## {STEP_NUMBER}. Setup Expo
 
-Expo simplifies mobile development by handling Auth redirects and removing XCode and Android studio dependencies.
+_Expo simplifies mobile development by handling Auth redirects and removing XCode and Android studio dependencies._
 
 If you're new to Expo, register (it's free) by running:
 
@@ -46,7 +46,7 @@ yarn expo login
 
 ## {STEP_NUMBER}. Setup Pulumi
 
-Pulumi defines AWS and Auth0 infrastructure as TypeScript code.
+_Pulumi defines AWS and Auth0 infrastructure as TypeScript code._
 
 Install Pulumi from their [website](https://www.pulumi.com/docs/get-started/install/).
 
@@ -113,7 +113,7 @@ pulumi config set --secret auth0:clientId xxxxxxxxxxx # YOUR AUTH0 MACHINE TO MA
 pulumi config set --secret auth0:clientSecret xxxxxxxxxxx # YOUR AUTH0 MACHINE TO MACHINE CLIENT SECRET
 ```
 
-You can learn more on the [Auth0 docs](https://www.pulumi.com/docs/intro/cloud-providers/auth0/setup/#configuring-credentials).
+_You can learn more on the [Auth0 docs](https://www.pulumi.com/docs/intro/cloud-providers/auth0/setup/#configuring-credentials)._
 
 ## {STEP_NUMBER}. Install the Auth0 Pulumi plugin
 
@@ -127,7 +127,7 @@ pulumi plugin install resource auth0 1.1.0
 pulumi up --yes
 ```
 
-This creates and configures APIs and applications on Auth0 and writes local `.env` files with the Auth0 configuration. No secrets are stored in the `.env` files. `.env` files can be checked into source control.
+_This creates and configures APIs and applications on Auth0 and writes local `.env` files with the Auth0 configuration. No secrets are stored in the `.env` files. `.env` files can be checked into source control._
 
 <!-- @remove-pulumi-aws-end -->
 <!-- @remove-manual-config-begin -->
@@ -136,43 +136,44 @@ This creates and configures APIs and applications on Auth0 and writes local `.en
 
 [Signup](https://auth0.com/signup) and create an Auth0 tenant. Change the default tenant name (ex. "development-{APP_NAME}") to make it readable. Auth0 is free for up to 7k users.
 
-**Record your tenant domain for steps below**
+**Save your tenant domain for steps below**
 
 <img alt="Auth0 Signup" src="https://create-full-stack.com/img/readme/auth0_signup.png" width="512">
 
 ## {STEP_NUMBER}. Create an Auth0 API
 
-This stores the auth configuration for the server.
+_This stores the auth configuration for the server._
 
 - APIs > CREATE API
 
 <img alt="Auth0 Create API" src="https://create-full-stack.com/img/readme/auth0_create_api.png" width="512">
 
 - Set the name (ex. "server")
+- Set the identifier (audience) to "server"
 <!-- @remove-mobile-begin -->
 - Enable "Allow Offline Access"
 
 <img alt="Auth0 API Offline Access" src="https://create-full-stack.com/img/readme/auth0_api_offline_access.png" width="512">
 <!-- @remove-mobile-end -->
 
-- Record the identifier/audience
+- Save the identifier/audience for later steps
 
 <img alt="Auth0 API" src="https://create-full-stack.com/img/readme/auth0_api_settings.png" width="512">
 
-In [`packages/server/.env.development`](packages/server/.env.development) fill in the fields
+In `packages/server/.env.development` fill in the fields
 
 ```
 AUTH0_AUDIENCE=[YOUR AUTH0 API AUDIENCE]
 AUTH0_DOMAIN=[YOUR AUTH0 TENANT DOMAIN]
 ```
 
-**Record your API audience for steps below**
+**Save your API audience for steps below**
 
 <!-- @remove-web-begin -->
 
 ## {STEP_NUMBER}. Create an Auth0 "Single Page Application"
 
-This stores the auth configuration for web.
+_This stores the auth configuration for web._
 
 - Applications > CREATE APPLICATION
 
@@ -187,7 +188,7 @@ This stores the auth configuration for web.
 
 <img alt="Auth0 Single Page Web App URLs" src="https://create-full-stack.com/img/readme/auth0_spa_urls.png" width="512">
 
-In [`packages/web/.env.development`](packages/web/.env.development) fill in the fields from the server API you created above and your Single Page Web Application's "Settings" page.
+In `packages/web/.env.development` fill in the fields from the server API you created above and your Single Page Web Application's "Settings" page.
 
 <img alt="Auth0 Single Page Web App URLs" src="https://create-full-stack.com/img/readme/auth0_spa_settings.png" width="512">
 
@@ -202,7 +203,7 @@ REACT_APP_AUTH0_CLIENT_ID=[YOUR AUTH0 SINGLE PAGE APPLICATION CLIENT ID]
 
 ## {STEP_NUMBER}. Create an Auth0 "Native" Application
 
-This stores the auth configuration for mobile.
+_This stores the auth configuration for mobile._
 
 - Applications > CREATE APPLICATION
 
@@ -223,7 +224,7 @@ This stores the auth configuration for mobile.
 
 <img alt="Auth0 Native Refresh Token" src="https://create-full-stack.com/img/readme/auth0_native_refresh_token.png" width="512">
 
-In [`packages/mobile/.env.development`](packages/mobile/.env.development) fill in the fields from the server API you created above and your Native Application's "Settings" page.
+In `packages/mobile/.env.development` fill in the fields from the server API you created above and your Native Application's "Settings" page.
 
 <img alt="Auth0 Native Application Settings" src="https://create-full-stack.com/img/readme/auth0_native_settings.png" width="512">
 
@@ -237,7 +238,7 @@ AUTH0_CLIENT_ID=[YOUR AUTH0 NATIVE APPLICATION CLIENT ID]
 
 ## {STEP_NUMBER}. Switch Universal Login to "New"
 
-It's recommended you use the "New Universal Login Experience" which stores user credentials on page refresh. This is also helpful for developing so you don't need to re-authenticate to view changes you make.
+_It's recommended you use the "New Universal Login Experience" which stores user credentials on page refresh. This is also helpful for developing so you don't need to re-authenticate to view changes you make._
 
 - Navigate to "Universal Login"
 - Switch from "Classic" to "New"
@@ -248,7 +249,7 @@ It's recommended you use the "New Universal Login Experience" which stores user 
 
 ## {STEP_NUMBER}. Start
 
-🎉 Congrats! Your full stack is configured and ready for development.
+🎉 _Congrats! Your full stack is configured and ready for development._
 
 From the root of the project run:
 
