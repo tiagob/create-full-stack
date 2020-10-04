@@ -7,7 +7,7 @@ slug: /
 
 Create Full Stack (CFS) generates a boilerplate Todo app for you, integrating the tools you select ([view demo](http://demo-full-stack.com/)). It provides the glue between the libraries and frameworks. No more stitching together random blog posts guessing about best practices. Build scalable applications on a solid foundation. CFS works on macOS, and Linux.
 
-Prerequisites:
+## Prerequisites
 
 - [Yarn](https://yarnpkg.com/getting-started/install#global-install) >= v1.12.0
 - [Docker](https://docs.docker.com/get-docker/) >= 1.25.5
@@ -22,22 +22,22 @@ docker-compose --version
 node --version
 ```
 
-Then scaffold your full stack:
+:::note
+CFS support for `npm` will be added when [npm v7](https://blog.npmjs.org/post/626173315965468672/npm-v7-series-beta-release-and-semver-major) is stable, which contains the required [workspaces feature](https://github.com/npm/rfcs/blob/latest/accepted/0026-workspaces.md).
+:::
+
+## Run
 
 ```bash
 yarn create full-stack my-full-stack
 ```
 
-Follow the instructions generated in `my-full-stack/DEVELOPMENT.md` to complete the setup. Then try spinning up the full stack locally.
+**Follow the instructions generated in `my-full-stack/development.html` to complete the setup.** Then try spinning up the full stack locally.
 
 ```bash
 cd my-full-stack
 yarn start
 ```
-
-:::note
-CFS support for `npm` will be added when [npm v7](https://blog.npmjs.org/post/626173315965468672/npm-v7-series-beta-release-and-semver-major) is stable, which contains the required [workspaces feature](https://github.com/npm/rfcs/blob/latest/accepted/0026-workspaces.md).
-:::
 
 ## Development URLs
 
@@ -55,3 +55,12 @@ If [auth](/docs/auth) is enabled, expect:
 - An authorization error from the backend APIs
 
 :::
+
+## Setup [VSCode](https://code.visualstudio.com/) (recommended IDE/Editor)
+
+When opening the project in VSCode, click on the dialog to install [recommended extensions](https://code.visualstudio.com/docs/editor/extension-gallery#_workspace-recommended-extensions) which automatically:
+
+- Format on save
+- Lint on save
+- Understand Dockerfiles
+- Spellcheck

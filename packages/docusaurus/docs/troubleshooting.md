@@ -57,3 +57,58 @@ Kill it (ex. node)
 ```bash
 pkill node
 ```
+
+## Can't connect to AWS Fargate service
+
+If either of the following URLs returns an empty response:
+
+- Hasura backend: `https://hasura.[YOUR DOMAIN].com/v1/graphql`
+- Apollo Server Express backend: `https://server.[YOUR DOMAIN].com/graphql`
+
+Refresh Fargate and the associated listener and target group. To do that, comment out the Fargate resource in `packages/pulumi-aws/index.ts`:
+
+```bash
+--- a/packages/pulumi-aws/index.ts
++++ b/packages/pulumi-aws/index.ts
+@@ -33,18 +33,18 @@ const { connectionString } = new Rds("server-db", {
+dbUsername,
+dbPassword,
+});
+-new Fargate(path.basename(serverPath), {
+
+- certificateArn,
+- domain: serverDomain,
+- image: awsx.ecs.Image.fromDockerBuild("image", {
+- context: "../..",
+- dockerfile: `${serverPath}/Dockerfile`,
+- }),
+- env: {
+- DATABASE_URL: connectionString,
+- CORS_ORIGIN: webUrl,
+- },
+  -});
+  +// new Fargate(path.basename(serverPath), {
+  +// certificateArn,
+  +// domain: serverDomain,
+  +// image: awsx.ecs.Image.fromDockerBuild("image", {
+  +// context: "../..",
+  +// dockerfile: `${serverPath}/Dockerfile`,
+  +// }),
+  +// env: {
+  +// DATABASE_URL: connectionString,
+  +// CORS_ORIGIN: webUrl,
+  +// },
+  +// });
+```
+
+Then run:
+
+```bash
+pulumi up --yes
+```
+
+Undo the changes above in `packages/pulumi-aws/index.ts` then again run:
+
+```bash
+pulumi up --yes
+```

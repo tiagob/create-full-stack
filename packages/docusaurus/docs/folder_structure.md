@@ -10,7 +10,7 @@ hasura/  # If hasura backend is selected
 packages/
   common/
   mobile/  # If mobile is included
-  pulumi-aws/  # If pulumi aws is included
+  pulumi-aws/  # If pulumi aws cloud is selected
   server/  # If apollo-server-express backend is selected
   web/  # If web is included
 ```
