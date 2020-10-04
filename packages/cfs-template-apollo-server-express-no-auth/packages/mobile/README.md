@@ -7,3 +7,5 @@ An Expo [managed workflow](https://docs.expo.io/introduction/managed-vs-bare/#ma
 ```bash
 yarn start
 ```
+
+Expo web is unsupported. If you need this, +1 [create-full-stack/issues/148](https://github.com/tiagob/create-full-stack/issues/148).

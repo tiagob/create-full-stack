@@ -348,12 +348,31 @@ function generateSetupMdAndHtml(
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.0/build/styles/default.min.css">
   </head>
-  <body style="padding: 40px;">
-    ${md.render(
-      htmlContent
-        .replace(/{PRODUCTION_FILENAME}/g, "production.html")
-        .replace(/{DEVELOPMENT_FILENAME}/g, "development.html")
-    )}
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="${
+              htmlFile.endsWith("readme.html") ? "active" : ""
+            }"><a href="readme.html">Readme</a></li>
+            <li class="${
+              htmlFile.endsWith("development.html") ? "active" : ""
+            }"><a href="development.html">Development</a></li>
+            <li class="${
+              htmlFile.endsWith("production.html") ? "active" : ""
+            }"><a href="production.html">Production</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div style="margin: 0 40px 40px 40px;">
+      ${md.render(
+        htmlContent
+          .replace(/{PRODUCTION_FILENAME}/g, "production.html")
+          .replace(/{DEVELOPMENT_FILENAME}/g, "development.html")
+      )}
+    </div>
   </body>
 </html>
 `

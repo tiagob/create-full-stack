@@ -114,9 +114,9 @@ _Pulumi web configuration requires a custom domain that is registered on Route53
 
 _The backend uses the custom domain with a subdomain._
 
-If you don't have a domain, register a domain on Route53 from the [AWS console](https://console.aws.amazon.com/route53/home#DomainRegistration:).
+If you don't have a domain, register one on Route53 from the AWS console [domain registration page](https://console.aws.amazon.com/route53/home#DomainRegistration:).
 
-If you already have a domain on a different registrar, transfer your domain to Route53 from the [AWS console](https://console.aws.amazon.com/route53/home#DomainTransfer:).
+If you already have a domain on a different registrar, transfer it to Route53 from the AWS console [domain transfer page](https://console.aws.amazon.com/route53/home#DomainTransfer:).
 
 ```bash
 pulumi config set domain demo-full-stack.com # YOUR ROUTE53 DOMAIN

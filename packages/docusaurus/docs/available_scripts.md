@@ -17,9 +17,23 @@ This continues to run if one of the processes fails. You may need to scroll up t
 
 Runs all the tests across the platforms once. Unlike platform specific `yarn test`, this does not use watch mode which makes it useful for CI.
 
+### `yarn lint`
+
+Use [ESLint](https://eslint.org/) to lint all `.ts` and `.tsx` files with autofix enabled. Files are automatically linted and formatted on save with VSCode.
+
+This uses a [custom ESLint configuration](https://github.com/tiagob/create-full-stack/tree/master/packages/eslint-config-create-full-stack) which includes [Airbnb style guide](https://github.com/airbnb/javascript) rules.
+
+### `yarn prettier`
+
+Use [Prettier](https://prettier.io/) to format all files. Files are automatically linted and formatted on save with VSCode.
+
 ### `yarn generate`
 
-Generates TypeScript types and React hooks for the Apollo GraphQL client. To run in watch mode which actively updates on any change, add the `--watch` flag.
+Generates TypeScript types and React hooks for the Apollo GraphQL client. To run in watch mode which actively updates on any change, add the `--watch` flag. If Hasura backend is selected, the Hasura docker container must be up locally.
+
+### `docker-compose up`
+
+Starts Hasura (if selected) and Postgres in Docker containers running locally.
 
 ## Apollo Server Express
 
@@ -43,15 +57,11 @@ Common commands are shown below. Additional commands are documented on the [Hasu
 Create Full Stack installs the Hasura CLI locally to the workspace so you must run `yarn hasura` to access it.
 :::
 
-### `docker-compose up`
-
-Starts Hasura and Postgres in Docker containers running locally.
-
 ### `yarn hasura console`
 
-Run a web server to serve the Hasura console for the GraphQL engine to manage the database and build queries.
+Run a web server to host the Hasura console for the GraphQL engine to manage the database and build queries. The Hasura backend must be up locally for the console to load.
 
-Changes to the schema automatically update the migrations file.
+Changes to the schema automatically update or create the migrations files.
 
 ## Mobile
 
@@ -66,6 +76,10 @@ Create Full Stack installs the Expo CLI locally to the workspace so you must run
 ### `yarn start`
 
 Starts or restarts a local server for your app and gives you a url to it. Unlike the default `expo start` this clears the Metro bundler cache. The cache is cleared between runs in case a `.env` file is updated otherwise stale values may persist.
+
+:::caution
+Expo web is unsupported. If you need this, +1 [create-full-stack/issues/148](https://github.com/tiagob/create-full-stack/issues/148).
+:::
 
 ### `yarn test`
 
