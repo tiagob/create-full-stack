@@ -143,15 +143,7 @@ async function updatePackage({
     });
     testCommands.push({
       name: "Server",
-      // Don't include --ci, this can get into a weird state where jest can't
-      // find the snapshots. To reproduce:
-      // 1. Include "--ci"
-      // 2. Run `yarn start` from root
-      // 3. Run `yarn test` from root
-      // The issue goes away if you update the snapshot but no files are
-      // modified. It occurs because __snapshots__ isn't included in build/
-      // and build/ is only used after `yarn start` is run.
-      command: "yarn --cwd packages/server test --watchAll=false",
+      command: "yarn --cwd packages/server test --ci --watchAll=false",
     });
   }
   if (hasMobile) {

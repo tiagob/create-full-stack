@@ -18,7 +18,11 @@
       "src/**/*.ts"
     ],
     "preset": "ts-jest",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "<rootDir>/build/",
+      "<rootDir>/node_modules/"
+    ]
   },
   "dependencies": {
     "apollo-server-express": "^2.18.0",

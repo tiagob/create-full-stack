@@ -118,7 +118,7 @@ _You can learn more on the [Auth0 docs](https://www.pulumi.com/docs/intro/cloud-
 ## {STEP_NUMBER}. Install the Auth0 Pulumi plugin
 
 ```bash
-pulumi plugin install resource auth0 1.1.0
+pulumi plugin install resource auth0 1.2.0
 ```
 
 ## {STEP_NUMBER}. Deploy
@@ -282,6 +282,9 @@ _It's recommended you use the "New Universal Login Experience" which stores user
 From the root of the project run:
 
 ```bash
+<!-- @remove-pulumi-aws-begin -->
+cd ../.. # Goto root
+<!-- @remove-pulumi-aws-end -->
 yarn start
 ```
 

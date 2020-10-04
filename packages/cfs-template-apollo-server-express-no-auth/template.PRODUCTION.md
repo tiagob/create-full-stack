@@ -125,7 +125,7 @@ pulumi config set domain demo-full-stack.com # YOUR ROUTE53 DOMAIN
 ## {STEP_NUMBER}. Install the AWS Pulumi plugin
 
 ```bash
-pulumi plugin install resource aws 3.2.1
+pulumi plugin install resource aws 3.5.0
 ```
 
 ## {STEP_NUMBER}. Deploy

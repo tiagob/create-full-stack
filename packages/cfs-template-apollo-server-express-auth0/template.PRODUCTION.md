@@ -118,7 +118,7 @@ _You can learn more on the [Auth0 docs](https://www.pulumi.com/docs/intro/cloud-
 ## {STEP_NUMBER}. Install the AWS Pulumi plugin
 
 ```bash
-pulumi plugin install resource aws 3.2.1
+pulumi plugin install resource aws 3.5.0
 ```
 
 ## {STEP_NUMBER}. Deploy
