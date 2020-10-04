@@ -1,6 +1,6 @@
 {
   "name": "cfs-dotenv",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Load dotenv files like CRA in Create Full Stack.",
   "bugs": {
     "url": "https://github.com/tiagob/create-full-stack/issues"

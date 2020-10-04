@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-expo-cfs-dotenv",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Babel plugin for dotenv in Expo mobile apps in Create Full Stack",
   "bugs": {
     "url": "https://github.com/tiagob/create-full-stack/issues"
@@ -20,7 +20,7 @@
   "dependencies": {
     "@babel/traverse": "^7.10.5",
     "@babel/types": "^7.10.5",
-    "cfs-dotenv": "^0.1.6"
+    "cfs-dotenv": "^0.1.7"
   },
   "devDependencies": {
     "@types/babel__traverse": "^7.0.13"
