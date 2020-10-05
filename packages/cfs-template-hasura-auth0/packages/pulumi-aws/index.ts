@@ -56,8 +56,12 @@ export const webUrl = isDevelopment
 
 const {
   audience: auth0Audience,
+  // @remove-web-begin
   webClientId: auth0WebClientId,
+  // @remove-web-end
+  // @remove-mobile-begin
   mobileClientId: auth0MobileClientId,
+  // @remove-mobile-end
 } = new Auth0("auth0", {
   resourceServerName: path.basename(serverPath),
   // @remove-web-begin
