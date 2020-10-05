@@ -1,6 +1,6 @@
 {
   "name": "create-full-stack",
-  "version": "0.1.65",
+  "version": "0.1.66",
   "description": "Set up a TypeScript full stack (web, mobile, backend, aws) with one command.",
   "keywords": [
     "react",
