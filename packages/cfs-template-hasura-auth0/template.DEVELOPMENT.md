@@ -179,17 +179,19 @@ _This stores the auth configuration for the server._
 
 - Set the name (ex. "server")
 - Set the identifier (audience) to "server"
+
+<img alt="Auth0 API Identifier" src="https://create-full-stack.com/img/readme/auth0_api_identifier.png" width="512">
+
+- Click "Settings"
 <!-- @remove-mobile-begin -->
 - Enable "Allow Offline Access"
 
 <img alt="Auth0 API Offline Access" src="https://create-full-stack.com/img/readme/auth0_api_offline_access.png" width="512">
 <!-- @remove-mobile-end -->
 
-- Save the identifier/audience for later steps
+In `hasura/.env.development` fill in the field
 
 <img alt="Auth0 API" src="https://create-full-stack.com/img/readme/auth0_api_settings.png" width="512">
-
-In `hasura/.env.development` fill in the field
 
 ```
 HASURA_GRAPHQL_JWT_SECRET={"jwk_url":"https://[YOUR AUTH0 TENANT DOMAIN]/.well-known/jwks.json","audience":"[YOUR AUTH0 API AUDIENCE]"}
@@ -212,7 +214,8 @@ _This stores the auth configuration for web._
 
 <img alt="Auth0 Single Page Web App" src="https://create-full-stack.com/img/readme/auth0_spa.png" width="512">
 
-- Under "Settings" set "Allowed Callback URLs", "Allowed Logout URLs", and "Allowed Web Origins" to "http://localhost:3000"
+- Click "Settings"
+- Set "Allowed Callback URLs", "Allowed Logout URLs", and "Allowed Web Origins" to "http://localhost:3000"
 
 <img alt="Auth0 Single Page Web App URLs" src="https://create-full-stack.com/img/readme/auth0_spa_urls.png" width="512">
 
@@ -242,6 +245,7 @@ _This stores the auth configuration for mobile._
 
 <img alt="Auth0 Native" src="https://create-full-stack.com/img/readme/auth0_native.png" width="512">
 
+- Click "Settings"
 - Set "Allowed Callback URLs" to "https://auth.expo.io/@[YOUR EXPO USERNAME]/[YOUR EXPO APP SLUG]"
   - Get YOUR EXPO USERNAME by running `expo whoami`
   - Get YOUR EXPO APP SLUG from [`packages/mobile/app.json`](packages/mobile/app.json) `"slug"`
