@@ -138,6 +138,7 @@ if (isDevelopment) {
       REACT_APP_AUTH0_CLIENT_ID: auth0.webClientId,
     },
   });
+  // @remove-web-end
 
   // @remove-mobile-begin
   expoProjectUrl = new PublishExpo("publish-expo", {
