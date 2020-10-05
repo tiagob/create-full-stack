@@ -485,7 +485,7 @@ export type CreateTodoMutation = { __typename?: "mutation_root" } & {
   insert_todos?: Maybe<
     { __typename?: "todos_mutation_response" } & {
       returning: Array<
-        { __typename?: "todos" } & Pick<Todos, "name" | "id" | "complete">
+        { __typename?: "todos" } & Pick<Todos, "id" | "name" | "complete">
       >;
     }
   >;
@@ -500,7 +500,7 @@ export type UpdateTodoMutation = { __typename?: "mutation_root" } & {
   update_todos?: Maybe<
     { __typename?: "todos_mutation_response" } & {
       returning: Array<
-        { __typename?: "todos" } & Pick<Todos, "complete" | "id" | "name">
+        { __typename?: "todos" } & Pick<Todos, "id" | "name" | "complete">
       >;
     }
   >;
@@ -569,8 +569,8 @@ export const CreateTodoDocument = gql`
   mutation CreateTodo($name: String!) {
     insert_todos(objects: { name: $name }) {
       returning {
-        name
         id
+        name
         complete
       }
     }
@@ -623,9 +623,9 @@ export const UpdateTodoDocument = gql`
   mutation UpdateTodo($id: Int!, $complete: Boolean!) {
     update_todos(where: { id: { _eq: $id } }, _set: { complete: $complete }) {
       returning {
-        complete
         id
         name
+        complete
       }
     }
   }

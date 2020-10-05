@@ -17,5 +17,5 @@ generates:
       namingConvention:
         typeNames: pascal-case#pascalCase
         transformUnderscore: true
-      # Use undefined instead of null. Never use null in TS
+      # Use undefined instead of null when a field isn't set.
       maybeValue: T | undefined

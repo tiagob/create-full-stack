@@ -21,7 +21,6 @@ const PrivateRoute = ({ component, path, ...rest }: RouteProps) => {
 
   // Wait for the token to render
   if (isLoading || !isAuthenticated) {
-    // eslint-disable-next-line unicorn/no-null
     return null;
   }
 

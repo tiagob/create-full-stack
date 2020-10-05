@@ -71,6 +71,8 @@ module.exports = {
     // But requires https://github.com/facebook/create-react-app/pull/8978
     // Which isn't released yet. It's tracked https://github.com/facebook/create-react-app/milestone/69
     "unicorn/no-fn-reference-in-iterator": "off",
+    // Postgres and Apollo GraphQL uses null
+    "unicorn/no-null": "off",
     // Common abbreviations are known and readable
     "unicorn/prevent-abbreviations": "off",
     // TypeScript can infer return types

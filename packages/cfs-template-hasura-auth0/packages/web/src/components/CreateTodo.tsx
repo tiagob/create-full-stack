@@ -7,6 +7,11 @@ export default function CreateTodo() {
   const [name, setName] = useState("");
   const [createTodo, { loading }] = useCreateTodo();
 
+  function onSubmit() {
+    createTodo({ variables: { name } });
+    setName("");
+  }
+
   return (
     <TextField
       id="outlined-full-width"
@@ -18,22 +23,14 @@ export default function CreateTodo() {
       onChange={(event) => setName(event.target.value)}
       onKeyPress={async (event) => {
         if (event.key === "Enter") {
-          createTodo({ variables: { name } });
-          setName("");
+          onSubmit();
         }
       }}
       disabled={loading}
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">
-            <IconButton
-              aria-label="add"
-              onClick={() => {
-                createTodo({ variables: { name } });
-                setName("");
-              }}
-              disabled={loading}
-            >
+            <IconButton aria-label="add" onClick={onSubmit} disabled={loading}>
               <AddIcon />
             </IconButton>
           </InputAdornment>
