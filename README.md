@@ -1,6 +1,6 @@
 # Create Full Stack
 
-Set up a TypeScript full stack with one command.
+Set up a TypeScript full stack (web, mobile, backend, aws) with one command.
 
 - [Getting Started](https://create-full-stack.com/docs) – How to create a new full stack.
 - [User Guide](https://create-full-stack.com) – How to develop apps bootstrapped with Create Full Stack.
