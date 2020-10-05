@@ -190,6 +190,37 @@ async function updatePackage({
   );
 }
 
+/**
+ * Remove "cfs-pulumi-expo" package if the generated project doesn't include mobile
+ */
+async function updatePulumiAwsPackage({
+  projectPath,
+  hasMobile,
+}: {
+  projectPath: string;
+  hasMobile: boolean;
+}) {
+  if (hasMobile) {
+    return;
+  }
+  const pulumiAwsPackagePath = path.join(
+    projectPath,
+    "packages/pulumi-aws/package.json"
+  );
+  const {
+    default: pulumiAwsPackage,
+  }: { default: JSONSchemaForNPMPackageJsonFiles } = await import(
+    pulumiAwsPackagePath
+  );
+  if (pulumiAwsPackage.dependencies) {
+    delete pulumiAwsPackage.dependencies["cfs-pulumi-expo"];
+  }
+  fs.writeFileSync(
+    pulumiAwsPackagePath,
+    JSON.stringify(sortPackageJson(pulumiAwsPackage), undefined, 2) + os.EOL
+  );
+}
+
 function toTitleCase(name: string) {
   return name
     .replace(
@@ -305,7 +336,8 @@ function replaceStepNumbers(mdSetup: string) {
 function generateSetupMdAndHtml(
   mdFile: string,
   htmlFile: string,
-  appName: string
+  appName: string,
+  hasProductionMd: boolean
 ) {
   const md = markdownIt({
     html: true,
@@ -358,9 +390,13 @@ function generateSetupMdAndHtml(
             <li class="${
               htmlFile.endsWith("development.html") ? "active" : ""
             }"><a href="development.html">Development</a></li>
-            <li class="${
-              htmlFile.endsWith("production.html") ? "active" : ""
-            }"><a href="production.html">Production</a></li>
+            ${
+              hasProductionMd
+                ? `<li class="${
+                    htmlFile.endsWith("production.html") ? "active" : ""
+                  }"><a href="production.html">Production</a></li>`
+                : ""
+            }
           </ul>
         </div>
       </div>
@@ -472,6 +508,7 @@ export default async function copyTemplate(options: {
   }
   if (cloudPlatform === CloudPlatform.aws) {
     updatePulumiProjectFile(appName, projectPath);
+    await updatePulumiAwsPackage(options);
   }
   await updateVSCodeLaunch(options);
   await updatePackage(options);
@@ -500,21 +537,27 @@ export default async function copyTemplate(options: {
   recursiveRemoveEmptyDir(projectPath);
 
   // Generate html after code blocks have been removed
+  const hasProductionMd = fs.existsSync(
+    path.join(projectPath, "PRODUCTION.md")
+  );
   generateSetupMdAndHtml(
     path.join(projectPath, "README.md"),
     path.join(projectPath, "readme.html"),
-    appName
+    appName,
+    hasProductionMd
   );
   generateSetupMdAndHtml(
     path.join(projectPath, "DEVELOPMENT.md"),
     path.join(projectPath, "development.html"),
-    appName
+    appName,
+    hasProductionMd
   );
-  if (fs.existsSync(path.join(projectPath, "PRODUCTION.md"))) {
+  if (hasProductionMd) {
     generateSetupMdAndHtml(
       path.join(projectPath, "PRODUCTION.md"),
       path.join(projectPath, "production.html"),
-      appName
+      appName,
+      hasProductionMd
     );
   }
 }
