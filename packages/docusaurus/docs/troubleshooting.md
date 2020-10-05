@@ -58,14 +58,14 @@ Kill it (ex. node)
 pkill node
 ```
 
-## Can't connect to AWS Fargate service
+## Failed to load resource: net::ERR_EMPTY_RESPONSE
 
 If either of the following URLs returns an empty response:
 
 - Hasura backend: `https://hasura.[YOUR DOMAIN].com/v1/graphql`
 - Apollo Server Express backend: `https://server.[YOUR DOMAIN].com/graphql`
 
-Refresh Fargate and the associated listener and target group. To do that, comment out the Fargate resource in `packages/pulumi-aws/index.ts`:
+If you just launched the service, Fargate can sometimes take a few minutes to come up. If it's been over ten minutes, try re-provisioning Fargate and the associated listener and target group. To do that, comment out the Fargate resource in `packages/pulumi-aws/index.ts`:
 
 ```bash
 --- a/packages/pulumi-aws/index.ts
