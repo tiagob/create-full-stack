@@ -1,6 +1,6 @@
 {
   "name": "cfs-template-hasura-auth0",
-  "version": "0.1.53",
+  "version": "0.1.54",
   "description": "The Hasura Auth0 template for Create Full Stack.",
   "bugs": {
     "url": "https://github.com/tiagob/create-full-stack/issues"
