@@ -91,7 +91,7 @@ If you're new to AWS, register on their [signup page](https://portal.aws.amazon.
 
 - Access keys > Create New Access Key.
 
-<img alt="AWS Access Key" src="https://create-full-stack.com/img/readme/aws_access_key.png" width="512">
+<img alt="AWS Access Key" src="https://create-full-stack.com/img/readme/aws_access_key.png" width="512"/>
 
 Configure the AWS CLI by inputting your access key ID and secret access key. Default region name and output format are not required.
 
@@ -146,7 +146,7 @@ pulumi up --yes
 
 Create a Pulumi access token from the Pulumi [Access Tokens Page](https://app.pulumi.com/account/tokens).
 
-<img alt="Pulumi Access Token" src="https://create-full-stack.com/img/readme/pulumi_access_token.png" width="512">
+<img alt="Pulumi Access Token" src="https://create-full-stack.com/img/readme/pulumi_access_token.png" width="512"/>
 
 - Give it a description (ex. "github actions")
 
@@ -156,7 +156,7 @@ After your code is pushed to a GitHub repo, add the following secrets for the Ac
 - `AWS_SECRET_ACCESS_KEY`
 - `PULUMI_ACCESS_TOKEN`
 
-<img alt="GitHub Secrets" src="https://create-full-stack.com/img/readme/github_secrets.png" width="512">
+<img alt="GitHub Secrets" src="https://create-full-stack.com/img/readme/github_secrets.png" width="512"/>
 
 `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` come from the "Setup the AWS CLI" section above.
 

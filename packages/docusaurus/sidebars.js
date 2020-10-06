@@ -10,11 +10,14 @@ module.exports = {
       "cicd",
       "libraries_and_frameworks",
     ],
-    "Getting Started": [
+    Development: [
       "getting_started",
       "folder_structure",
       "available_scripts",
+      "configuration",
+      "migrations",
+      "troubleshooting",
     ],
-    Development: ["configuration", "migrations", "troubleshooting"],
+    Tutorials: ["tutorial_apollo_server_express", "tutorial_hasura"],
   },
 };

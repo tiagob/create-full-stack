@@ -90,22 +90,22 @@ In your development Auth0 tenant create a Machine to Machine Application.
 
 - Applications > CREATE APPLICATION
 
-<img alt="Auth0 Create Application" src="https://create-full-stack.com/img/readme/auth0_create_application.png" width="512">
+<img alt="Auth0 Create Application" src="https://create-full-stack.com/img/readme/auth0_create_application.png" width="512"/>
 
 - Give it a name (ex. "pulumi")
 - Select "Machine to Machine Applications"
 
-<img alt="Auth0 Machine to Machine" src="https://create-full-stack.com/img/readme/auth0_m2m.png" width="512">
+<img alt="Auth0 Machine to Machine" src="https://create-full-stack.com/img/readme/auth0_m2m.png" width="512"/>
 
 - Select the "Auth0 Management API" under "Select an API..." dropdown
 - Select "All" scopes
 
-<img alt="Auth0 Machine to Machine Scopes" src="https://create-full-stack.com/img/readme/auth0_m2m_scopes.png" width="512">
+<img alt="Auth0 Machine to Machine Scopes" src="https://create-full-stack.com/img/readme/auth0_m2m_scopes.png" width="512"/>
 
 - Click "Settings"
 - Use the created Machine to Machine Application to set the pulumi configuration
 
-<img alt="Auth0 Machine to Machine Settings" src="https://create-full-stack.com/img/readme/auth0_m2m_settings.png" width="512">
+<img alt="Auth0 Machine to Machine Settings" src="https://create-full-stack.com/img/readme/auth0_m2m_settings.png" width="512"/>
 
 ```bash
 pulumi config set auth0:domain demo-full-stack.us.auth0.com # YOUR AUTH0 TENANT DOMAIN
@@ -138,7 +138,7 @@ _This creates and configures APIs and applications on Auth0 and writes local `.e
 
 **Save your tenant domain for steps below**
 
-<img alt="Auth0 Signup" src="https://create-full-stack.com/img/readme/auth0_signup.png" width="512">
+<img alt="Auth0 Signup" src="https://create-full-stack.com/img/readme/auth0_signup.png" width="512"/>
 
 ## {STEP_NUMBER}. Create an Auth0 rule
 
@@ -146,11 +146,11 @@ _This Auth0 rule adds the required [custom JWT claims for Hasura auth](https://h
 
 - Rules > CREATE RULE
 
-<img alt="Auth0 Create Rule" src="https://create-full-stack.com/img/readme/auth0_create_rule.png" width="512">
+<img alt="Auth0 Create Rule" src="https://create-full-stack.com/img/readme/auth0_create_rule.png" width="512"/>
 
 - Select the "Empty rule" template
 
-<img alt="Auth0 Rule Select" src="https://create-full-stack.com/img/readme/auth0_rule_select.png" width="512">
+<img alt="Auth0 Rule Select" src="https://create-full-stack.com/img/readme/auth0_rule_select.png" width="512"/>
 
 - Name the rule (ex. "hasura custom JWT claims")
 - Paste the code snippet below into the "Script" section
@@ -167,7 +167,7 @@ function hasuraAccessToken(user, context, callback) {
 }
 ```
 
-<img alt="Auth0 Rule" src="https://create-full-stack.com/img/readme/auth0_rule.png" width="512">
+<img alt="Auth0 Rule" src="https://create-full-stack.com/img/readme/auth0_rule.png" width="512"/>
 
 ## {STEP_NUMBER}. Create an Auth0 API
 
@@ -175,23 +175,23 @@ _This stores the auth configuration for the server._
 
 - APIs > CREATE API
 
-<img alt="Auth0 Create API" src="https://create-full-stack.com/img/readme/auth0_create_api.png" width="512">
+<img alt="Auth0 Create API" src="https://create-full-stack.com/img/readme/auth0_create_api.png" width="512"/>
 
 - Set the name (ex. "server")
 - Set the identifier (audience) to "server"
 
-<img alt="Auth0 API Identifier" src="https://create-full-stack.com/img/readme/auth0_api_identifier.png" width="512">
+<img alt="Auth0 API Identifier" src="https://create-full-stack.com/img/readme/auth0_api_identifier.png" width="512"/>
 
 - Click "Settings"
 <!-- @remove-mobile-begin -->
 - Enable "Allow Offline Access"
 
-<img alt="Auth0 API Offline Access" src="https://create-full-stack.com/img/readme/auth0_api_offline_access.png" width="512">
+<img alt="Auth0 API Offline Access" src="https://create-full-stack.com/img/readme/auth0_api_offline_access.png" width="512"/>
 <!-- @remove-mobile-end -->
 
 In `hasura/.env.development` fill in the field
 
-<img alt="Auth0 API" src="https://create-full-stack.com/img/readme/auth0_api_settings.png" width="512">
+<img alt="Auth0 API" src="https://create-full-stack.com/img/readme/auth0_api_settings.png" width="512"/>
 
 ```
 HASURA_GRAPHQL_JWT_SECRET={"jwk_url":"https://[YOUR AUTH0 TENANT DOMAIN]/.well-known/jwks.json","audience":"[YOUR AUTH0 API AUDIENCE]"}
@@ -207,21 +207,21 @@ _This stores the auth configuration for web._
 
 - Applications > CREATE APPLICATION
 
-<img alt="Auth0 Create Application" src="https://create-full-stack.com/img/readme/auth0_create_application.png" width="512">
+<img alt="Auth0 Create Application" src="https://create-full-stack.com/img/readme/auth0_create_application.png" width="512"/>
 
 - Set the name (ex. "web")
 - Select "Single Page Web Applications"
 
-<img alt="Auth0 Single Page Web App" src="https://create-full-stack.com/img/readme/auth0_spa.png" width="512">
+<img alt="Auth0 Single Page Web App" src="https://create-full-stack.com/img/readme/auth0_spa.png" width="512"/>
 
 - Click "Settings"
 - Set "Allowed Callback URLs", "Allowed Logout URLs", and "Allowed Web Origins" to "http://localhost:3000"
 
-<img alt="Auth0 Single Page Web App URLs" src="https://create-full-stack.com/img/readme/auth0_spa_urls.png" width="512">
+<img alt="Auth0 Single Page Web App URLs" src="https://create-full-stack.com/img/readme/auth0_spa_urls.png" width="512"/>
 
 In `packages/web/.env.development` fill in the fields from the server API you created above and your Single Page Web Application's "Settings" page.
 
-<img alt="Auth0 Single Page Web App URLs" src="https://create-full-stack.com/img/readme/auth0_spa_settings.png" width="512">
+<img alt="Auth0 Single Page Web App URLs" src="https://create-full-stack.com/img/readme/auth0_spa_settings.png" width="512"/>
 
 ```
 REACT_APP_AUTH0_AUDIENCE=[YOUR AUTH0 API AUDIENCE]
@@ -238,27 +238,27 @@ _This stores the auth configuration for mobile._
 
 - Applications > CREATE APPLICATION
 
-<img alt="Auth0 Create Application" src="https://create-full-stack.com/img/readme/auth0_create_application.png" width="512">
+<img alt="Auth0 Create Application" src="https://create-full-stack.com/img/readme/auth0_create_application.png" width="512"/>
 
 - Set the name (ex. "mobile")
 - Select "Native"
 
-<img alt="Auth0 Native" src="https://create-full-stack.com/img/readme/auth0_native.png" width="512">
+<img alt="Auth0 Native" src="https://create-full-stack.com/img/readme/auth0_native.png" width="512"/>
 
 - Click "Settings"
 - Set "Allowed Callback URLs" to "https://auth.expo.io/@[YOUR EXPO USERNAME]/[YOUR EXPO APP SLUG]"
   - Get YOUR EXPO USERNAME by running `expo whoami`
   - Get YOUR EXPO APP SLUG from [`packages/mobile/app.json`](packages/mobile/app.json) `"slug"`
 
-<img alt="Auth0 Native Application URLs" src="https://create-full-stack.com/img/readme/auth0_native_urls.png" width="512">
+<img alt="Auth0 Native Application URLs" src="https://create-full-stack.com/img/readme/auth0_native_urls.png" width="512"/>
 
 - Set "Refresh Token Behavior" to "Rotating"
 
-<img alt="Auth0 Native Refresh Token" src="https://create-full-stack.com/img/readme/auth0_native_refresh_token.png" width="512">
+<img alt="Auth0 Native Refresh Token" src="https://create-full-stack.com/img/readme/auth0_native_refresh_token.png" width="512"/>
 
 In `packages/mobile/.env.development` fill in the fields from the server API you created above and your Native Application's "Settings" page.
 
-<img alt="Auth0 Native Application Settings" src="https://create-full-stack.com/img/readme/auth0_native_settings.png" width="512">
+<img alt="Auth0 Native Application Settings" src="https://create-full-stack.com/img/readme/auth0_native_settings.png" width="512"/>
 
 ```
 AUTH0_AUDIENCE=[YOUR AUTH0 API AUDIENCE]
@@ -275,7 +275,7 @@ _It's recommended you use the "New Universal Login Experience" which stores user
 - Navigate to "Universal Login"
 - Switch from "Classic" to "New"
 
-<img alt="Auth0 Universal Login" src="https://create-full-stack.com/img/readme/auth0_universal_login.png" width="512">
+<img alt="Auth0 Universal Login" src="https://create-full-stack.com/img/readme/auth0_universal_login.png" width="512"/>
 
 <!-- @remove-manual-config-end -->
 
@@ -318,7 +318,8 @@ _Learn more about Hasura from their [docs](https://hasura.io/docs/1.0/graphql/co
 
 ## {STEP_NUMBER}. What's next
 
-- Check out [Available Scripts](https://create-full-stack.com/docs/available_scripts)
+- Follow the [Hasura tutorial](https://create-full-stack.com/docs/tutorial_hasura) to update your full stack
+- Check out [available scripts](https://create-full-stack.com/docs/available_scripts)
 <!-- @remove-pulumi-aws-begin -->
 - Deploy to AWS with the [production guide]({PRODUCTION_FILENAME})
 <!-- @remove-pulumi-aws-end -->

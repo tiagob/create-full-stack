@@ -48,7 +48,7 @@ If you're new to AWS, register on their [signup page](https://portal.aws.amazon.
 
 - Access keys > Create New Access Key.
 
-<img alt="AWS Access Key" src="https://create-full-stack.com/img/readme/aws_access_key.png" width="512">
+<img alt="AWS Access Key" src="https://create-full-stack.com/img/readme/aws_access_key.png" width="512"/>
 
 Configure the AWS CLI by inputting your access key ID and secret access key. Default region name and output format are not required.
 
@@ -84,28 +84,28 @@ pulumi config set domain demo-full-stack.com # YOUR ROUTE53 DOMAIN
 
 Create a new [Auth0 tenant](https://auth0.com/docs/getting-started/the-basics#account-and-tenants) for production. The tenant name is publicly viewable in the login url so make it readable (ex. "{APP_NAME}").
 
-<img alt="Auth0 Tenant" src="https://create-full-stack.com/img/readme/auth0_tenant.png" width="512">
+<img alt="Auth0 Tenant" src="https://create-full-stack.com/img/readme/auth0_tenant.png" width="512"/>
 
 In your production Auth0 tenant create a Machine to Machine Application
 
 - Applications > CREATE APPLICATION
 
-<img alt="Auth0 Create Application" src="https://create-full-stack.com/img/readme/auth0_create_application.png" width="512">
+<img alt="Auth0 Create Application" src="https://create-full-stack.com/img/readme/auth0_create_application.png" width="512"/>
 
 - Give it a name (ex. "pulumi")
 - Select "Machine to Machine Applications"
 
-<img alt="Auth0 Machine to Machine" src="https://create-full-stack.com/img/readme/auth0_m2m.png" width="512">
+<img alt="Auth0 Machine to Machine" src="https://create-full-stack.com/img/readme/auth0_m2m.png" width="512"/>
 
 - Select the "Auth0 Management API" under "Select an API..." dropdown
 - Select "All" scopes
 
-<img alt="Auth0 Machine to Machine Scopes" src="https://create-full-stack.com/img/readme/auth0_m2m_scopes.png" width="512">
+<img alt="Auth0 Machine to Machine Scopes" src="https://create-full-stack.com/img/readme/auth0_m2m_scopes.png" width="512"/>
 
 - Click "Settings"
 - Use the created Machine to Machine Application to set the pulumi configuration
 
-<img alt="Auth0 Machine to Machine Settings" src="https://create-full-stack.com/img/readme/auth0_m2m_settings.png" width="512">
+<img alt="Auth0 Machine to Machine Settings" src="https://create-full-stack.com/img/readme/auth0_m2m_settings.png" width="512"/>
 
 ```bash
 pulumi config set auth0:domain demo-full-stack.us.auth0.com # YOUR AUTH0 TENANT DOMAIN
@@ -138,7 +138,7 @@ pulumi up --yes
 
 Create a Pulumi access token from the Pulumi [Access Tokens Page](https://app.pulumi.com/account/tokens).
 
-<img alt="Pulumi Access Token" src="https://create-full-stack.com/img/readme/pulumi_access_token.png" width="512">
+<img alt="Pulumi Access Token" src="https://create-full-stack.com/img/readme/pulumi_access_token.png" width="512"/>
 
 - Give it a description (ex. "github actions")
 
@@ -148,7 +148,7 @@ After your code is pushed to a GitHub repo, add the following secrets for the Ac
 - `AWS_SECRET_ACCESS_KEY`
 - `PULUMI_ACCESS_TOKEN`
 
-<img alt="GitHub Secrets" src="https://create-full-stack.com/img/readme/github_secrets.png" width="512">
+<img alt="GitHub Secrets" src="https://create-full-stack.com/img/readme/github_secrets.png" width="512"/>
 
 `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` come from the "Setup the AWS CLI" section above.
 

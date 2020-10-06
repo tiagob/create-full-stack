@@ -116,6 +116,15 @@ async function updatePackage({
     path.join(projectPath, "package.json")
   );
   appPackage.name = appName;
+  // Some commands must wait for Hasura to come up.
+  // A set sleep timer is not ideal. Two other better approaches:
+  // 1. Use wait-on package
+  // Unfortunately it doesn't work with the health check endpoint
+  // https://hasura.io/docs/1.0/graphql/core/api-reference/health.html#endpoint
+  // https://github.com/jeffbski/wait-on/issues/78
+  // 2. Use graphql-code-generator `watchPolling`
+  // Isn't released yet https://github.com/dotansimha/graphql-code-generator/pull/4823
+  const waitForHasura = backend === Backend.hasura ? "sleep 8 && " : "";
   // Cannot include "graphql-codegen" because that requires Hasura running (when
   // Hasura is selected as the BE). The build command is used in CI/CD for setup.
   // GitHub actions cannot run Hasura.
@@ -127,7 +136,9 @@ async function updatePackage({
     },
     {
       name: "Generate",
-      command: "yarn generate --watch",
+      // Wait for Hasura to come up otherwise it can't generate the schema
+      // and doesn't retry.
+      command: `${waitForHasura}yarn generate --watch`,
     },
     {
       name: "Build Common",
@@ -162,9 +173,11 @@ async function updatePackage({
     buildCommands.push("yarn --cwd packages/web build");
     startCommands.push({
       name: "Web",
+      // Wait for "Generate" and "Build Common" commands to run otherwise web
+      // compilation fails and doesn't recover.
       // Don't open the browser because it doesn't work right away and needs to
-      // be refreshed when run in concurrently
-      command: "BROWSER=none yarn --cwd packages/web start",
+      // be refreshed when run in concurrently.
+      command: `${waitForHasura}BROWSER=none yarn --cwd packages/web start`,
     });
     testCommands.push({
       name: "Web",

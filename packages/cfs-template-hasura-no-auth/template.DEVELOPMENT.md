@@ -58,7 +58,8 @@ _Learn more about Hasura from their [docs](https://hasura.io/docs/1.0/graphql/co
 
 ## {STEP_NUMBER}. What's next
 
-- Check out [Available Scripts](https://create-full-stack.com/docs/available_scripts)
+- Follow the [Hasura tutorial](https://create-full-stack.com/docs/tutorial_hasura) to update your full stack
+- Check out [available scripts](https://create-full-stack.com/docs/available_scripts)
 <!-- @remove-pulumi-aws-begin -->
 - Deploy to AWS with the [production guide]({PRODUCTION_FILENAME})
 <!-- @remove-pulumi-aws-end -->

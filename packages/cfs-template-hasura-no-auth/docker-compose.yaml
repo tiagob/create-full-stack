@@ -16,5 +16,11 @@ services:
       - "postgres"
     restart: always
     env_file: "./hasura/.env.development"
+    # Include Hasura migrations and metadata every time `docker-compose up` is
+    # run.
+    # https://hasura.io/docs/1.0/graphql/core/migrations/advanced/auto-apply-migrations.html#applying-migrations
+    volumes:
+      - "./hasura/migrations:/hasura-migrations"
+      - "./hasura/metadata:/hasura-metadata"
 volumes:
   db_data:
