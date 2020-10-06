@@ -26,7 +26,7 @@ Bring up the Hasura developer console. This is where we can make changes to Hasu
 
 ```bash
 cd hasura/
-yarn hasura console
+yarn hasura console  # This requires the backend Hasura backend is up (can take a minute)
 ```
 
 Add a "date" column to todos.
@@ -67,7 +67,7 @@ _If you run `git status` you'll notice that changes have been made to the `hasur
 
 Common contains shared code across the full stack. It's used for client Apollo GraphQL requests from both web and mobile.
 
-Update the GraphQL query and create mutation requests to include "date".
+Update the GraphQL [query](https://graphql.org/learn/queries/) and create [mutation](https://graphql.org/learn/queries/#mutations) requests to include "date".
 
 In `packages/common/src/graphql/todos.graphql` make the following changes:
 
@@ -82,16 +82,19 @@ query Todos {
     id
     name
     complete
+    # Add the date to the todos query
     date
   }
 }
 
+# Add date to the mutation input fields
 mutation CreateTodo($name: String!, $date: date) {
   insert_todos(objects: { name: $name, date: $date }) {
     returning {
       id
       name
       complete
+      # Add date to the mutation response
       date
     }
   }
@@ -127,12 +130,11 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 // ...
 
    return (
-     <ApolloProvider client={apolloClient}>
+     <ApolloProvider client={client}>
+      {/* Add MuiPickersUtilsProvider wrapper */}
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Router>
-          {
-            // ...
-          }
+          {/* ... */}
         </Router>
       </MuiPickersUtilsProvider>
      </ApolloProvider>
@@ -168,6 +170,7 @@ export default function CreateTodo() {
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">
+            {/* Add KeyboardDatePicker component */}
             <KeyboardDatePicker
               disableToolbar
               variant="inline"
@@ -204,14 +207,14 @@ Update `ListItemText` in `packages/web/src/components/Todo.tsx`:
 />
 ```
 
-Kill and restart the full stack (required when libraries are added):
+Make sure files are properly formatted and linted. In VSCode, with the recommended extensions, this happens automatically. Otherwise, from the root of the project run:
 
 ```bash
-^C # Ctrl-C
-yarn start
+yarn prettier
+yarn lint
 ```
 
-Navigate to http://localhost:3000. You should see your new todo date field! 🎉
+With the full stack running (`yarn start` from root), navigate to [http://localhost:3000](http://localhost:3000). You should see your new todo date field! 🎉
 
 <img alt="Add date web" src="/img/add_date_web.png" width="512" />
 
@@ -240,6 +243,8 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const styles = StyleSheet.create({
   // ...
+  // React Native uses FlexBox. Add a new CSS class to make content inside
+  // horizontally laid out.
   row: {
     display: "flex",
     flexDirection: "row",
@@ -271,6 +276,10 @@ export default function CreateTodo() {
         onSubmitEditing={onSubmit}
         rightIcon={
           <View style={styles.row}>
+            {
+              // Add TouchableOpacity. This is a button that displays the modal
+              // to change the date.
+            }
             <TouchableOpacity
               style={styles.row}
               accessibilityLabel="date"
@@ -288,6 +297,10 @@ export default function CreateTodo() {
           </View>
         }
       />
+      {
+        // Add the DateTimePickerModal. This is a modal that displays a date
+        // picker when the button is pressed.
+      }
       <DateTimePickerModal
         isVisible={showDatePicker}
         mode="date"
@@ -319,13 +332,13 @@ Update `ListItem.Title` in `packages/mobile/src/components/Todo.tsx`:
 </ListItem.Title>
 ```
 
-Kill and restart the full stack (required when libraries are added):
+Make sure files are properly formatted and linted. In VSCode, with the recommended extensions, this happens automatically. Otherwise, from the root of the project run:
 
 ```bash
-^C # Ctrl-C
-yarn start
+yarn prettier
+yarn lint
 ```
 
-Navigate to http://localhost:19002/ and bring up the application. You should see your new todo date field! 🎉
+With the full stack running (`yarn start` from root), navigate to [http://localhost:19002](http://localhost:19002) and bring up the application. You should see your new todo date field! 🎉
 
 <img alt="Add date mobile" src="/img/add_date_mobile.png" height="512" />

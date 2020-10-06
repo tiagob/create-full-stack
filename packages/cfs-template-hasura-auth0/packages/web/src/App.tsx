@@ -26,10 +26,10 @@ export default function App() {
   const classes = useStyles();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { getAccessTokenSilently } = useAuth0();
-  const apolloClient = getApolloClient(getAccessTokenSilently);
+  const client = getApolloClient(getAccessTokenSilently);
 
   return (
-    <ApolloProvider client={apolloClient}>
+    <ApolloProvider client={client}>
       <Router>
         <div className={classes.root}>
           <Header openDrawer={() => setIsDrawerOpen(true)} />

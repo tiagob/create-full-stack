@@ -67,7 +67,7 @@ If either of the following URLs returns an empty response:
 
 If you just launched the service, Fargate can sometimes take a few minutes to come up. If it's been over ten minutes, try re-provisioning Fargate and the associated listener and target group. To do that, comment out the Fargate resource in `packages/pulumi-aws/index.ts`:
 
-```bash
+```diff
 --- a/packages/pulumi-aws/index.ts
 +++ b/packages/pulumi-aws/index.ts
 @@ -33,18 +33,18 @@ const { connectionString } = new Rds("server-db", {
@@ -111,4 +111,22 @@ Undo the changes above in `packages/pulumi-aws/index.ts` then again run:
 
 ```bash
 pulumi up --yes
+```
+
+## Failed to compile. import/no-extraneous-dependencies
+
+If you see this type of error despite these libraries included in `packages/web/` then `node_modules` is likely corrupt.
+
+```bash
+[Web] Failed to compile.
+[Web]
+[Web] ./src/App.tsx
+[Web]   Line 3:1:  '@date-io/date-fns' should be listed in the project's dependencies. Run 'npm i -S @date-io/date-fns' to add it        import/no-extraneous-dependencies
+```
+
+This can be fixed with a clean install of node modules. From the root of the project run:
+
+```bash
+rm -rf **/node_modules
+yarn
 ```
