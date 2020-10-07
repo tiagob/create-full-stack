@@ -37,24 +37,15 @@ module.exports = {
       style: "dark",
       links: [
         {
-          title: "Community",
+          title: "Made with ❤️ by",
           items: [
             {
-              label: "Twitter",
+              label: "🐦 @tiagsters",
               href: "https://twitter.com/tiagsters",
             },
-          ],
-        },
-        {
-          title: "More",
-          items: [
             {
-              label: "Blog",
-              to: "blog",
-            },
-            {
-              label: "GitHub",
-              href: "https://github.com/tiagob/create-full-stack",
+              label: "👨‍💻 @tiagob",
+              href: "https://github.com/tiagob/",
             },
           ],
         },
