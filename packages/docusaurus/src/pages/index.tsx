@@ -133,7 +133,8 @@ function Home() {
           <i>
             <a href="/docs/why">Why?</a>
           </i>{" "}
-          or check out <a href="/blog/create_full_stack">the blog post</a>.
+          or check out <a href="/blog/create_full_stack_story">the blog post</a>
+          .
         </div>
         {features && features.length > 0 && (
           <section className={styles.features}>
