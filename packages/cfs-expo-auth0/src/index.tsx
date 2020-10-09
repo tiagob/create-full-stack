@@ -26,21 +26,9 @@ export interface User {
   locale?: string;
 }
 
-// Create a custom type for result to fix AuthSession.AuthSessionResult
-// https://github.com/expo/expo/issues/10104
-type Result = {
-  type: "cancel" | "dismiss" | "locked" | "error" | "success";
-  errorCode?: string | null;
-  error?: AuthSession.AuthError | null;
-  params?: {
-    [key: string]: string;
-  };
-  url?: string;
-};
-
 interface Auth0Context {
   request?: AuthSession.AuthRequest | null;
-  result?: Result;
+  result?: AuthSession.AuthSessionResult | null;
   /**
    * ```ts
    * await login();
@@ -250,13 +238,15 @@ export function Auth0Provider({
       authorizationEndpoint,
     } as AuthSession.DiscoveryDocument
   );
-  const result = auth0Result as Result;
 
   useEffect(() => {
     async function getToken() {
+      if (!auth0Result) {
+        return;
+      }
       if (
-        result.type === "success" &&
-        result?.params?.code &&
+        auth0Result.type === "success" &&
+        auth0Result?.params?.code &&
         auth0request?.redirectUri &&
         auth0request?.codeVerifier
       ) {
@@ -264,7 +254,7 @@ export function Auth0Provider({
           {
             grant_type: "authorization_code",
             client_id: clientId,
-            code: result.params.code,
+            code: auth0Result.params.code,
             redirect_uri: auth0request.redirectUri,
             // Expo AuthSession uses Authorization Code Flow with PKCE
             // Code verifier is required with PKCE
@@ -280,22 +270,22 @@ export function Auth0Provider({
       } else {
         Alert.alert(
           "Authentication error",
-          result?.params?.error_description || "something went wrong"
+          auth0Result.type === "error"
+            ? auth0Result.params.error_description
+            : "something went wrong"
         );
         onTokenRequestFailure?.();
       }
     }
-    if (result) {
-      getToken();
-    }
+    getToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onLogin, result, clientId]);
+  }, [onLogin, auth0Result, clientId]);
 
   return (
     <Auth0Context.Provider
       value={{
         request: auth0request,
-        result,
+        result: auth0Result,
         login: () => promptAsync?.({ useProxy }),
         user,
         accessToken,
