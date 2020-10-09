@@ -27,7 +27,7 @@
     "@react-navigation/drawer": "^5.9.0",
     "@react-navigation/native": "^5.7.3",
     "@unimodules/core": "~5.5.0",
-    "cfs-expo-auth0": "^0.1.1",
+    "cfs-expo-auth0": "^0.2.0",
     "common": "0.1.0",
     "expo": "^39.0.2",
     "expo-application": "~2.3.0",
