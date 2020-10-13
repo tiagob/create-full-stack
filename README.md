@@ -60,3 +60,20 @@ When opening the project in VSCode, click on the dialog to install [recommended 
 - Lint on save
 - Understand Dockerfiles
 - Spellcheck
+
+## Why
+
+As a Software Engineer at Google, I was impressed with the seamless integration of the various libraries and frameworks. When starting a new project, Google developers never start from scratch. They build on a stable foundation with guard rails in place.
+
+Since leaving Google, I've been dismayed that this same type of foundation doesn't exist. It's natural to cobble together solutions following one-off blog posts. A developer's focus isn't - and shouldn't be - infra at an early stage, so hacky solutions tend to win. Unfortunately, as what you're building scales, maintaining these solutions can be a nightmare.
+
+## Goals
+
+We want a stack that enables rapid iteration as requirements change without producing bugs. Ideally, it should scale in terms of traffic and developers without requiring costly re-writes.
+
+To achieve this we chose components for the boilerplate that are:
+
+1. A single language, eliminating developer context switching
+1. Type-safe, eliminating a whole class of bugs
+1. Tested at scale in production
+1. Used by enough developers that solutions are easy to find
