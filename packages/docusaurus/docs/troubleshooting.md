@@ -130,3 +130,21 @@ This can be fixed with a clean install of node modules. From the root of the pro
 rm -rf **/node_modules
 yarn
 ```
+
+## Role “postgres” doesn’t exist OR Password authentication failed for user “postgres”
+
+You likely have another Postgres server already running. Create Full Stack runs Postgres in a Docker container on localhost at port 5432. This is what a local installation of Postgres uses by default. You need to stop your existing Postgres server.
+
+On MacOS:
+
+```bash
+pg_ctl -D /usr/local/var/postgres stop
+# OR with homebrew
+brew services stop postgresql
+```
+
+On Linux:
+
+```bash
+sudo service postgresql stop
+```
