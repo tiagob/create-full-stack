@@ -6,6 +6,8 @@
 
 **Follow the steps below to run locally.**
 
+<!-- @remove-docker-install-begin -->
+
 ## {STEP_NUMBER}. Setup Docker
 
 _Docker runs the Postgres DB._
@@ -23,6 +25,7 @@ open /Applications/Docker.app
 ```
 
 <!-- @remove-mac-end -->
+<!-- @remove-docker-install-end -->
 <!-- @remove-mobile-begin -->
 
 ## {STEP_NUMBER}. Setup Expo
@@ -64,6 +67,12 @@ If you're new to Pulumi, register on their [signup page](https://app.pulumi.com/
 
 ```bash
 pulumi login
+```
+
+## {STEP_NUMBER}. CD into your project
+
+```bash
+cd {CD_PATH}
 ```
 
 ## {STEP_NUMBER}. Configure the development stack
