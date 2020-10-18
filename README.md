@@ -14,7 +14,7 @@ If something doesn’t work, please check [troubleshooting](https://create-full-
 
 - [Yarn](https://yarnpkg.com/getting-started/install#global-install) >= v1.12.0
 - [Docker](https://docs.docker.com/get-docker/) >= 1.25.5
-- Node >= v12.10
+- Node ^12.10 || 14.x
   - You can use [n](https://github.com/tj/n) to switch Node versions
 
 Check versions:
