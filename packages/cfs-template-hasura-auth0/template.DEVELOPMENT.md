@@ -72,7 +72,7 @@ pulumi login
 ## {STEP_NUMBER}. CD into your project
 
 ```bash
-cd {APP_NAME}/
+cd {CD_PATH}
 ```
 
 ## {STEP_NUMBER}. Configure the development stack

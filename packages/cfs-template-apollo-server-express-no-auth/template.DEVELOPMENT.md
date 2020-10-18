@@ -30,7 +30,7 @@ open /Applications/Docker.app
 ## {STEP_NUMBER}. CD into your project
 
 ```bash
-cd {APP_NAME}/
+cd {CD_PATH}
 ```
 
 ## {STEP_NUMBER}. Start

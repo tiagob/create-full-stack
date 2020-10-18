@@ -9,6 +9,7 @@ import path from "path";
 import sortPackageJson from "sort-package-json";
 
 import { Auth, Backend, CloudPlatform } from "./constants";
+import { getCdPath } from "./createReactAppUtils";
 import { hasDocker, runYarn } from "./utils";
 
 // Don't include any local files. node_modules and yarn.lock will be different
@@ -351,6 +352,7 @@ function generateSetupMdAndHtml(
   mdFile: string,
   htmlFile: string,
   appName: string,
+  cdPath: string,
   hasProductionMd: boolean
 ) {
   const md = markdownIt({
@@ -373,6 +375,7 @@ function generateSetupMdAndHtml(
   let mdContent = fs.readFileSync(mdFile, "utf8");
   mdContent = replaceStepNumbers(mdContent);
   mdContent = mdContent.replace(/{APP_NAME}/g, appName);
+  mdContent = mdContent.replace(/{CD_PATH}/g, cdPath);
   // Copy to replace links to related docs (ex. DEVELOPMENT.md, production.html)
   // with the corresponding file extension
   const htmlContent = mdContent.slice();
@@ -554,6 +557,7 @@ export default async function copyTemplate(options: {
   recursiveRemoveEmptyDir(projectPath);
 
   // Generate html after code blocks have been removed
+  const cdPath = getCdPath(projectPath);
   const hasProductionMd = fs.existsSync(
     path.join(projectPath, "PRODUCTION.md")
   );
@@ -561,12 +565,14 @@ export default async function copyTemplate(options: {
     path.join(projectPath, "README.md"),
     path.join(projectPath, "readme.html"),
     appName,
+    cdPath,
     hasProductionMd
   );
   generateSetupMdAndHtml(
     path.join(projectPath, "DEVELOPMENT.md"),
     path.join(projectPath, "development.html"),
     appName,
+    cdPath,
     hasProductionMd
   );
   if (hasProductionMd) {
@@ -574,6 +580,7 @@ export default async function copyTemplate(options: {
       path.join(projectPath, "PRODUCTION.md"),
       path.join(projectPath, "production.html"),
       appName,
+      cdPath,
       hasProductionMd
     );
   }
