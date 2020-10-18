@@ -6,6 +6,8 @@
 
 **Follow the steps below to run locally.**
 
+<!-- @remove-docker-install-begin -->
+
 ## {STEP_NUMBER}. Setup Docker
 
 _Docker runs the Postgres DB._
@@ -23,6 +25,13 @@ open /Applications/Docker.app
 ```
 
 <!-- @remove-mac-end -->
+<!-- @remove-docker-install-end -->
+
+## {STEP_NUMBER}. CD into your project
+
+```bash
+cd {APP_NAME}/
+```
 
 ## {STEP_NUMBER}. Start
 

@@ -27,12 +27,11 @@ import {
 import copyTemplate from "./copyTemplate";
 import {
   checkAppName,
-  getCdPath,
   isSafeToCreateProjectIn,
   shouldUseYarn,
   tryGitInit,
 } from "./createReactAppUtils";
-import { hasDocker, runYarn } from "./utils";
+import { runYarn } from "./utils";
 
 let projectName = "";
 
@@ -258,36 +257,7 @@ async function run() {
   console.clear();
   console.log(`Success! Created ${appName} at ${projectName}`);
   console.log();
-  if (auth === Auth.none) {
-    if (cloudPlatform !== CloudPlatform.none) {
-      console.log(
-        "Additional setup for production is required. See production.html or PRODUCTION.md."
-      );
-      console.log();
-    }
-    // Additional manual setup isn't required for development
-    if (hasDocker()) {
-      console.log("We suggest that you begin by typing:");
-    } else {
-      console.log(
-        `We suggest you ${chalk.bold(
-          "install and start Docker"
-        )} (https://docs.docker.com/get-docker/) then type:`
-      );
-    }
-    console.log();
-    console.log(chalk.cyan("  cd"), getCdPath(projectPath));
-    console.log(`  ${chalk.cyan("yarn start")}`);
-  } else {
-    console.log("We suggest that you begin by typing:");
-    console.log();
-    console.log(chalk.cyan("  cd"), getCdPath(projectPath));
-    console.log();
-    // Additional manual setup is required for development
-    console.log(
-      "And complete the steps on development.html or DEVELOPMENT.md to get started."
-    );
-  }
+  console.log("Complete the steps on development.html to get started.");
   open(`${projectName}/development.html`);
   console.log();
   console.log("Happy hacking!");

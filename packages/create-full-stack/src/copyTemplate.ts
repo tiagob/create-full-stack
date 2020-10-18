@@ -9,7 +9,7 @@ import path from "path";
 import sortPackageJson from "sort-package-json";
 
 import { Auth, Backend, CloudPlatform } from "./constants";
-import { runYarn } from "./utils";
+import { hasDocker, runYarn } from "./utils";
 
 // Don't include any local files. node_modules and yarn.lock will be different
 // depending on what packages are included because yarn puts these at the root
@@ -528,6 +528,9 @@ export default async function copyTemplate(options: {
   await updatePackage(options);
 
   const removeBlockInFileKeys: string[] = [];
+  if (hasDocker()) {
+    removeBlockInFileKeys.push("docker-install");
+  }
   if (!hasMobile) {
     removeBlockInFileKeys.push("mobile");
   }
