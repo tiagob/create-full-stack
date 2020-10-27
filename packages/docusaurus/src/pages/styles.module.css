@@ -21,34 +21,84 @@
 .features {
   display: flex;
   align-items: center;
-  padding: 2rem 0;
   width: 100%;
 }
 
-.summary {
+.heading {
   margin-left: 40px;
   margin-right: 40px;
   margin-top: 40px;
   text-align: center;
 }
 
-select {
-  width: 100%;
-  cursor: pointer;
-  font-size: 20px;
-  border-color: #dbdbdb;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  color: #363636;
-  appearance: none;
-  height: 54px;
-  padding-left: 54px;
-  background: url(/static/img/arrow_drop_down-24px.svg) no-repeat right;
-  background-size: 32px 32px;
-  background-position-x: 290px;
+.headingStep {
+  font-size: 14px;
+  letter-spacing: 0.08333em;
 }
 
-select:focus {
-  outline: none;
-  box-shadow: 0px 0px 4px #0066ff;
+.selectTitle {
+  width: 160px;
+  margin-top: 22px;
+  font-size: var(--ifm-h4-font-size);
+}
+
+.selectOption {
+  width: 440px;
+  margin: 8px;
+}
+
+.selectButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #eae7ed;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.selectLabel {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  cursor: pointer;
+}
+
+.selectImg {
+  padding: 11px;
+  height: 32px;
+  width: 32px;
+}
+
+.selectRadio {
+  margin-right: 11px;
+  cursor: pointer;
+}
+
+.selectDescription {
+  padding: 8px;
+  font-size: 15px;
+  color: #595959;
+  background-color: #fafafa;
+  border: 1px solid #eae7ed;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.featuresSection {
+  background-color: #fafafa;
+  padding-bottom: 40px;
+  padding-top: 1px;
+  margin-top: 20px;
+  border-top: 1px solid #eaeaea;
+}
+
+.featureBox {
+  width: 340px;
+  padding: 18px;
+  font-size: 15px;
+  color: #595959;
+  margin: 20px;
+  border: 1px solid #eae7ed;
+  border-radius: 4px;
+  background-color: white;
 }

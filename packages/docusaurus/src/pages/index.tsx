@@ -1,5 +1,4 @@
 /* eslint-disable import/no-unresolved */
-import useBaseUrl from "@docusaurus/useBaseUrl";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import CodeBlock from "@theme/CodeBlock";
 import Layout from "@theme/Layout";
@@ -21,48 +20,37 @@ interface SelectProps {
 }
 
 function Select({ title, value, options, setValue }: SelectProps) {
-  const chosenOption = options.find((option) => option.value === value);
   return (
-    <div style={{ width: 325, margin: 8 }}>
-      <h4 style={{ paddingLeft: 10 }}>{title}</h4>
-      <div className="select">
-        <img
-          src={useBaseUrl(chosenOption.imgSrc)}
-          style={{
-            padding: 11,
-            height: 32,
-            width: 32,
-            position: "absolute",
-          }}
-          alt={chosenOption.name}
-        />
-        <select
-          style={{
-            borderBottomLeftRadius: 0,
-            borderBottomRightRadius: 0,
-          }}
-          value={value}
-          onChange={(event) => setValue(event.target.value)}
-        >
-          {options.map((option) => (
-            <option value={option.value}>{option.name}</option>
-          ))}
-        </select>
-      </div>
-      <div
-        style={{
-          padding: 8,
-          fontSize: 15,
-          color: "#595959",
-          backgroundColor: "#faf8fc",
-          border: "1px solid #eae7ed",
-          borderBottomLeftRadius: 4,
-          borderBottomRightRadius: 4,
-        }}
-      >
-        {chosenOption.description}
-      </div>
-    </div>
+    <>
+      <div className={styles.selectTitle}>{title}</div>
+      {options.map((option) => (
+        <div className={styles.selectOption} key={option.value}>
+          <div className={styles.selectButton}>
+            <label
+              htmlFor={`${title}${option.value}`}
+              className={styles.selectLabel}
+            >
+              <img
+                src={option.imgSrc}
+                alt={option.name}
+                className={styles.selectImg}
+              />
+              {option.name}
+            </label>
+            <input
+              id={`${title}${option.value}`}
+              type="radio"
+              name={title}
+              value={option.value}
+              checked={value === option.value}
+              onChange={(event) => setValue(event.target.value)}
+              className={styles.selectRadio}
+            />
+          </div>
+          <div className={styles.selectDescription}>{option.description}</div>
+        </div>
+      ))}
+    </>
   );
 }
 
@@ -90,39 +78,29 @@ function Home() {
         </div>
       </header>
       <main>
-        <div className={styles.summary}>
-          <h2>Choose your stack</h2>
+        <div className={styles.heading}>
+          <div
+            style={{
+              fontSize: 14,
+              letterSpacing: "0.08333em",
+            }}
+          >
+            STEP #1
+          </div>
+          <h3>Choose your stack</h3>
         </div>
         <section className={styles.features}>
           <div className="container">
-            <div className="row">
+            <div className="row" style={{ justifyContent: "center" }}>
               <Select
                 title="Backend"
                 value={backend}
                 setValue={setBackend}
                 options={[
                   {
-                    name: "Apollo Server Express",
-                    value: "apollo-server-express",
-                    imgSrc: "img/apollo.svg",
-                    description: (
-                      <>
-                        <a
-                          target="_blank"
-                          rel="noreferrer"
-                          href="https://www.apollographql.com/docs/apollo-server/"
-                        >
-                          Apollo Server Express
-                        </a>{" "}
-                        generates a TypeScript, Express, and Node stack with
-                        Apollo Server for resolving GraphQL requests.
-                      </>
-                    ),
-                  },
-                  {
                     name: "Hasura",
                     value: "hasura",
-                    imgSrc: "img/hasura.svg",
+                    imgSrc: "/img/hasura.svg",
                     description: (
                       <>
                         <a
@@ -138,6 +116,24 @@ function Home() {
                       </>
                     ),
                   },
+                  {
+                    name: "Apollo Server Express",
+                    value: "apollo-server-express",
+                    imgSrc: "/img/apollo.svg",
+                    description: (
+                      <>
+                        <a
+                          target="_blank"
+                          rel="noreferrer"
+                          href="https://www.apollographql.com/docs/apollo-server/"
+                        >
+                          Apollo Server Express
+                        </a>{" "}
+                        generates a TypeScript, Express, Node, and TypeORM stack
+                        with Apollo Server for resolving GraphQL requests.
+                      </>
+                    ),
+                  },
                 ]}
               />
 
@@ -149,7 +145,7 @@ function Home() {
                   {
                     name: "Auth0",
                     value: "auth0",
-                    imgSrc: "img/auth0.svg",
+                    imgSrc: "/img/auth0.svg",
                     description: (
                       <>
                         <a
@@ -168,7 +164,7 @@ function Home() {
                   {
                     name: "None",
                     value: "none",
-                    imgSrc: "img/block-24px.svg",
+                    imgSrc: "/img/block-24px.svg",
                     description: "This won't be included in your code base.",
                   },
                 ]}
@@ -182,7 +178,7 @@ function Home() {
                   {
                     name: "AWS/Pulumi",
                     value: "aws",
-                    imgSrc: "img/aws.svg",
+                    imgSrc: "/img/aws.svg",
                     description: (
                       <>
                         <a
@@ -201,7 +197,7 @@ function Home() {
                   {
                     name: "None",
                     value: "none",
-                    imgSrc: "img/block-24px.svg",
+                    imgSrc: "/img/block-24px.svg",
                     description: "This won't be included in your code base.",
                   },
                 ]}
@@ -215,7 +211,7 @@ function Home() {
                   {
                     name: "React",
                     value: "react",
-                    imgSrc: "img/react.svg",
+                    imgSrc: "/img/react.svg",
                     description: (
                       <>
                         Create Full Stack scaffolds a TypeScript React app with{" "}
@@ -257,7 +253,7 @@ function Home() {
                   {
                     name: "None",
                     value: "none",
-                    imgSrc: "img/block-24px.svg",
+                    imgSrc: "/img/block-24px.svg",
                     description: "This won't be included in your code base.",
                   },
                 ]}
@@ -271,7 +267,7 @@ function Home() {
                   {
                     name: "React Native/Expo",
                     value: "react-native",
-                    imgSrc: "img/expo.svg",
+                    imgSrc: "/img/expo.svg",
                     description: (
                       <>
                         Create Full Stack scaffolds a TypeScript React Native
@@ -314,7 +310,7 @@ function Home() {
                   {
                     name: "None",
                     value: "none",
-                    imgSrc: "img/block-24px.svg",
+                    imgSrc: "/img/block-24px.svg",
                     description: "This won't be included in your code base.",
                   },
                 ]}
@@ -328,7 +324,7 @@ function Home() {
                   {
                     name: "GitHub Actions",
                     value: "github-actions",
-                    imgSrc: "img/github.svg",
+                    imgSrc: "/img/github.svg",
                     description: (
                       <>
                         Includes configuration for continuous integration (CI)
@@ -347,61 +343,125 @@ function Home() {
                   {
                     name: "None",
                     value: "none",
-                    imgSrc: "img/block-24px.svg",
+                    imgSrc: "/img/block-24px.svg",
                     description: "This won't be included in your code base.",
                   },
                 ]}
               />
             </div>
-            <div className={styles.summary}>
-              <h2>Check dependencies</h2>
+            <div className={styles.heading}>
+              <div className={styles.headingStep}>STEP #2</div>
+              <h3>Check dependencies</h3>
             </div>
             <CodeBlock>yarn --version</CodeBlock>
             <p>
-              Must be at or above v1.22. Download or upgrade from their{" "}
-              <a href="https://classic.yarnpkg.com/en/docs/install">website</a>.
+              Must be at or above v1.22 (
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://classic.yarnpkg.com/en/docs/install"
+              >
+                install
+              </a>
+              ).
             </p>
             <CodeBlock>docker-compose --version</CodeBlock>
             <p>
-              Must be at or above v1.25.5. Download, install and start Docker
-              from their{" "}
-              <a href="https://docs.docker.com/get-docker/">website</a>.
+              Must be at or above v1.25.5 (
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://docs.docker.com/get-docker/"
+              >
+                install
+              </a>
+              ). Docker must be running.
             </p>
             <CodeBlock>node --version</CodeBlock>
             <p>
               Must be at or above v12.10 or v14 (excluding non LTS v13 and v15).
               You can use{" "}
-              <a href="https://github.com/nvm-sh/nvm#installing-and-updating">
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://github.com/nvm-sh/nvm#installing-and-updating"
+              >
                 nvm
               </a>{" "}
               to download or upgrade versions.
             </p>
-            <div className={styles.summary}>
-              <h2>Generate codebase</h2>
+            <div className={styles.heading}>
+              <div className={styles.headingStep}>STEP #3</div>
+              <h3>Generate codebase</h3>
             </div>
             <CodeBlock>{generateCommand}</CodeBlock>
             <p>
               Run this command in the terminal to generate your codebase based
               on your stack selection above.
             </p>
+          </div>
+        </section>
 
-            <div className={styles.summary}>
-              <h2>Additional features</h2>
+        <section className={styles.featuresSection}>
+          <div className="container">
+            <div className={styles.heading}>
+              <h3>Additional features</h3>
             </div>
-            <ul>
-              <li>Open source</li>
-              <li>Single start local development command for the full stack</li>
-              <li>Monorepo with workspaces set up for code sharing</li>
-              <li>
-                Configuration with .env.{"{development|production}"} files
-                across platform
-              </li>
-              <li>Automated TypeScript code generation from GraphQL</li>
-              <li>Cross platform Jest testing</li>
-              <li>Code formatting with Prettier</li>
-              <li>Code linting with ESLint following the Airbnb style guide</li>
-              <li>Suggested VSCode extensions with configuration</li>
-            </ul>
+            <div className="row" style={{ justifyContent: "center" }}>
+              <div className={styles.featureBox}>
+                <h4>Open source</h4>
+                Create Full Stack is free and open source under the MIT license
+              </div>
+              <div className={styles.featureBox}>
+                <h4>Simple commands</h4>
+                Single <a href="/docs/available_scripts#yarn-start">
+                  start
+                </a>{" "}
+                local development command for the full stack
+              </div>
+              <div className={styles.featureBox}>
+                <h4>Monorepo</h4>
+                Monorepo with{" "}
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href="https://classic.yarnpkg.com/en/docs/workspaces/"
+                >
+                  workspaces
+                </a>{" "}
+                set up for code sharing
+              </div>
+              <div className={styles.featureBox}>
+                <h4>Consistent configuration</h4>
+                Cross platform <a href="/docs/configuration">
+                  configuration
+                </a>{" "}
+                with .env.
+                {"{development|production}"} files
+              </div>
+              <div className={styles.featureBox}>
+                <h4>GraphQL API</h4>
+                Automated TypeScript code generation from GraphQL
+              </div>
+              <div className={styles.featureBox}>
+                <h4>Tests included</h4>
+                Cross platform Jest testing
+              </div>
+              <div className={styles.featureBox}>
+                <h4>Code formatting and linting</h4>
+                Formatting with Prettier and linting with ESLint following the
+                Airbnb style guide
+              </div>
+              <div className={styles.featureBox}>
+                <h4>Migration support</h4>
+                Postgres <a href="/docs/migrations">migration</a> configuration
+                included with Hasura or TypeORM
+              </div>
+              <div className={styles.featureBox}>
+                <h4>VSCode configuration</h4>
+                Suggested VSCode extensions with configuration
+              </div>
+            </div>
           </div>
         </section>
       </main>
