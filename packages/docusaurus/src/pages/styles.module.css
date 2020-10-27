@@ -12,12 +12,6 @@
   overflow: hidden;
 }
 
-@media screen and (max-width: 966px) {
-  .heroBanner {
-    padding: 2rem;
-  }
-}
-
 .features {
   display: flex;
   align-items: center;
@@ -90,6 +84,13 @@
   padding-top: 1px;
   margin-top: 20px;
   border-top: 1px solid #eaeaea;
+  justify-content: start;
+}
+
+.featuresContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .featureBox {
@@ -101,4 +102,31 @@
   border: 1px solid #eae7ed;
   border-radius: 4px;
   background-color: white;
+}
+
+@media screen and (max-width: 1154px) and (min-width: 775px) {
+  .featureBox:last-child {
+    margin-right: 400px;
+  }
+}
+
+@media screen and (max-width: 1090px) {
+  .selectOption {
+    width: 380px;
+  }
+}
+
+@media screen and (max-width: 966px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+
+  .selectTitle {
+    width: 100%;
+    margin-left: 20px;
+  }
+
+  .selectOption {
+    width: 100%;
+  }
 }
