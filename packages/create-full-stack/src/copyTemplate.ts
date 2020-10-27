@@ -8,7 +8,16 @@ import os from "os";
 import path from "path";
 import sortPackageJson from "sort-package-json";
 
-import { Auth, Backend, CloudPlatform } from "./constants";
+import {
+  Auth,
+  Backend,
+  Cicd,
+  Cloud,
+  getTemplateTypeKey,
+  Mobile,
+  typesToTemplate,
+  Web,
+} from "./constants";
 import { getCdPath } from "./createReactAppUtils";
 import { hasDocker, runYarn } from "./utils";
 
@@ -58,15 +67,15 @@ interface VSCodeLaunch {
 
 async function updateVSCodeLaunch({
   projectPath,
-  hasWeb,
+  web,
 }: {
   projectPath: string;
-  hasWeb: boolean;
+  web: Web;
 }) {
   const { default: vscodeLaunch }: { default: VSCodeLaunch } = await import(
     path.join(projectPath, ".vscode/launch.json")
   );
-  if (hasWeb) {
+  if (web === Web.react) {
     vscodeLaunch.configurations.push({
       type: "chrome",
       request: "launch",
@@ -102,13 +111,13 @@ function getConcurrentlyScript(commands: Command[], args: string[] = []) {
 async function updatePackage({
   projectPath,
   backend,
-  hasMobile,
-  hasWeb,
+  mobile,
+  web,
 }: {
   projectPath: string;
   backend: Backend;
-  hasMobile: boolean;
-  hasWeb: boolean;
+  mobile: Mobile;
+  web: Web;
 }) {
   const appName = path.basename(projectPath);
   const {
@@ -159,7 +168,7 @@ async function updatePackage({
       command: "yarn --cwd packages/server test --ci --watchAll=false",
     });
   }
-  if (hasMobile) {
+  if (mobile === Mobile.reactNative) {
     startCommands.push({
       name: "Mobile",
       // --non-interactive included to print out the DevTools url
@@ -171,7 +180,7 @@ async function updatePackage({
       command: "yarn --cwd packages/mobile test --ci --watchAll=false",
     });
   }
-  if (hasWeb) {
+  if (web === Web.react) {
     buildCommands.push("yarn --cwd packages/web build");
     startCommands.push({
       name: "Web",
@@ -210,12 +219,12 @@ async function updatePackage({
  */
 async function updatePulumiAwsPackage({
   projectPath,
-  hasMobile,
+  mobile,
 }: {
   projectPath: string;
-  hasMobile: boolean;
+  mobile: Mobile;
 }) {
-  if (hasMobile) {
+  if (mobile === Mobile.reactNative) {
     return;
   }
   const pulumiAwsPackagePath = path.join(
@@ -436,35 +445,42 @@ export default async function copyTemplate(options: {
   projectPath: string;
   backend: Backend;
   auth: Auth;
-  template: string;
-  cloudPlatform: CloudPlatform;
-  hasMobile: boolean;
-  hasWeb: boolean;
-  hasGithubActions: boolean;
+  cloud: Cloud;
+  mobile: Mobile;
+  web: Web;
+  cicd: Cicd;
 }) {
   const {
     appName,
     projectPath,
-    template,
-    cloudPlatform,
-    hasMobile,
-    hasWeb,
-    hasGithubActions,
+    backend,
+    auth,
+    cloud,
+    mobile,
+    web,
+    cicd,
   } = options;
 
+  const template =
+    typesToTemplate[
+      getTemplateTypeKey({
+        backend,
+        auth,
+      })
+    ];
   const fullTemplate = `cfs-template-${template}`;
 
   const excludeList = [];
-  if (!hasMobile) {
+  if (mobile !== Mobile.reactNative) {
     excludeList.push("mobile");
   }
-  if (!hasWeb) {
+  if (web !== Web.react) {
     excludeList.push("web");
   }
-  if (cloudPlatform !== CloudPlatform.aws) {
+  if (cloud !== Cloud.aws) {
     excludeList.push("pulumi-aws");
   }
-  if (!hasGithubActions) {
+  if (cicd !== Cicd.githubActions) {
     excludeList.push(".github", ".pulumi");
   }
 
@@ -511,7 +527,7 @@ export default async function copyTemplate(options: {
     path.join(projectPath, "template.DEVELOPMENT.md"),
     path.join(projectPath, "DEVELOPMENT.md")
   );
-  if (cloudPlatform !== CloudPlatform.none) {
+  if (cloud !== Cloud.none) {
     fs.renameSync(
       path.join(projectPath, "template.PRODUCTION.md"),
       path.join(projectPath, "PRODUCTION.md")
@@ -520,10 +536,10 @@ export default async function copyTemplate(options: {
     fs.removeSync(path.join(projectPath, "template.PRODUCTION.md"));
   }
 
-  if (hasMobile) {
+  if (mobile === Mobile.reactNative) {
     updateAppJson(appName, projectPath);
   }
-  if (cloudPlatform === CloudPlatform.aws) {
+  if (cloud === Cloud.aws) {
     updatePulumiProjectFile(appName, projectPath);
     await updatePulumiAwsPackage(options);
   }
@@ -534,18 +550,18 @@ export default async function copyTemplate(options: {
   if (hasDocker()) {
     removeBlockInFileKeys.push("docker-install");
   }
-  if (!hasMobile) {
+  if (mobile !== Mobile.reactNative) {
     removeBlockInFileKeys.push("mobile");
   }
-  if (!hasWeb) {
+  if (web !== Web.react) {
     removeBlockInFileKeys.push("web");
   }
-  if (cloudPlatform !== CloudPlatform.aws) {
+  if (cloud !== Cloud.aws) {
     removeBlockInFileKeys.push("pulumi-aws");
   } else {
     removeBlockInFileKeys.push("manual-config");
   }
-  if (!hasGithubActions) {
+  if (cicd !== Cicd.githubActions) {
     removeBlockInFileKeys.push("github-actions");
   }
   if (process.platform !== "darwin") {

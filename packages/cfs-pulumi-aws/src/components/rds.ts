@@ -60,7 +60,7 @@ export default class Rds extends pulumi.ComponentResource {
     const db = new aws.rds.Instance(`${name}-instance`, {
       engine: "postgres",
       instanceClass: aws.rds.InstanceTypes.T3_Micro,
-      allocatedStorage: 5,
+      allocatedStorage: 1,
       dbSubnetGroupName: subnetGroup.id,
       vpcSecurityGroupIds: clusterOrDefault.securityGroups.map((g) => g.id),
       name: dbName,

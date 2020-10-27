@@ -14,15 +14,19 @@ import packageJson from "../package.json";
 import {
   Auth,
   authChoices,
+  auths,
   Backend,
   backends,
-  CloudPlatform,
+  Cicd,
+  cicds,
+  Cloud,
   cloudPlatformChoices,
-  getTemplateTypeKey,
+  cloudPlatforms,
+  Mobile,
+  mobileStacks,
   nodeBackends,
-  TemplateToTypes,
-  templateToTypes,
-  typesToTemplate,
+  Web,
+  webStacks,
 } from "./constants";
 import copyTemplate from "./copyTemplate";
 import {
@@ -33,47 +37,84 @@ import {
 } from "./createReactAppUtils";
 import { runYarn } from "./utils";
 
-let projectName = "";
+let projectName: string | undefined;
 
 interface Program extends commander.Command {
-  template?: string;
-  web?: boolean;
-  mobile?: boolean;
+  backend?: string;
+  authentication?: string;
+  cloud?: string;
+  web?: string;
+  mobile?: string;
+  cicd?: string;
 }
 
 const program: Program = new commander.Command(packageJson.name)
   .version(packageJson.version)
-  .arguments("<project-directory>")
-  .usage(`${chalk.green("<project-directory>")} [options]`)
+  .arguments("[project-directory]")
+  .usage(`${chalk.green("[project-directory]")} [options]`)
   .action((name) => {
     projectName = name;
   })
   .option(
-    "-t, --template <template>",
-    "specify a template for the created project"
+    "-b, --backend <backend>",
+    `specify a backend for the project [${backends.join("|")}]`
+  )
+  .option(
+    "-a, --authentication <authentication>",
+    `specify authentication for the project [${auths.join("|")}]`
+  )
+  .option(
+    "-c, --cloud <cloud>",
+    `specify a cloud platform for the project [${cloudPlatforms.join("|")}]`
+  )
+  .option(
+    "-w, --web <cloud>",
+    `specify a web stack for the project [${webStacks.join("|")}]`
+  )
+  .option(
+    "-m, --mobile <mobile>",
+    `specify a mobile stack for the project [${mobileStacks.join("|")}]`
+  )
+  .option(
+    "-d, --cicd <cicd>",
+    `specify a CI/CD for the project [${cicds.join("|")}]`
   );
+program.parse(process.argv);
 
-program.exitOverride();
-try {
-  program.parse(process.argv);
-} catch (error) {
-  console.log();
-  if (error.code === "commander.missingArgument") {
-    console.error("Please specify the project directory:");
-    console.log(
-      `  ${chalk.cyan(program.name())} ${chalk.green("<project-directory>")}`
-    );
-    console.log();
-    console.log("For example:");
-    console.log(
-      `  ${chalk.cyan(program.name())} ${chalk.green("my-full-stack")}`
-    );
-    console.log();
-    console.log(
-      `Run ${chalk.cyan(`${program.name()} --help`)} to see all options.`
-    );
+function resolveHome(filepath: string) {
+  if (filepath[0] === "~" && process.env.HOME) {
+    return path.join(process.env.HOME, filepath.slice(1));
   }
-  process.exit(1);
+  return filepath;
+}
+
+async function optionOrPropmt<T>(options: {
+  choices: (T | { name: string; value: T })[];
+  programValue: T | string | undefined;
+  message: string;
+  default: string;
+}): Promise<T> {
+  const { choices, programValue, message } = options;
+  if (
+    programValue &&
+    choices.find(
+      (val) =>
+        val === programValue ||
+        (typeof val === "object" &&
+          (val as { name: string; value: T }).value === programValue)
+    ) !== undefined
+  ) {
+    return programValue as T;
+  }
+  const answer = await inquirer.prompt({
+    type: "list",
+    choices,
+    name: "value",
+    message,
+    // default can't be destructured
+    default: options.default,
+  });
+  return answer.value;
 }
 
 async function run() {
@@ -90,13 +131,20 @@ async function run() {
     process.exit(1);
   }
 
+  if (!projectName) {
+    const projectNameAnswer = await inquirer.prompt({
+      name: "value",
+      message: "What would you like to name your project?",
+      default: "my-full-stack",
+    });
+    projectName = resolveHome(projectNameAnswer.value as string);
+  }
   const projectPath = path.resolve(projectName);
   const appName = path.basename(projectPath);
   checkAppName(appName);
   if (!isSafeToCreateProjectIn(projectPath, projectName)) {
     process.exit(1);
   }
-
   const latest = execSync("yarn info create-full-stack")
     .toString()
     .match(/latest: '(.*?)'/)?.[1];
@@ -111,94 +159,74 @@ async function run() {
     console.log();
     process.exit(1);
   }
-
-  // Which template should be used?
-  let { template } = program;
-  let backend: Backend = Backend.hasura;
-  let auth: Auth = Auth.none;
-  if (!template || !(template in templateToTypes)) {
-    const backendAnswer = await inquirer.prompt({
-      type: "list",
-      choices: backends,
-      name: "backend",
-      message: `Which backend? ${chalk.grey(
-        "(https://create-full-stack.com/docs/backend)"
-      )}`,
-      default: Backend.hasura,
-    });
-    backend = backendAnswer.backend;
-    const authAnswer = await inquirer.prompt({
-      type: "list",
-      choices: authChoices,
-      name: "auth",
-      message: `Which auth method? ${chalk.grey(
-        "(https://create-full-stack.com/docs/auth)"
-      )}`,
-      default: Auth.none,
-    });
-    auth = authAnswer.auth;
-    template =
-      typesToTemplate[
-        getTemplateTypeKey({
-          backend,
-          auth,
-        })
-      ];
-  } else {
-    const templateTypes = templateToTypes[template as keyof TemplateToTypes];
-    backend = templateTypes.backend;
-    auth = templateTypes.auth;
-  }
-  // What packages should be included/ignored in the template?
-  const cloudPlatformAnswer = await inquirer.prompt({
-    type: "list",
-    choices: cloudPlatformChoices,
-    name: "cloudPlatform",
-    message: `Which cloud platform? ${chalk.grey(
-      "(https://create-full-stack.com/docs/cloud)"
-    )}`,
-    default: CloudPlatform.none,
-  });
-  const { cloudPlatform } = cloudPlatformAnswer;
-  const hasWebAnswer = await inquirer.prompt({
-    type: "confirm",
-    name: "hasWeb",
-    message: `Include a React website? ${chalk.grey(
-      "(https://create-full-stack.com/docs/web)"
-    )}`,
-  });
-  const { hasWeb } = hasWebAnswer;
-  const hasMobileAnswer = await inquirer.prompt({
-    type: "confirm",
-    name: "hasMobile",
-    message: `Include a React Native iOS and Android app? ${chalk.grey(
-      "(https://create-full-stack.com/docs/mobile)"
-    )}`,
-  });
-  const { hasMobile } = hasMobileAnswer;
-  let hasGithubActions = false;
-  if (cloudPlatform !== CloudPlatform.none) {
-    const hasGithubActionsAnswer = await inquirer.prompt({
-      type: "confirm",
-      name: "hasGithubActions",
-      message: `Include GitHub Actions CI/CD? ${chalk.grey(
-        "(~5m of setup) (https://create-full-stack.com/docs/cicd)"
-      )}`,
-    });
-    hasGithubActions = hasGithubActionsAnswer.hasGithubActions;
-  }
-
-  fs.ensureDirSync(projectName);
-  console.log();
   // Yarn is required for Yarn workspaces (monorepo support)
   if (!shouldUseYarn()) {
+    console.log();
     console.error(
       chalk.red(
         "Create Full Stack requires Yarn.\nPlease install Yarn. https://classic.yarnpkg.com/en/docs/install"
       )
     );
+    console.log();
     process.exit(1);
   }
+
+  // Which template should be used?
+  const backend = await optionOrPropmt({
+    choices: backends,
+    programValue: program.backend,
+    message: `Which backend? ${chalk.grey(
+      "(https://create-full-stack.com/docs/backend)"
+    )}`,
+    default: Backend.hasura,
+  });
+  const auth = await optionOrPropmt({
+    choices: authChoices,
+    programValue: program.authentication,
+    message: `Which auth method? ${chalk.grey(
+      "(https://create-full-stack.com/docs/auth)"
+    )}`,
+    default: Auth.none,
+  });
+  // What packages should be included/ignored in the template?
+  const cloud = await optionOrPropmt({
+    choices: cloudPlatformChoices,
+    programValue: program.cloud,
+    message: `Which cloud platform? ${chalk.grey(
+      "(https://create-full-stack.com/docs/cloud)"
+    )}`,
+    default: Cloud.none,
+  });
+  const web = await optionOrPropmt({
+    choices: webStacks,
+    programValue: program.web,
+    message: `Which web stack? ${chalk.grey(
+      "(https://create-full-stack.com/docs/web)"
+    )}`,
+    default: Web.none,
+  });
+  const mobile = await optionOrPropmt({
+    choices: mobileStacks,
+    programValue: program.mobile,
+    message: `Which mobile stack? ${chalk.grey(
+      "(https://create-full-stack.com/docs/mobile)"
+    )}`,
+    default: Mobile.none,
+  });
+  let cicd: Cicd = Cicd.none;
+  if (cloud !== Cloud.none) {
+    cicd = await optionOrPropmt({
+      choices: cicds,
+      programValue: program.cicd,
+      message: `Include GitHub Actions CI/CD? ${chalk.grey(
+        "(~5m of setup) (https://create-full-stack.com/docs/cicd)"
+      )}`,
+      default: Cicd.none,
+    });
+  }
+
+  fs.ensureDirSync(projectName);
+  console.log();
   console.log(`Creating a new full-stack app in ${chalk.green(projectPath)}.`);
   console.log();
 
@@ -212,11 +240,10 @@ async function run() {
     projectPath,
     backend,
     auth,
-    template,
-    cloudPlatform,
-    hasMobile,
-    hasWeb,
-    hasGithubActions,
+    cloud,
+    mobile,
+    web,
+    cicd,
   });
 
   console.log(`Installing packages using yarn...`);

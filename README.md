@@ -10,6 +10,38 @@ If something doesn’t work, please check [troubleshooting](https://create-full-
 
 **Looking for co-contributors. If this project interests you, email me@tiagobandeira.com**
 
+## Choose your stack
+
+### Backend
+
+- Apollo Server Express
+- Hasura
+
+### Auth
+
+- Auth0
+- None
+
+### Cloud
+
+- AWS/Pulumi
+- None
+
+### Web
+
+- React
+- None
+
+### Mobile
+
+- React Native
+- None
+
+### CI/CD
+
+- GitHub Actions
+- None
+
 ## Prerequisites
 
 - [Yarn](https://yarnpkg.com/getting-started/install#global-install) >= v1.12.0

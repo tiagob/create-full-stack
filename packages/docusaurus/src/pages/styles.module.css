@@ -18,27 +18,11 @@
   }
 }
 
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .features {
   display: flex;
   align-items: center;
   padding: 2rem 0;
   width: 100%;
-}
-
-.featureImage {
-  height: 200px;
-  width: 200px;
-}
-
-.heroButton {
-  color: var(--ifm-hero-text-color) !important;
-  margin: 0 1rem;
 }
 
 .summary {
@@ -48,9 +32,23 @@
   text-align: center;
 }
 
-.logos {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 40px;
+select {
+  width: 100%;
+  cursor: pointer;
+  font-size: 20px;
+  border-color: #dbdbdb;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  color: #363636;
+  appearance: none;
+  height: 54px;
+  padding-left: 54px;
+  background: url(/static/img/arrow_drop_down-24px.svg) no-repeat right;
+  background-size: 32px 32px;
+  background-position-x: 290px;
+}
+
+select:focus {
+  outline: none;
+  box-shadow: 0px 0px 4px #0066ff;
 }
