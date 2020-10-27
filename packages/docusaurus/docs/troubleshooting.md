@@ -148,3 +148,7 @@ On Linux:
 ```bash
 sudo service postgresql stop
 ```
+
+## Error parsing JWK from url
+
+You're likely using an old Auth0 Tenant that incorrectly sets the xt5 in the JWK URL ([40 bytes instead of 20](https://community.auth0.com/t/certificate-thumbprint-is-longer-than-20-bytes/7794)). [Rotate your signing key](https://community.auth0.com/t/jwk-certificate-thumbprint-is-invalid/16070/22) to fix.

@@ -18,39 +18,87 @@
   }
 }
 
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .features {
   display: flex;
   align-items: center;
-  padding: 2rem 0;
   width: 100%;
 }
 
-.featureImage {
-  height: 200px;
-  width: 200px;
-}
-
-.heroButton {
-  color: var(--ifm-hero-text-color) !important;
-  margin: 0 1rem;
-}
-
-.summary {
+.heading {
   margin-left: 40px;
   margin-right: 40px;
   margin-top: 40px;
   text-align: center;
 }
 
-.logos {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 40px;
+.headingStep {
+  font-size: 14px;
+  letter-spacing: 0.08333em;
+}
+
+.selectTitle {
+  width: 160px;
+  margin-top: 22px;
+  font-size: var(--ifm-h4-font-size);
+}
+
+.selectOption {
+  width: 440px;
+  margin: 8px;
+}
+
+.selectButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #eae7ed;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.selectLabel {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  cursor: pointer;
+}
+
+.selectImg {
+  padding: 11px;
+  height: 32px;
+  width: 32px;
+}
+
+.selectRadio {
+  margin-right: 11px;
+  cursor: pointer;
+}
+
+.selectDescription {
+  padding: 8px;
+  font-size: 15px;
+  color: #595959;
+  background-color: #fafafa;
+  border: 1px solid #eae7ed;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.featuresSection {
+  background-color: #fafafa;
+  padding-bottom: 40px;
+  padding-top: 1px;
+  margin-top: 20px;
+  border-top: 1px solid #eaeaea;
+}
+
+.featureBox {
+  width: 340px;
+  padding: 18px;
+  font-size: 15px;
+  color: #595959;
+  margin: 20px;
+  border: 1px solid #eae7ed;
+  border-radius: 4px;
+  background-color: white;
 }

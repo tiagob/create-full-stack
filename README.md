@@ -1,6 +1,6 @@
 # Create Full Stack
 
-Set up a TypeScript full stack (web, mobile, backend, aws) with one command.
+Set up a TypeScript full stack with one command.
 
 - [Getting Started](https://create-full-stack.com/docs) – How to create a new full stack.
 - [User Guide](https://create-full-stack.com) – How to develop apps bootstrapped with Create Full Stack.
@@ -9,6 +9,38 @@ Create Full Stack works on macOS, and Linux.<br>
 If something doesn’t work, please check [troubleshooting](https://create-full-stack.com/docs/troubleshooting) or file an [issue](https://github.com/tiagob/create-full-stack/issues).
 
 **Looking for co-contributors. If this project interests you, email me@tiagobandeira.com**
+
+## Choose your stack
+
+### Backend
+
+- Apollo Server Express
+- Hasura
+
+### Auth
+
+- Auth0
+- None
+
+### Cloud
+
+- AWS/Pulumi
+- None
+
+### Web
+
+- React
+- None
+
+### Mobile
+
+- React Native
+- None
+
+### CI/CD
+
+- GitHub Actions
+- None
 
 ## Prerequisites
 

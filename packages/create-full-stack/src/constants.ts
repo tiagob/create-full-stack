@@ -50,15 +50,30 @@ export const typesToTemplate = Object.freeze(
     ])
   )
 );
-export enum CloudPlatform {
+export enum Cloud {
   aws = "aws",
   none = "none",
 }
-export const cloudPlatforms = [CloudPlatform.aws, CloudPlatform.none];
+export const cloudPlatforms = [Cloud.aws, Cloud.none];
 export const cloudPlatformChoices = [
   {
-    name: `${CloudPlatform.aws} ${chalk.grey("(~15m of setup)")}`,
-    value: CloudPlatform.aws,
+    name: `${Cloud.aws} ${chalk.grey("(~15m of setup)")}`,
+    value: Cloud.aws,
   },
-  CloudPlatform.none,
+  Cloud.none,
 ];
+export enum Web {
+  react = "react",
+  none = "none",
+}
+export const webStacks = Object.values(Web);
+export enum Mobile {
+  reactNative = "react-native",
+  none = "none",
+}
+export const mobileStacks = Object.values(Mobile);
+export enum Cicd {
+  githubActions = "github-actions",
+  none = "none",
+}
+export const cicds = Object.values(Cicd);
