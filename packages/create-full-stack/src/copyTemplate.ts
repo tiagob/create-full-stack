@@ -52,49 +52,6 @@ function templateCopySync(
   }
 }
 
-interface VSCodeLaunch {
-  configurations: {
-    type: string;
-    request: string;
-    name: string;
-    url: string;
-    webRoot: string;
-    sourceMapPathOverrides: {
-      [key: string]: string;
-    };
-  }[];
-}
-
-async function updateVSCodeLaunch({
-  projectPath,
-  web,
-}: {
-  projectPath: string;
-  web: Web;
-}) {
-  const { default: vscodeLaunch }: { default: VSCodeLaunch } = await import(
-    path.join(projectPath, ".vscode/launch.json")
-  );
-  if (web === Web.react) {
-    vscodeLaunch.configurations.push({
-      type: "chrome",
-      request: "launch",
-      name: "Chrome",
-      url: "http://localhost:3000",
-      // eslint-disable-next-line no-template-curly-in-string
-      webRoot: "${workspaceFolder}/packages/web/src",
-      sourceMapPathOverrides: {
-        // eslint-disable-next-line no-template-curly-in-string
-        "webpack:///packages/web/src/*": "${webRoot}/*",
-      },
-    });
-  }
-  fs.writeFileSync(
-    path.join(projectPath, ".vscode/launch.json"),
-    JSON.stringify(vscodeLaunch, undefined, 2) + os.EOL
-  );
-}
-
 interface Command {
   name: string;
   command: string;
@@ -543,7 +500,6 @@ export default async function copyTemplate(options: {
     updatePulumiProjectFile(appName, projectPath);
     await updatePulumiAwsPackage(options);
   }
-  await updateVSCodeLaunch(options);
   await updatePackage(options);
 
   const removeBlockInFileKeys: string[] = [];

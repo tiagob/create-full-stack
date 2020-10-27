@@ -1,7 +1,7 @@
 {
   "name": "create-full-stack",
   "version": "0.1.69",
-  "description": "Set up a TypeScript full stack (web, mobile, backend, aws) with one command.",
+  "description": "Set up a TypeScript full stack with one command.",
   "keywords": [
     "react",
     "react-native",
@@ -57,9 +57,5 @@
   "engines": {
     "node": "^12.10 || 14.x",
     "yarn": ">=1.12.0"
-  },
-  "os": [
-    "darwin",
-    "linux"
-  ]
+  }
 }
