@@ -213,17 +213,14 @@ async function run() {
     )}`,
     default: Mobile.none,
   });
-  let cicd: Cicd = Cicd.none;
-  if (cloud !== Cloud.none) {
-    cicd = await optionOrPropmt({
-      choices: cicds,
-      programValue: program.cicd,
-      message: `Include GitHub Actions CI/CD? ${chalk.grey(
-        "(~5m of setup) (https://create-full-stack.com/docs/cicd)"
-      )}`,
-      default: Cicd.none,
-    });
-  }
+  const cicd = await optionOrPropmt({
+    choices: cicds,
+    programValue: program.cicd,
+    message: `Include GitHub Actions CI/CD? ${chalk.grey(
+      "(~5m of setup) (https://create-full-stack.com/docs/cicd)"
+    )}`,
+    default: Cicd.none,
+  });
 
   fs.ensureDirSync(projectName);
   console.log();
