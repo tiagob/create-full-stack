@@ -1,6 +1,7 @@
 ---
 id: mobile
 title: Mobile
+image: /img/logo.svg
 ---
 
 If included, Create Full Stack scaffolds a TypeScript React Native app with [Expo](https://docs.expo.io/) [![GitHub stars](https://img.shields.io/github/stars/expo/expo.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/expo/expo/stargazers/)

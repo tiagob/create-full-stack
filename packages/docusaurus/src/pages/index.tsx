@@ -72,7 +72,8 @@ function Home() {
   return (
     <Layout
       title={siteConfig.title}
-      description="Description will go into a meta tag in <head />"
+      description={siteConfig.tagline}
+      image="/img/logo.svg"
     >
       <header className={clsx("hero hero--primary", styles.heroBanner)}>
         <div className="container">

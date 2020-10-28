@@ -1,6 +1,7 @@
 ---
 id: auth
 title: Auth
+image: /img/logo.svg
 ---
 
 Auth choices for Create Full Stack.

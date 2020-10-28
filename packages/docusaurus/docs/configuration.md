@@ -1,6 +1,7 @@
 ---
 id: configuration
 title: Configuration
+image: /img/logo.svg
 ---
 
 Configuration across web, mobile and apollo-sever-express follows CRA's [environment variables](https://create-react-app.dev/docs/adding-custom-environment-variables/). Configuration specific to cloud deployment is found in the [Pulumi stack](https://www.pulumi.com/docs/intro/concepts/stack/).

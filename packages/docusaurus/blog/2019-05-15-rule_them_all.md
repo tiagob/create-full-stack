@@ -4,6 +4,7 @@ title: One full-stack to rule them all!
 author: Tiago Bandeira
 author_url: https://github.com/tiagob
 author_image_url: https://avatars3.githubusercontent.com/u/1031522?v=4
+image: /img/logo.svg
 ---
 
 **Originally [posted on Medium](https://medium.com/@tiagsters/one-full-stack-to-rule-them-all-5ca39ded16c1)**

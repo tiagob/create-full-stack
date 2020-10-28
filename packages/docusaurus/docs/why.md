@@ -1,6 +1,7 @@
 ---
 id: why
 title: Why?
+image: /img/logo.svg
 ---
 
 ## Problem

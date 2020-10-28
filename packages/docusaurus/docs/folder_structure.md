@@ -1,6 +1,7 @@
 ---
 id: folder_structure
 title: Folder Structure
+image: /img/logo.svg
 ---
 
 After creation, your project should look something like this:

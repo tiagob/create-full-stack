@@ -1,6 +1,7 @@
 ---
 id: available_scripts
 title: Available Scripts
+image: /img/logo.svg
 ---
 
 ## Root level

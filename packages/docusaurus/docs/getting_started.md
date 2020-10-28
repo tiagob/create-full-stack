@@ -3,6 +3,7 @@ id: getting_started
 title: Getting Started
 sidebar_label: Getting Started
 slug: /
+image: /img/logo.svg
 ---
 
 Create Full Stack (CFS) generates a boilerplate Todo app for you, integrating the tools you select ([view demo](http://demo-full-stack.com/)). It provides the glue between the libraries and frameworks. No more stitching together random blog posts guessing about best practices. Build scalable applications on a solid foundation. CFS works on macOS, and Linux.

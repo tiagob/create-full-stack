@@ -1,6 +1,7 @@
 ---
 id: cicd
 title: CI/CD
+image: /img/logo.svg
 ---
 
 If included, Create Full Stack includes configuration for continuous integration (CI) and continuous deployment (CD) through [GitHub Actions](https://docs.github.com/en/actions) at `.github/workflows/`.

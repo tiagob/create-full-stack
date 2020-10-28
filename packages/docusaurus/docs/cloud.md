@@ -1,6 +1,7 @@
 ---
 id: cloud
 title: Cloud
+image: /img/logo.svg
 ---
 
 Cloud choices for Create Full Stack.

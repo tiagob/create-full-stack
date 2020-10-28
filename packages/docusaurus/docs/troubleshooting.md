@@ -1,6 +1,7 @@
 ---
 id: troubleshooting
 title: Troubleshooting
+image: /img/logo.svg
 ---
 
 ## EADDRINUSE, Address already in use

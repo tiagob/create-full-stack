@@ -1,6 +1,7 @@
 ---
 id: backend
 title: Backend
+image: /img/logo.svg
 ---
 
 Backend choices for Create Full Stack. Hasura is recommended for most cases.

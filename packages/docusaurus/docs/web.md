@@ -1,6 +1,7 @@
 ---
 id: web
 title: Web
+image: /img/logo.svg
 ---
 
 If included, Create Full Stack scaffolds a TypeScript React app with [Create React App](https://create-react-app.dev/) (CRA) [![GitHub stars](https://img.shields.io/github/stars/facebook/create-react-app.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/facebook/create-react-app/stargazers/)

@@ -1,6 +1,7 @@
 ---
 id: migrations
 title: Migrations
+image: /img/logo.svg
 ---
 
 ## Apollo Server Express

@@ -1,6 +1,7 @@
 ---
 id: libraries_and_frameworks
 title: Libraries and Frameworks
+image: /img/logo.svg
 ---
 
 Included libraries and frameworks that Create Full Stack stitches together.

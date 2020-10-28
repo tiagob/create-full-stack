@@ -1,6 +1,7 @@
 ---
 id: tutorial_apollo_server_express
 title: Apollo Server Express
+image: /img/logo.svg
 ---
 
 **This tutorial assumes [Apollo Server Express backend](/docs/backend#apollo-server-express) was selected. If Hasura was selected, check out the [Hasura version](/docs/tutorial_hasura).**

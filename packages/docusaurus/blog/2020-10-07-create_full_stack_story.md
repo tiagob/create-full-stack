@@ -4,6 +4,7 @@ title: Create Full Stack Story
 author: Tiago Bandeira
 author_url: https://github.com/tiagob
 author_image_url: https://avatars3.githubusercontent.com/u/1031522?v=4
+image: /img/logo.svg
 ---
 
 Create Full Stack marries best practices I picked up over a decade developing at large tech companies like Google and Twitter to small startups like MoPub, as well as my own personal projects ([Compare Hospitals](https://comparehospitals.org/), [Whether°](https://apps.apple.com/us/app/id1446510851), [Flixfindr](https://www.youtube.com/watch?v=Ekf3k5jIGT4)). At Google, I was impressed with the seamless integration of all the libraries and frameworks. The consistency across Google3 (Google's mono-repo) is incredible. Teams across the entire organization use the same tools with the same style guidelines, and code can be shared and accessed anywhere. When starting a new project, Google developers build on a stable foundation with significant guard rails in place. On the other hand, the tools are very company-specific and focus on performance over developer productivity.
