@@ -19,9 +19,7 @@
 }
 
 .heading {
-  margin-left: 40px;
-  margin-right: 40px;
-  margin-top: 40px;
+  margin-top: 32px;
   text-align: center;
 }
 
@@ -78,6 +76,22 @@
   border-bottom-right-radius: 4px;
 }
 
+.break {
+  width: 100%;
+  border-top: 1px solid #eaeaea;
+}
+
+.templates {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.templateImg {
+  height: 400px;
+  filter: drop-shadow(2px 2px 2px #222);
+}
+
 .featuresSection {
   background-color: #fafafa;
   padding-bottom: 40px;
@@ -128,5 +142,9 @@
 
   .selectOption {
     width: 100%;
+  }
+
+  .templates {
+    flex-direction: column;
   }
 }

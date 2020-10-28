@@ -66,6 +66,9 @@ function Home() {
   const [cicd, setCicd] = React.useState("github-actions");
   const generateCommand = `yarn create full-stack --backend ${backend} --authentication ${authentication} --cloud ${cloud} --web ${web} --mobile ${mobile} --cicd ${cicd}`;
 
+  const [webImgSrc, setWebImgSrc] = React.useState("/img/web1.png");
+  const [mobileImgSrc, setMobileImgSrc] = React.useState("/img/mobile1.png");
+
   return (
     <Layout
       title={siteConfig.title}
@@ -399,6 +402,37 @@ function Home() {
               Run this command in the terminal to generate your codebase based
               on your stack selection above.
             </p>
+
+            <div className={styles.break} />
+            <div className={styles.heading}>
+              <h3>Templates</h3>
+            </div>
+            <div className={styles.templates}>
+              <div>
+                <div style={{ margin: 10 }}>Web</div>
+                <img
+                  className={styles.templateImg}
+                  src={webImgSrc}
+                  alt="web"
+                  onMouseOver={() => setWebImgSrc("/img/web2.png")}
+                  onFocus={() => setWebImgSrc("/img/web2.png")}
+                  onMouseOut={() => setWebImgSrc("/img/web1.png")}
+                  onBlur={() => setWebImgSrc("/img/web1.png")}
+                />
+              </div>
+              <div>
+                <div style={{ margin: 10 }}>Mobile</div>
+                <img
+                  className={styles.templateImg}
+                  src={mobileImgSrc}
+                  alt="mobile"
+                  onMouseOver={() => setMobileImgSrc("/img/mobile2.png")}
+                  onFocus={() => setMobileImgSrc("/img/mobile2.png")}
+                  onMouseOut={() => setMobileImgSrc("/img/mobile1.png")}
+                  onBlur={() => setMobileImgSrc("/img/mobile1.png")}
+                />
+              </div>
+            </div>
           </div>
         </section>
 
