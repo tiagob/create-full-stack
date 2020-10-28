@@ -409,7 +409,7 @@ function Home() {
             </div>
             <div className={styles.templates}>
               <div>
-                <div style={{ margin: 10 }}>Web</div>
+                <div className={styles.templateTitle}>Web</div>
                 <img
                   className={styles.templateImg}
                   src={webImgSrc}
@@ -421,7 +421,7 @@ function Home() {
                 />
               </div>
               <div>
-                <div style={{ margin: 10 }}>Mobile</div>
+                <div className={styles.templateTitle}>Mobile</div>
                 <img
                   className={styles.templateImg}
                   src={mobileImgSrc}

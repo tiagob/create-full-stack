@@ -87,6 +87,10 @@
   align-items: center;
 }
 
+.templateTitle {
+  margin: 0 0 10px 10px;
+}
+
 .templateImg {
   height: 400px;
   filter: drop-shadow(2px 2px 2px #222);
