@@ -26,7 +26,12 @@ Then create a file named `.eslintrc.json` with following contents in the root fo
 
 ```json
 {
-  "extends": "create-full-stack"
+  "extends": "create-full-stack",
+  "settings": {
+    "jest": {
+      "version": 26 // YOUR JEST VERSION
+    }
+  }
 }
 ```
 

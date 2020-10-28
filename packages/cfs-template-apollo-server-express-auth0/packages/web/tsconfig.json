@@ -13,6 +13,8 @@
     "moduleResolution": "Node",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "preserveWatchOutput": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
