@@ -16,6 +16,7 @@
     "module": "CommonJS",
     // Required by React Native. Node uses "CommonJS" which is overridden in child config
     "moduleResolution": "Node",
+    "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "paths": {
       "packages/*": ["packages/*"]

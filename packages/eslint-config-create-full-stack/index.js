@@ -16,6 +16,7 @@ module.exports = {
   ],
   extends: [
     "react-app",
+    "react-app/jest",
     "airbnb-typescript",
     "plugin:@typescript-eslint/recommended",
     "plugin:eslint-comments/recommended",
@@ -78,6 +79,7 @@ module.exports = {
     // TypeScript can infer return types
     // https://www.typescriptlang.org/docs/handbook/type-inference.html
     "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/prefer-optional-chain": "error",
   },
