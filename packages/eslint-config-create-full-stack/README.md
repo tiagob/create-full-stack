@@ -26,7 +26,16 @@ Then create a file named `.eslintrc.json` with following contents in the root fo
 
 ```json
 {
-  "extends": "create-full-stack",
+  "extends": "create-full-stack"
+}
+```
+
+That's it! You can override the settings from `eslint-config-create-full-stack` by editing the `.eslintrc.json` file. Learn more about [configuring ESLint](http://eslint.org/docs/user-guide/configuring) on the ESLint website.
+
+NOTE: The Jest version is set by default to v26 but can be overridden to something else by adding `"settings"` to `.eslintrc.json`:
+
+```
+{
   "settings": {
     "jest": {
       "version": 26
@@ -34,7 +43,3 @@ Then create a file named `.eslintrc.json` with following contents in the root fo
   }
 }
 ```
-
-Replace Jest version with your Jest version.
-
-That's it! You can override the settings from `eslint-config-create-full-stack` by editing the `.eslintrc.json` file. Learn more about [configuring ESLint](http://eslint.org/docs/user-guide/configuring) on the ESLint website.
