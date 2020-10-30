@@ -46,6 +46,8 @@
   border: 1px solid #eae7ed;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
+  background-color: var(--ifm-color-white);
+  color: var(--ifm-color-gray-900);
 }
 
 .selectLabel {
@@ -78,7 +80,7 @@
 
 .break {
   width: 100%;
-  border-top: 1px solid #eaeaea;
+  border-top: 1px solid #eae7ed;
 }
 
 .templates {
@@ -101,7 +103,7 @@
   padding-bottom: 40px;
   padding-top: 1px;
   margin-top: 20px;
-  border-top: 1px solid #eaeaea;
+  border-top: 1px solid #eae7ed;
   justify-content: start;
 }
 
