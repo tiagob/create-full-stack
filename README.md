@@ -109,3 +109,9 @@ To achieve this we chose components for the boilerplate that are:
 1. Type-safe, eliminating a whole class of bugs
 1. Tested at scale in production
 1. Used by enough developers that solutions are easy to find
+
+## Sponsors
+
+![Amity](img/amity-logo.svg)
+
+Home of innovative digital solutions that help organizations, teams and individuals achieve more through the power of technology.
