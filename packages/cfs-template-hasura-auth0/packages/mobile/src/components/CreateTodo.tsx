@@ -1,5 +1,5 @@
 import { useCreateTodo } from "common";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Icon, Input } from "react-native-elements";
 
@@ -16,10 +16,10 @@ export default function CreateTodo() {
   const [name, setName] = useState("");
   const [createTodo] = useCreateTodo();
 
-  function onSubmit() {
+  const onSubmit = useCallback(() => {
     createTodo({ variables: { name } });
     setName("");
-  }
+  }, [name, setName, createTodo]);
 
   return (
     <View style={styles.root}>

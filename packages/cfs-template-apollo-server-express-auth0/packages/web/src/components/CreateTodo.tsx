@@ -1,16 +1,16 @@
 import { IconButton, InputAdornment, TextField } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import { useCreateTodo } from "common";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
 export default function CreateTodo() {
   const [name, setName] = useState("");
   const [createTodo, { loading }] = useCreateTodo();
 
-  function onSubmit() {
+  const onSubmit = useCallback(() => {
     createTodo({ variables: { name } });
     setName("");
-  }
+  }, [name, setName, createTodo]);
 
   return (
     <TextField
