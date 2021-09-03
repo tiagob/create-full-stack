@@ -20,26 +20,18 @@ export default function App(): ReactElement {
             name="Todos"
             component={Todos}
             options={{
-              drawerIcon: ({
-                color,
-                size,
-              }: {
-                color: string;
-                size: number;
-              }) => <Icon color={color} size={size} name="home" />,
+              drawerIcon: ({ color, size }) => (
+                <Icon color={color} size={size} name="home" />
+              ),
             }}
           />
           <Drawer.Screen
             name="About"
             component={About}
             options={{
-              drawerIcon: ({
-                color,
-                size,
-              }: {
-                color: string;
-                size: number;
-              }) => <Icon color={color} size={size} name="info" />,
+              drawerIcon: ({ color, size }) => (
+                <Icon color={color} size={size} name="info" />
+              ),
             }}
           />
         </Drawer.Navigator>
