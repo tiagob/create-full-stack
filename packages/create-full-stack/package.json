@@ -36,7 +36,7 @@
     "inquirer": "^7.3.3",
     "is-online": "^8.4.0",
     "js-yaml": "^3.14.0",
-    "markdown-it": "^11.0.0",
+    "markdown-it": "^12.3.2",
     "open": "^7.2.1",
     "path": "^0.12.7",
     "semver": "^7.3.2",
